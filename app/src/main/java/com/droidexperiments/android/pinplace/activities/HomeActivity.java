@@ -1,0 +1,104 @@
+package com.droidexperiments.android.pinplace.activities;
+
+import android.Manifest;
+import android.location.Location;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.droidexperiments.android.pinplace.R;
+import com.droidexperiments.android.pinplace.impls.operations.LocationOperationsImpl;
+import com.droidexperiments.android.pinplace.impls.presenters.HomeActivityPresenterImpl;
+import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;
+import com.droidexperiments.android.pinplace.interfaces.operations.LocationOperations;
+import com.droidexperiments.android.pinplace.interfaces.presenters.HomeActivityPresenter;
+import com.droidexperiments.android.pinplace.models.Place;
+import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
+
+/**
+ * Author : Krupal Shah
+ * Date : 02-Apr-16
+ */
+public final class HomeActivity extends BaseActivity implements PlaceUpdatesListener {
+
+    private static final String TAG = "HomeActivity";
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final String[] LOCATION_PERMISSIONS = new String[]{
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+    private HomeActivityPresenter mHomePresenter;
+    private LocationOperations mLocationOperations;
+    private PermissionsHelper mPermissionsHelper;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        initComponents();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mPermissionsHelper.askPermissionsIfNotGranted(this, LOCATION_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
+            mLocationOperations.startLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE:
+                if (mPermissionsHelper.checkGrantResults(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
+                    mLocationOperations.startLocationUpdates();
+                }
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        mLocationOperations.stopLocationUpdates();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mLocationOperations.unregisterPlaceListener();
+        mHomePresenter.detachActivity(this);
+        super.onDestroy();
+    }
+
+    @Override
+    protected void initComponents() {
+        mHomePresenter = new HomeActivityPresenterImpl(this);
+        mHomePresenter.attachActivity(this);
+        mHomePresenter.animateToolbarCollapsing();
+        mHomePresenter.setTransparentStatusBar();
+        mHomePresenter.setupViewPager();
+
+        mPermissionsHelper = mHomePresenter.providePermissionsHelper();
+
+        mLocationOperations = new LocationOperationsImpl(this);
+        mLocationOperations.registerPlaceListener(this);
+    }
+
+
+    @Override
+    public void onGotLastKnownPlace(Place lastKnownPlace) {
+        Log.d(TAG, "onGotLastKnownPlace() called with " + "lastKnownPlace = [" + lastKnownPlace + "]");
+    }
+
+    @Override
+    public void onLocationUpdated(Location newLocation) {
+        Log.d(TAG, "onLocationUpdated() called with " + "newLocation = [" + newLocation + "]");
+    }
+}

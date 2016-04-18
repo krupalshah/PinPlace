@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PinPlace</string>
+
+
+    <string name="allow">ALLOW</string>
+    <string name="rationale_access_location">You need to allow app to get location </string>
+    <string name="err_unable_to_fetch_address">Unable to fetch Address</string>
+    <string name="unknown">Unknown</string>
+    <string name="err_no_internet">Internet not available!</string>
+
+</resources>
