@@ -15,6 +15,8 @@ import com.droidexperiments.android.pinplace.interfaces.presenters.HomeActivityP
 import com.droidexperiments.android.pinplace.models.Place;
 import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
 
+import java.util.Arrays;
+
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
@@ -59,6 +61,7 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
                 break;
 
             default:
+                Log.e(TAG, "onRequestPermissionsResult() : switch fell under default case " + "requestCode = [" + requestCode + "], permissions = [" + Arrays.toString(permissions) + "], grantResults = [" + Arrays.toString(grantResults) + "]");
                 break;
 
         }
