@@ -3,7 +3,7 @@ package com.droidexperiments.android.pinplace.impls.presenters;
 import android.content.Context;
 import android.support.annotation.CallSuper;
 
-import com.droidexperiments.android.pinplace.activities.BaseActivity;
+import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
 import com.droidexperiments.android.pinplace.interfaces.presenters.ActivityPresenter;
 
 /**

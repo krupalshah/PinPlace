@@ -1,4 +1,4 @@
-package com.droidexperiments.android.pinplace.activities;
+package com.droidexperiments.android.pinplace.activities.home;
 
 import android.Manifest;
 import android.location.Location;
@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.droidexperiments.android.pinplace.R;
+import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
 import com.droidexperiments.android.pinplace.impls.operations.LocationOperationsImpl;
 import com.droidexperiments.android.pinplace.impls.presenters.HomeActivityPresenterImpl;
 import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;

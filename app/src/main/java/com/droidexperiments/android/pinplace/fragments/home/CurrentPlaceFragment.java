@@ -1,5 +1,7 @@
-package com.droidexperiments.android.pinplace.fragments;
+package com.droidexperiments.android.pinplace.fragments.home;
 
+
+import com.droidexperiments.android.pinplace.fragments.base.BaseFragment;
 
 /**
  * Author : Krupal Shah

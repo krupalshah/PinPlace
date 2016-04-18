@@ -1,4 +1,4 @@
-package com.droidexperiments.android.pinplace.fragments;
+package com.droidexperiments.android.pinplace.fragments.base;
 
 import android.support.v4.app.Fragment;
 
