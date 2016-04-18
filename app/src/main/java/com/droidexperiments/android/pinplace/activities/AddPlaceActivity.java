@@ -1,6 +1,6 @@
-package com.droidexperiments.android.pinplace.activities.remember;
+package com.droidexperiments.android.pinplace.activities;
 
-import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
+import com.droidexperiments.android.pinplace.activities.BaseActivity;
 
 /**
  * Author : Krupal Shah

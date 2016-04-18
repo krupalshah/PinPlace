@@ -1,4 +1,4 @@
-package com.droidexperiments.android.pinplace.activities.base;
+package com.droidexperiments.android.pinplace.activities;
 
 import android.support.v7.app.AppCompatActivity;
 

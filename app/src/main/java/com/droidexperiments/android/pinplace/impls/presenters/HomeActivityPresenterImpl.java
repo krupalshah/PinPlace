@@ -7,8 +7,8 @@ import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
-import com.droidexperiments.android.pinplace.activities.home.HomeActivity;
+import com.droidexperiments.android.pinplace.activities.BaseActivity;
+import com.droidexperiments.android.pinplace.activities.HomeActivity;
 import com.droidexperiments.android.pinplace.interfaces.presenters.HomeActivityPresenter;
 
 /**
