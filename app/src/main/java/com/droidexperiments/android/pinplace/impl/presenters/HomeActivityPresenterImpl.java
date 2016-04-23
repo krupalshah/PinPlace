@@ -12,7 +12,7 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.impls.presenters;
+package com.droidexperiments.android.pinplace.impl.presenters;
 
 import android.annotation.TargetApi;
 import android.content.Context;

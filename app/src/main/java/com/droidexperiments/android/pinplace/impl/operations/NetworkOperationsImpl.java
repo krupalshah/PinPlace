@@ -12,7 +12,7 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.impls.operations;
+package com.droidexperiments.android.pinplace.impl.operations;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

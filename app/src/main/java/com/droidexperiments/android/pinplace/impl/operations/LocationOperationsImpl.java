@@ -12,7 +12,7 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.impls.operations;
+package com.droidexperiments.android.pinplace.impl.operations;
 
 import android.content.Context;
 import android.location.Location;
@@ -23,7 +23,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.droidexperiments.android.pinplace.R;
-import com.droidexperiments.android.pinplace.asynctasks.FetchAddressTask;
+import com.droidexperiments.android.pinplace.async.FetchAddressTask;
 import com.droidexperiments.android.pinplace.config.AppConfig;
 import com.droidexperiments.android.pinplace.interfaces.callbacks.AsyncTaskCallback;
 import com.droidexperiments.android.pinplace.interfaces.callbacks.GetPlaceCallback;
@@ -87,11 +87,10 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
                 return;
             }
         }
-        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, new AsyncTaskCallback() { //needs address update and internet is available
+        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, new AsyncTaskCallback<String>() { //needs address update and internet is available
             @Override
-            public <T> void onAsyncTaskCompleted(T result) {
-                String address = (String) result;
-                mCurrentPlace.setAddress(TextUtils.isEmpty(address) ? mContext.getString(R.string.unknown) : address);
+            public void onAsyncTaskCompleted(String result) {
+                mCurrentPlace.setAddress(TextUtils.isEmpty(result) ? mContext.getString(R.string.unknown) : result);
                 callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
             }
         });

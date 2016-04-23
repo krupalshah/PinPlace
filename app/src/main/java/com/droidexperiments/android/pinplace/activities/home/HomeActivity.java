@@ -22,8 +22,8 @@ import android.util.Log;
 
 import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
-import com.droidexperiments.android.pinplace.impls.operations.LocationOperationsImpl;
-import com.droidexperiments.android.pinplace.impls.presenters.HomeActivityPresenterImpl;
+import com.droidexperiments.android.pinplace.impl.operations.LocationOperationsImpl;
+import com.droidexperiments.android.pinplace.impl.presenters.HomeActivityPresenterImpl;
 import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;
 import com.droidexperiments.android.pinplace.interfaces.operations.LocationOperations;
 import com.droidexperiments.android.pinplace.interfaces.presenters.HomeActivityPresenter;

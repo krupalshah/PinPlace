@@ -12,7 +12,7 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.asynctasks;
+package com.droidexperiments.android.pinplace.async;
 
 import android.content.Context;
 import android.location.Address;
@@ -34,10 +34,10 @@ import java.util.Locale;
 public class FetchAddressTask extends AsyncTask<Void, Void, String> {
 
     private double mLatitude, mLongitude;
-    private AsyncTaskCallback mCallback;
+    private AsyncTaskCallback<String> mCallback;
     private Context mContext;
 
-    public FetchAddressTask(Context context, double latitude, double longitude, @NonNull AsyncTaskCallback asyncTaskCallback) {
+    public FetchAddressTask(Context context, double latitude, double longitude, @NonNull AsyncTaskCallback<String> asyncTaskCallback) {
         mContext = context.getApplicationContext();
         mLatitude = latitude;
         mLongitude = longitude;
