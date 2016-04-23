@@ -19,5 +19,5 @@ package com.droidexperiments.android.pinplace.interfaces.callbacks;
  * Date : 09-Apr-16
  */
 public interface AsyncTaskCallback<T> {
-    void onAsyncTaskCompleted(T result);
+    void onAsyncOperationCompleted(T result);
 }

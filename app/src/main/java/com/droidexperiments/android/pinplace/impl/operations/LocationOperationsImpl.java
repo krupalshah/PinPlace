@@ -89,7 +89,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
         }
         mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, new AsyncTaskCallback<String>() { //needs address update and internet is available
             @Override
-            public void onAsyncTaskCompleted(String result) {
+            public void onAsyncOperationCompleted(String result) {
                 mCurrentPlace.setAddress(TextUtils.isEmpty(result) ? mContext.getString(R.string.unknown) : result);
                 callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
             }

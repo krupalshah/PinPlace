@@ -62,6 +62,6 @@ public class FetchAddressTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        mCallback.onAsyncTaskCompleted(result);
+        mCallback.onAsyncOperationCompleted(result);
     }
 }
