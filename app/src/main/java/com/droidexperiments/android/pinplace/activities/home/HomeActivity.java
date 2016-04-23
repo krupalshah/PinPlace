@@ -70,7 +70,7 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE:
-                if (mPermissionsHelper.checkGrantResults(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
+                if (mPermissionsHelper.checkGrantResultsAndShowRationale(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
                     mLocationOperations.startLocationUpdates();
                 }
                 break;
