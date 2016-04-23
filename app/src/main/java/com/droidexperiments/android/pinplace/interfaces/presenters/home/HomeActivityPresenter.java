@@ -12,24 +12,20 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.interfaces.presenters;
+package com.droidexperiments.android.pinplace.interfaces.presenters.home;
 
-import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
-import com.droidexperiments.android.pinplace.fragments.base.BaseFragment;
+import com.droidexperiments.android.pinplace.interfaces.presenters.base.ActivityPresenter;
 
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public interface FragmentPresenter extends BaseAppPresenter {
+public interface HomeActivityPresenter extends ActivityPresenter {
 
-    void attachFragment(BaseFragment baseFragment);
+    void setTransparentStatusBar();
 
-    void detachFragment(BaseFragment baseFragment);
+    void animateToolbarCollapsing();
 
-    void checkFragmentIsAvailable();
+    void setupViewPager();
 
-    BaseFragment getFragment();
-
-    BaseActivity getActivity();
 }

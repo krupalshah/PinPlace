@@ -17,6 +17,8 @@ package com.droidexperiments.android.pinplace;
 import android.app.Application;
 import android.util.Log;
 
+import com.squareup.leakcanary.LeakCanary;
+
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
@@ -28,6 +30,7 @@ public class TimePassApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LeakCanary.install(this);
     }
 
     @Override

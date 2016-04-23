@@ -33,9 +33,9 @@ import java.util.Locale;
  */
 public class FetchAddressTask extends AsyncTask<Void, Void, String> {
 
+    private Context mContext;
     private double mLatitude, mLongitude;
     private AsyncTaskCallback<String> mCallback;
-    private Context mContext;
 
     public FetchAddressTask(Context context, double latitude, double longitude, @NonNull AsyncTaskCallback<String> asyncTaskCallback) {
         mContext = context.getApplicationContext();

@@ -73,9 +73,7 @@ public final class PermissionsHelper {
                     continue;
                 }
                 Snackbar.make(appCompatActivity.findViewById(android.R.id.content).getRootView(), rationaleMessage, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.allow, (view) -> {
-                            askPermissionsIfNotGranted(appCompatActivity, requestCode, permissionsAsked);
-                        })
+                        .setAction(R.string.allow, (view) -> askPermissionsIfNotGranted(appCompatActivity, requestCode, permissionsAsked))
                         .setActionTextColor(ContextCompat.getColor(appCompatActivity, R.color.accent))
                         .show();
                 break;

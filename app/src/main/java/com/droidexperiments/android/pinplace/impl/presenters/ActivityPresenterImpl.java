@@ -18,7 +18,7 @@ import android.content.Context;
 import android.support.annotation.CallSuper;
 
 import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
-import com.droidexperiments.android.pinplace.interfaces.presenters.ActivityPresenter;
+import com.droidexperiments.android.pinplace.interfaces.presenters.base.ActivityPresenter;
 
 /**
  * Author : Krupal Shah
@@ -42,13 +42,6 @@ public abstract class ActivityPresenterImpl extends BaseAppPresenterImpl impleme
     @CallSuper
     public void detachActivity(BaseActivity activity) {
         isActivityDestroyed = true;
-    }
-
-    @Override
-    public final void checkActivityIsAvailable() {
-        if (getActivity() == null) {
-            throw new IllegalStateException("unable to get activity. Did you attached Activity instance by calling attachActivity() ?");
-        }
     }
 
     @Override

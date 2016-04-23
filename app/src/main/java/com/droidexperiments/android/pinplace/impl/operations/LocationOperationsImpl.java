@@ -25,7 +25,6 @@ import android.util.Log;
 import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.async.FetchAddressTask;
 import com.droidexperiments.android.pinplace.config.AppConfig;
-import com.droidexperiments.android.pinplace.interfaces.callbacks.AsyncTaskCallback;
 import com.droidexperiments.android.pinplace.interfaces.callbacks.GetPlaceCallback;
 import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;
 import com.droidexperiments.android.pinplace.interfaces.operations.LocationOperations;
@@ -41,6 +40,7 @@ import com.google.android.gms.location.LocationServices;
  * Date : 17-Apr-16
  */
 public final class LocationOperationsImpl implements LocationOperations, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
     private static final String TAG = "LocationOperationsImpl";
 
     private final Context mContext;
@@ -87,12 +87,9 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
                 return;
             }
         }
-        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, new AsyncTaskCallback<String>() { //needs address update and internet is available
-            @Override
-            public void onAsyncOperationCompleted(String result) {
-                mCurrentPlace.setAddress(TextUtils.isEmpty(result) ? mContext.getString(R.string.unknown) : result);
-                callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
-            }
+        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, (result) -> {
+            mCurrentPlace.setAddress(!TextUtils.isEmpty(result) ? result : mContext.getString(R.string.unknown));
+            callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
         });
         mFetchAddressTask.execute();
     }
@@ -163,6 +160,5 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e(TAG, "onConnectionFailed() called with " + "connectionResult = [" + connectionResult + "]");
     }
-
 
 }

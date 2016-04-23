@@ -20,7 +20,7 @@ import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.droidexperiments.android.pinplace.interfaces.presenters.BaseAppPresenter;
+import com.droidexperiments.android.pinplace.interfaces.presenters.base.BaseAppPresenter;
 import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
 
 /**

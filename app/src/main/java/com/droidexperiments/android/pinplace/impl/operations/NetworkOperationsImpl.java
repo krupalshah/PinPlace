@@ -59,7 +59,7 @@ public final class NetworkOperationsImpl implements NetworkOperations {
     @Override
     public boolean isInternetAvailable() {
         if (mConnectivityManager == null) {
-            throw new IllegalStateException("Network receiver not registered! Call registerNetworkReceiver() before calling this method.");
+            mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         }
 
         NetworkInfo activeNetworkInfo = mConnectivityManager.getActiveNetworkInfo();

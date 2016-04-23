@@ -12,20 +12,20 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.interfaces.presenters;
+package com.droidexperiments.android.pinplace.interfaces.presenters.base;
+
+import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
 
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public interface HomeActivityPresenter extends ActivityPresenter {
+public interface ActivityPresenter extends BaseAppPresenter {
 
-    void setTransparentStatusBar();
+    void attachActivity(BaseActivity activity);
 
-    void animateToolbarCollapsing();
+    void detachActivity(BaseActivity activity);
 
-    void setupViewPager();
-
-    void onPageChanged(int position);
+    BaseActivity getActivity();
 
 }

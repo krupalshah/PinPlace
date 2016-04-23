@@ -19,11 +19,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
 import com.droidexperiments.android.pinplace.activities.home.HomeActivity;
-import com.droidexperiments.android.pinplace.interfaces.presenters.HomeActivityPresenter;
+import com.droidexperiments.android.pinplace.interfaces.presenters.home.HomeActivityPresenter;
 
 /**
  * Author : Krupal Shah
@@ -45,32 +46,26 @@ public final class HomeActivityPresenterImpl extends ActivityPresenterImpl imple
 
     @Override
     public void animateToolbarCollapsing() {
-        checkActivityIsAvailable();
 
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void setTransparentStatusBar() {
-        checkActivityIsAvailable();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            homeActivity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                homeActivity.getWindow().setStatusBarColor(Color.TRANSPARENT);
-            } else {
-                homeActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        Window window = getActivity().getWindow();
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 
     @Override
     public void setupViewPager() {
-        checkActivityIsAvailable();
-    }
-
-    @Override
-    public void onPageChanged(int position) {
-        checkActivityIsAvailable();
     }
 
     @Override

@@ -26,7 +26,7 @@ import com.droidexperiments.android.pinplace.impl.operations.LocationOperationsI
 import com.droidexperiments.android.pinplace.impl.presenters.HomeActivityPresenterImpl;
 import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;
 import com.droidexperiments.android.pinplace.interfaces.operations.LocationOperations;
-import com.droidexperiments.android.pinplace.interfaces.presenters.HomeActivityPresenter;
+import com.droidexperiments.android.pinplace.interfaces.presenters.home.HomeActivityPresenter;
 import com.droidexperiments.android.pinplace.models.Place;
 import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
 
