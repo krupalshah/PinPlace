@@ -78,7 +78,6 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
             default:
                 Log.e(TAG, "onRequestPermissionsResult() : switch fell under default case " + "requestCode = [" + requestCode + "], permissions = [" + Arrays.toString(permissions) + "], grantResults = [" + Arrays.toString(grantResults) + "]");
                 break;
-
         }
     }
 

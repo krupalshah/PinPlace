@@ -26,7 +26,6 @@ import com.droidexperiments.android.pinplace.R;
 /**
  * Author : Krupal Shah
  * Date : 03-Apr-16
- * helper class for runtime permissions in marshmallow
  */
 public final class PermissionsHelper {
 
@@ -41,11 +40,12 @@ public final class PermissionsHelper {
     public final boolean askPermissionsIfNotGranted(AppCompatActivity appCompatActivity, int requestCode, String... permissionsToCheck) {
         boolean hasPermissionGranted = true;
         for (String permission : permissionsToCheck) {
-            if (ContextCompat.checkSelfPermission(appCompatActivity, permission) != PermissionChecker.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(appCompatActivity, permissionsToCheck, requestCode);
-                hasPermissionGranted = false;
-                break;
+            if (ContextCompat.checkSelfPermission(appCompatActivity, permission) == PermissionChecker.PERMISSION_GRANTED) {
+                continue;
             }
+            ActivityCompat.requestPermissions(appCompatActivity, permissionsToCheck, requestCode);
+            hasPermissionGranted = false;
+            break;
         }
         return hasPermissionGranted;
     }
@@ -65,22 +65,25 @@ public final class PermissionsHelper {
     public final boolean checkGrantResults(AppCompatActivity appCompatActivity, int requestCode, int[] grantResults, @StringRes int rationaleMessage, String... permissionsAsked) {
         boolean allPermissionGranted = true;
         for (int grantResult : grantResults) {
-            if (grantResult != PermissionChecker.PERMISSION_GRANTED) {
-                for (String permission : permissionsAsked) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(appCompatActivity, permission)) {
-                        Snackbar.make(appCompatActivity.findViewById(android.R.id.content).getRootView(), rationaleMessage, Snackbar.LENGTH_LONG)
-                                .setAction(R.string.allow, (view) -> {
-                                    askPermissionsIfNotGranted(appCompatActivity, requestCode, permissionsAsked);
-                                })
-                                .setActionTextColor(ContextCompat.getColor(appCompatActivity, R.color.accent))
-                                .show();
-                        break;
-                    }
+            if (grantResult == PermissionChecker.PERMISSION_GRANTED) {
+                continue;
+            }
+            for (String permission : permissionsAsked) {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(appCompatActivity, permission)) {
+                    continue;
                 }
-                allPermissionGranted = false;
+                Snackbar.make(appCompatActivity.findViewById(android.R.id.content).getRootView(), rationaleMessage, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.allow, (view) -> {
+                            askPermissionsIfNotGranted(appCompatActivity, requestCode, permissionsAsked);
+                        })
+                        .setActionTextColor(ContextCompat.getColor(appCompatActivity, R.color.accent))
+                        .show();
                 break;
             }
+            allPermissionGranted = false;
+            break;
         }
+
         return allPermissionGranted;
     }
 
