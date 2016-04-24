@@ -45,6 +45,11 @@ public abstract class BasePresenterImpl implements BasePresenter {
         Toast.makeText(mAppContext, msg, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void showDialog(Dialog dialog) {
+        if (dialog != null && !dialog.isShowing()) dialog.show();
+    }
+
     public final void dismissDialogs(Dialog... dialogs) {
         for (Dialog dialog : dialogs) {
             if (dialog == null || !dialog.isShowing()) continue;

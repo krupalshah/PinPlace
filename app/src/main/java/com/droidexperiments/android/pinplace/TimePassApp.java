@@ -17,7 +17,10 @@ package com.droidexperiments.android.pinplace;
 import android.app.Application;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.squareup.leakcanary.LeakCanary;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Author : Krupal Shah
@@ -30,7 +33,9 @@ public class TimePassApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         if (BuildConfig.DEBUG) LeakCanary.install(this);
+        FlowManager.init(this);
     }
 
     @Override

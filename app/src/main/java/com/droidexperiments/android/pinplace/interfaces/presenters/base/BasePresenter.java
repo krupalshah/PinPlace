@@ -27,6 +27,8 @@ public interface BasePresenter {
 
     void showToast(String msg);
 
+    void showDialog(Dialog dialog);
+    
     void dismissDialogs(Dialog... dialogs);
 
     boolean isComponentDestroyed();

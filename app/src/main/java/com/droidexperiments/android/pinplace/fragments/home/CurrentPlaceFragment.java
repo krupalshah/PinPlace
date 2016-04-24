@@ -22,6 +22,11 @@ import com.droidexperiments.android.pinplace.fragments.base.BaseFragment;
  * Date : 17-Apr-16
  */
 public class CurrentPlaceFragment extends BaseFragment {
+
+    public static CurrentPlaceFragment newInstance(){
+        return new CurrentPlaceFragment();
+    }
+
     @Override
     protected void initComponents() {
 

@@ -15,6 +15,8 @@
 package com.droidexperiments.android.pinplace.fragments.home;
 
 
+import android.support.v4.app.Fragment;
+
 import com.droidexperiments.android.pinplace.fragments.base.BaseFragment;
 
 /**
@@ -22,6 +24,11 @@ import com.droidexperiments.android.pinplace.fragments.base.BaseFragment;
  * Date : 17-Apr-16
  */
 public class TrendingPlacesFragment extends BaseFragment {
+
+    public static Fragment newInstance() {
+        return new TrendingPlacesFragment();
+    }
+
     @Override
     protected void initComponents() {
 

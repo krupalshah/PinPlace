@@ -24,8 +24,8 @@ import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
 import com.droidexperiments.android.pinplace.impl.operations.LocationOperationsImpl;
 import com.droidexperiments.android.pinplace.impl.presenters.HomeActivityPresenterImpl;
-import com.droidexperiments.android.pinplace.interfaces.operations.LocationOperations;
 import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;
+import com.droidexperiments.android.pinplace.interfaces.operations.LocationOperations;
 import com.droidexperiments.android.pinplace.interfaces.presenters.home.HomeActivityPresenter;
 import com.droidexperiments.android.pinplace.models.Place;
 import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
@@ -37,6 +37,7 @@ import java.util.Arrays;
  * Date : 02-Apr-16
  */
 public final class HomeActivity extends BaseActivity implements PlaceUpdatesListener {
+
 
     private static final String TAG = "HomeActivity";
 
@@ -107,7 +108,6 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
 
         mPermissionsHelper = new PermissionsHelper();
     }
-
 
     @Override
     public void onGotLastKnownPlace(Place lastKnownPlace) {
