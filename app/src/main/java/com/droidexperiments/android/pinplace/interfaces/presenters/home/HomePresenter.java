@@ -12,27 +12,21 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.interfaces.presenters.base;
+package com.droidexperiments.android.pinplace.interfaces.presenters.home;
 
-import android.app.Dialog;
-import android.support.annotation.StringRes;
-
-import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
+import com.droidexperiments.android.pinplace.interfaces.presenters.base.ActivityPresenter;
 
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public interface BaseAppPresenter {
+public interface HomePresenter extends ActivityPresenter {
 
-    void showToast(@StringRes int msgResId);
+    void setTransparentStatusBar();
 
-    void showToast(String msg);
+    void animateToolbarCollapsing();
 
-    void dismissDialogs(Dialog... dialogs);
+    void setupViewPager();
 
-    PermissionsHelper providePermissionsHelper();
-
-    boolean isComponentDestroyed();
-
+    void updateAddress(String address);
 }

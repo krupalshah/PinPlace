@@ -23,10 +23,10 @@ import android.util.Log;
 import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
 import com.droidexperiments.android.pinplace.impl.operations.LocationOperationsImpl;
-import com.droidexperiments.android.pinplace.impl.presenters.HomeActivityPresenterImpl;
-import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;
+import com.droidexperiments.android.pinplace.impl.presenters.HomePresenterImpl;
 import com.droidexperiments.android.pinplace.interfaces.operations.LocationOperations;
-import com.droidexperiments.android.pinplace.interfaces.presenters.home.HomeActivityPresenter;
+import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;
+import com.droidexperiments.android.pinplace.interfaces.presenters.home.HomePresenter;
 import com.droidexperiments.android.pinplace.models.Place;
 import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
 
@@ -46,7 +46,7 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    private HomeActivityPresenter mHomePresenter;
+    private HomePresenter mHomeViewPresenter;
     private LocationOperations mLocationOperations;
     private PermissionsHelper mPermissionsHelper;
 
@@ -90,22 +90,22 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
     @Override
     protected void onDestroy() {
         mLocationOperations.unregisterPlaceListener();
-        mHomePresenter.detachActivity(this);
+        mHomeViewPresenter.detachActivity(this);
         super.onDestroy();
     }
 
     @Override
     protected void initComponents() {
-        mHomePresenter = new HomeActivityPresenterImpl(this);
-        mHomePresenter.attachActivity(this);
-        mHomePresenter.animateToolbarCollapsing();
-        mHomePresenter.setTransparentStatusBar();
-        mHomePresenter.setupViewPager();
-
-        mPermissionsHelper = mHomePresenter.providePermissionsHelper();
+        mHomeViewPresenter = new HomePresenterImpl(this);
+        mHomeViewPresenter.attachActivity(this);
+        mHomeViewPresenter.animateToolbarCollapsing();
+        mHomeViewPresenter.setTransparentStatusBar();
+        mHomeViewPresenter.setupViewPager();
 
         mLocationOperations = new LocationOperationsImpl(this);
         mLocationOperations.registerPlaceListener(this);
+
+        mPermissionsHelper = new PermissionsHelper();
     }
 
 

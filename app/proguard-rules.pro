@@ -16,8 +16,8 @@
 #   public *;
 #}
 -keep class android.**{ *; }
--keep class pinplace.** { *; }
--keep interface pinplace.** { *; }
+-keep class com.droidexperiments.android.pinplace.** { *; }
+-keep interface com.droidexperiments.android.pinplace.** { *; }
 
 -keep class * extends android.** { *; }
 

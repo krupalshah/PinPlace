@@ -20,7 +20,7 @@ import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public interface ActivityPresenter extends BaseAppPresenter {
+public interface ActivityPresenter extends BasePresenter {
 
     void attachActivity(BaseActivity activity);
 

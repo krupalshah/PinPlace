@@ -24,7 +24,7 @@ import com.droidexperiments.android.pinplace.interfaces.presenters.base.Activity
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public abstract class ActivityPresenterImpl extends BaseAppPresenterImpl implements ActivityPresenter {
+public abstract class ActivityPresenterImpl extends BasePresenterImpl implements ActivityPresenter {
 
     private boolean isActivityDestroyed;
 

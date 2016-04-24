@@ -12,20 +12,25 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.interfaces.presenters.home;
+package com.droidexperiments.android.pinplace.interfaces.operations;
 
-import com.droidexperiments.android.pinplace.interfaces.presenters.base.ActivityPresenter;
+import com.droidexperiments.android.pinplace.models.Place;
+
+import java.util.List;
 
 /**
  * Author : Krupal Shah
- * Date : 10-Apr-16
+ * Date : 24-Apr-16
  */
-public interface HomeActivityPresenter extends ActivityPresenter {
+public interface PlaceOperations {
 
-    void setTransparentStatusBar();
+    void savePlace(Place place);
 
-    void animateToolbarCollapsing();
+    Place getPlace();
 
-    void setupViewPager();
+    List<Place> getAllPlace();
 
+    void updatePlace(Place place);
+
+    void deletePlace(Place place);
 }

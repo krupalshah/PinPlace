@@ -24,17 +24,17 @@ import android.view.WindowManager;
 
 import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
 import com.droidexperiments.android.pinplace.activities.home.HomeActivity;
-import com.droidexperiments.android.pinplace.interfaces.presenters.home.HomeActivityPresenter;
+import com.droidexperiments.android.pinplace.interfaces.presenters.home.HomePresenter;
 
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public final class HomeActivityPresenterImpl extends ActivityPresenterImpl implements HomeActivityPresenter {
+public final class HomePresenterImpl extends ActivityPresenterImpl implements HomePresenter {
 
     private HomeActivity homeActivity;
 
-    public HomeActivityPresenterImpl(Context context) {
+    public HomePresenterImpl(Context context) {
         super(context);
     }
 
@@ -66,6 +66,11 @@ public final class HomeActivityPresenterImpl extends ActivityPresenterImpl imple
 
     @Override
     public void setupViewPager() {
+    }
+
+    @Override
+    public void updateAddress(String address) {
+
     }
 
     @Override

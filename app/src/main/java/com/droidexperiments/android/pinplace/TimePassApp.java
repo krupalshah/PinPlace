@@ -30,7 +30,7 @@ public class TimePassApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeakCanary.install(this);
+        if (BuildConfig.DEBUG) LeakCanary.install(this);
     }
 
     @Override

@@ -50,7 +50,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     private FetchAddressTask mFetchAddressTask;
 
     public LocationOperationsImpl(Context context) {
-        this.mContext = context.getApplicationContext();
+        this.mContext = context;
         mCurrentPlace = new Place();
     }
 

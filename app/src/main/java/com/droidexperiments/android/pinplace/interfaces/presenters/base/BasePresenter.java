@@ -14,20 +14,21 @@
 
 package com.droidexperiments.android.pinplace.interfaces.presenters.base;
 
-import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
-import com.droidexperiments.android.pinplace.fragments.base.BaseFragment;
+import android.app.Dialog;
+import android.support.annotation.StringRes;
 
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public interface FragmentPresenter extends BasePresenter {
+public interface BasePresenter {
 
-    void attachFragment(BaseFragment baseFragment);
+    void showToast(@StringRes int msgResId);
 
-    void detachFragment(BaseFragment baseFragment);
+    void showToast(String msg);
 
-    BaseFragment getFragment();
+    void dismissDialogs(Dialog... dialogs);
 
-    BaseActivity getActivity();
+    boolean isComponentDestroyed();
+
 }
