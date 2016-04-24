@@ -28,7 +28,7 @@ public interface PlaceOperations {
 
     Place getPlace();
 
-    List<Place> getAllPlace();
+    List<Place> getAllPlaces();
 
     void updatePlace(Place place);
 

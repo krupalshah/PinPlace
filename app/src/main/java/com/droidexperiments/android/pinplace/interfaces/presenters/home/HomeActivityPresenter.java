@@ -20,7 +20,7 @@ import com.droidexperiments.android.pinplace.interfaces.presenters.base.Activity
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public interface HomePresenter extends ActivityPresenter {
+public interface HomeActivityPresenter extends ActivityPresenter {
 
     void setTransparentStatusBar();
 
@@ -28,5 +28,5 @@ public interface HomePresenter extends ActivityPresenter {
 
     void setupViewPager();
 
-    void updateAddress(String address);
+    void updateAddressText(String address);
 }
