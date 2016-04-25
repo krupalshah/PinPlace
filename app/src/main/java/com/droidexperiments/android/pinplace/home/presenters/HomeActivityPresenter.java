@@ -57,19 +57,16 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
 
     @Override
     public void startPlaceUpdates() {
-        checkPlaceUpdatesRegistered();
         mLocationOperations.startLocationUpdates();
     }
 
     @Override
     public void stopPlaceUpdates() {
-        checkPlaceUpdatesRegistered();
         mLocationOperations.stopLocationUpdates();
     }
 
     @Override
     public void unregisterPlaceUpdates() {
-        checkPlaceUpdatesRegistered();
         mLocationOperations.unregisterPlaceUpdateCallbacks();
         mLocationOperations = null;
     }
@@ -87,11 +84,4 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
             }
         });
     }
-
-    private void checkPlaceUpdatesRegistered() {
-        if (mLocationOperations == null) {
-            throw new IllegalStateException("Place updates not registered! Did you forgot to call registerPlaceUpdates() before?");
-        }
-    }
-
 }
