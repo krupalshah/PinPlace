@@ -26,15 +26,15 @@ import io.fabric.sdk.android.Fabric;
  * Author : Krupal Shah
  * Date : 02-Apr-16
  */
-public class TimePassApp extends Application {
+public class TimePass extends Application {
 
-    private static final String TAG = "TimePassApp";
+    private static final String TAG = "TimePass";
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         if (BuildConfig.DEBUG) LeakCanary.install(this);
+        Fabric.with(this, new Crashlytics());
         FlowManager.init(this);
     }
 

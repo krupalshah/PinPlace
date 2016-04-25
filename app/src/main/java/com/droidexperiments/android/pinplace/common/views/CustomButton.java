@@ -17,7 +17,7 @@ package com.droidexperiments.android.pinplace.common.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -26,20 +26,20 @@ import com.droidexperiments.android.pinplace.utilities.FontFactory;
 
 /**
  * Author : Krupal Shah
- * Date : 24-Apr-16
+ * Date : 25-Apr-16
  */
-public class CustomTextView extends AppCompatTextView {
+public class CustomButton extends AppCompatButton {
 
-    public CustomTextView(Context context) {
+    public CustomButton(Context context) {
         super(context);
     }
 
-    public CustomTextView(Context context, AttributeSet attrs) {
+    public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         parseAttributeSet(context, attrs);
     }
 
-    public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         parseAttributeSet(context, attrs);
     }

@@ -22,7 +22,7 @@ public class ApiController {
 
     public static ApiController instance;
 
-    public static ApiController getInstance() {
+    public static synchronized ApiController getInstance() {
         if (instance == null) {
             instance = new ApiController();
         }
