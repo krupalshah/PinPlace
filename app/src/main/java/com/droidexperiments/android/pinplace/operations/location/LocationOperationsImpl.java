@@ -33,6 +33,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.sql.CallableStatement;
+
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
@@ -41,15 +43,16 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     private static final String TAG = "LocationOperationsImpl";
 
-    private final Context mContext;
-    private final Place mCurrentPlace;
+    private Context mContext, mAppContext;
+    private Place mCurrentPlace;
     private GoogleApiClient mGoogleApiClient;
     private PlaceUpdatesListener mPLacePlaceUpdatesListener;
     private FetchAddressTask mFetchAddressTask;
     private NetworkOperations mNetworkOperations;
 
     public LocationOperationsImpl(Context context) {
-        this.mContext = context;
+        mContext = context;
+        mAppContext = context.getApplicationContext();
         mCurrentPlace = new Place();
     }
 
@@ -98,6 +101,32 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     }
 
     @Override
+    public void getCurrentPlace(boolean needsUpdatedAddress, @NonNull GetPlaceCallback callback) {
+        Log.d(TAG, "getCurrentPlace() called with " + "needsUpdatedAddress = [" + needsUpdatedAddress + "], callback = [" + callback + "]");
+        if (!needsUpdatedAddress) { //does not need place with updated address - just need location not address
+            callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
+            return;
+        }
+        if (mNetworkOperations == null) mNetworkOperations = new NetworkOperationsImpl(mContext);
+        if (!mNetworkOperations.isInternetAvailable()) { //needs address update but no internet
+            callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_NO_NETWORK);
+            return;
+        }
+        double lat = mCurrentPlace.getLatitude(), lng = mCurrentPlace.getLongitude();
+        if (mFetchAddressTask != null) {
+            if (mFetchAddressTask.getStatus() == AsyncTask.Status.RUNNING || mFetchAddressTask.getStatus() == AsyncTask.Status.PENDING) {
+                callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_PREV_TASK_PENDING);
+                return;
+            }
+        }
+        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, (result) -> {
+            mCurrentPlace.setAddress(!TextUtils.isEmpty(result) ? result : mAppContext.getString(R.string.unknown));
+            callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
+        });
+        mFetchAddressTask.execute();
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(AppConfig.LocationUpdates.NORMAL_LOCATION_UPDATE_INTERVAL);
@@ -125,34 +154,6 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
         mCurrentPlace.setLongitude(location.getLongitude());
         mPLacePlaceUpdatesListener.onLocationUpdated(location);
     }
-
-
-    @Override
-    public void getCurrentPlace(boolean needsUpdatedAddress, @NonNull GetPlaceCallback callback) {
-        Log.d(TAG, "getCurrentPlace() called with " + "needsUpdatedAddress = [" + needsUpdatedAddress + "], callback = [" + callback + "]");
-        if (!needsUpdatedAddress) { //does not need place with updated address - just need location not address
-            callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
-            return;
-        }
-        if (mNetworkOperations == null) mNetworkOperations = new NetworkOperationsImpl(mContext);
-        if (!mNetworkOperations.isInternetAvailable()) { //needs address update but no internet
-            callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_NO_NETWORK);
-            return;
-        }
-        double lat = mCurrentPlace.getLatitude(), lng = mCurrentPlace.getLongitude();
-        if (mFetchAddressTask != null) {
-            if (mFetchAddressTask.getStatus() == AsyncTask.Status.RUNNING || mFetchAddressTask.getStatus() == AsyncTask.Status.PENDING) {
-                callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_PREV_TASK_PENDING);
-                return;
-            }
-        }
-        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, (result) -> {
-            mCurrentPlace.setAddress(!TextUtils.isEmpty(result) ? result : mContext.getApplicationContext().getString(R.string.unknown));
-            callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
-        });
-        mFetchAddressTask.execute();
-    }
-
 
     @Override
     public void onConnectionSuspended(int i) {
