@@ -62,7 +62,7 @@ public final class PermissionsHelper {
      * @param permissionsAsked  asked permissions for given request code
      * @return true if all permissions asked have been granted; false otherwise
      */
-    public final boolean checkGrantResultsAndShowRationale(AppCompatActivity appCompatActivity, int requestCode, int[] grantResults, @StringRes int rationaleMessage, String... permissionsAsked) {
+    public final boolean checkGrantResultsAndShowRationaleIfDenied(AppCompatActivity appCompatActivity, int requestCode, int[] grantResults, @StringRes int rationaleMessage, String... permissionsAsked) {
         boolean allPermissionGranted = true;
         for (int grantResult : grantResults) {
             if (grantResult == PermissionChecker.PERMISSION_GRANTED) {

@@ -23,5 +23,6 @@
     <string name="err_unable_to_fetch_address">Unable to fetch Address</string>
     <string name="unknown">Unknown</string>
     <string name="err_no_internet">Internet not available!</string>
+    <string name="home">Home</string>
 
 </resources>

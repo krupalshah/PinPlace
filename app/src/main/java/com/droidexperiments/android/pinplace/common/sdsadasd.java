@@ -12,22 +12,11 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.interfaces.presenters.base;
-
-import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
-import com.droidexperiments.android.pinplace.fragments.base.BaseFragment;
+package com.droidexperiments.android.pinplace.common;
 
 /**
  * Author : Krupal Shah
- * Date : 10-Apr-16
+ * Date : 25-Apr-16
  */
-public interface FragmentPresenter extends BasePresenter {
-
-    void attachFragment(BaseFragment baseFragment);
-
-    void detachFragment(BaseFragment baseFragment);
-
-    BaseFragment getFragment();
-
-    BaseActivity getActivity();
+public class sdsadasd {
 }

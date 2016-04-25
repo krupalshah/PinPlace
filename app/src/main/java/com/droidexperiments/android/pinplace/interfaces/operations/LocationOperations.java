@@ -25,7 +25,7 @@ import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesLi
  */
 public interface LocationOperations {
 
-    void registerPlaceListener(PlaceUpdatesListener placeUpdatesListener);
+    void registerPlaceUpdateCallbacks(PlaceUpdatesListener placeUpdatesListener);
 
     void startLocationUpdates();
 
@@ -33,5 +33,5 @@ public interface LocationOperations {
 
     void stopLocationUpdates();
 
-    void unregisterPlaceListener();
+    void unregisterPlaceUpdateCallbacks();
 }

@@ -14,17 +14,57 @@
 
 package com.droidexperiments.android.pinplace.activities.base;
 
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
+
+import com.droidexperiments.android.pinplace.interfaces.contracts.base.BaseContract;
 
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements BaseContract.BaseView {
 
-    /**
-     * initialize components here
-     */
+    boolean isViewDestroyed = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isViewDestroyed = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        isViewDestroyed = true;
+        super.onDestroy();
+    }
+
     protected abstract void initComponents();
 
+    @Override
+    public void showToast(@StringRes int msgResId) {
+
+    }
+
+    @Override
+    public void showToast(String msg) {
+
+    }
+
+    @Override
+    public void showDialog(Dialog dialog) {
+
+    }
+
+    @Override
+    public void dismissDialogs(Dialog... dialogs) {
+
+    }
+
+    @Override
+    public boolean isViewDestroyed() {
+        return isViewDestroyed;
+    }
 }

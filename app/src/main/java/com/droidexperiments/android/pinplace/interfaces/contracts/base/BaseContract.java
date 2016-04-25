@@ -12,25 +12,35 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.interfaces.presenters.base;
+package com.droidexperiments.android.pinplace.interfaces.contracts.base;
 
 import android.app.Dialog;
 import android.support.annotation.StringRes;
 
 /**
  * Author : Krupal Shah
- * Date : 10-Apr-16
+ * Date : 25-Apr-16
  */
-public interface BasePresenter {
+public interface BaseContract {
 
-    void showToast(@StringRes int msgResId);
+    interface BaseView {
+        void showToast(@StringRes int msgResId);
 
-    void showToast(String msg);
+        void showToast(String msg);
 
-    void showDialog(Dialog dialog);
-    
-    void dismissDialogs(Dialog... dialogs);
+        void showDialog(Dialog dialog);
 
-    boolean isComponentDestroyed();
+        void dismissDialogs(Dialog... dialogs);
 
+        boolean isViewDestroyed();
+    }
+
+    interface BasePresenter<T extends BaseView> {
+
+        void attachView(T view);
+
+        void detachView();
+
+        T getView();
+    }
 }

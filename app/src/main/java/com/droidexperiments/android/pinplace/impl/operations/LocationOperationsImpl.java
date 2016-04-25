@@ -50,12 +50,12 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     private FetchAddressTask mFetchAddressTask;
 
     public LocationOperationsImpl(Context context) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         mCurrentPlace = new Place();
     }
 
     @Override
-    public void registerPlaceListener(PlaceUpdatesListener placeUpdatesListener) {
+    public void registerPlaceUpdateCallbacks(PlaceUpdatesListener placeUpdatesListener) {
         mPLacePlaceUpdatesListener = placeUpdatesListener;
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addConnectionCallbacks(this)
@@ -109,7 +109,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     }
 
     @Override
-    public void unregisterPlaceListener() {
+    public void unregisterPlaceUpdateCallbacks() {
         mPLacePlaceUpdatesListener = null;
         if (mGoogleApiClient != null) {
             if (mGoogleApiClient.isConnectionCallbacksRegistered(this)) {
@@ -127,7 +127,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(AppConfig.LocationIntervals.NORMAL_LOCATION_UPDATE_INTERVAL);
         locationRequest.setFastestInterval(AppConfig.LocationIntervals.FASTEST_LOCATION_UPDATE_INTERVAL);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
 
         Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);

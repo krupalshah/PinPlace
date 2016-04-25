@@ -15,29 +15,45 @@
 package com.droidexperiments.android.pinplace.activities.home;
 
 import android.Manifest;
-import android.location.Location;
+import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.activities.base.BaseActivity;
-import com.droidexperiments.android.pinplace.impl.operations.LocationOperationsImpl;
-import com.droidexperiments.android.pinplace.impl.presenters.HomeActivityPresenterImpl;
-import com.droidexperiments.android.pinplace.interfaces.listeners.PlaceUpdatesListener;
-import com.droidexperiments.android.pinplace.interfaces.operations.LocationOperations;
-import com.droidexperiments.android.pinplace.interfaces.presenters.home.HomeActivityPresenter;
-import com.droidexperiments.android.pinplace.models.Place;
+import com.droidexperiments.android.pinplace.adapters.CommonPagerAdapter;
+import com.droidexperiments.android.pinplace.fragments.home.CurrentPlaceFragment;
+import com.droidexperiments.android.pinplace.fragments.home.SavedPlacesFragment;
+import com.droidexperiments.android.pinplace.fragments.home.TrendingPlacesFragment;
+import com.droidexperiments.android.pinplace.impl.presenters.home.HomePresenterImpl;
+import com.droidexperiments.android.pinplace.interfaces.contracts.home.HomeActivityContract;
 import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
  */
-public final class HomeActivity extends BaseActivity implements PlaceUpdatesListener {
+public final class HomeActivity extends BaseActivity implements HomeActivityContract.View {
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.pager_home)
+    ViewPager pagerHome;
 
     private static final String TAG = "HomeActivity";
 
@@ -47,14 +63,14 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    private HomeActivityPresenter mHomeActivityPresenter;
-    private LocationOperations mLocationOperations;
+    private HomeActivityContract.Presenter mHomeActivityPresenter;
     private PermissionsHelper mPermissionsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
         initComponents();
     }
 
@@ -62,7 +78,7 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
     protected void onStart() {
         super.onStart();
         if (mPermissionsHelper.askPermissionsIfNotGranted(this, LOCATION_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
-            mLocationOperations.startLocationUpdates();
+            mHomeActivityPresenter.startPlaceUpdates();
         }
     }
 
@@ -71,51 +87,74 @@ public final class HomeActivity extends BaseActivity implements PlaceUpdatesList
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE:
-                if (mPermissionsHelper.checkGrantResultsAndShowRationale(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
-                    mLocationOperations.startLocationUpdates();
+                if (mPermissionsHelper.checkGrantResultsAndShowRationaleIfDenied(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
+                    mHomeActivityPresenter.startPlaceUpdates();
                 }
-                break;
-
-            default:
-                Log.e(TAG, "onRequestPermissionsResult() : switch fell under default case " + "requestCode = [" + requestCode + "], permissions = [" + Arrays.toString(permissions) + "], grantResults = [" + Arrays.toString(grantResults) + "]");
                 break;
         }
     }
 
     @Override
     protected void onStop() {
-        mLocationOperations.stopLocationUpdates();
+        mHomeActivityPresenter.stopPlaceUpdates();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        mLocationOperations.unregisterPlaceListener();
-        mHomeActivityPresenter.detachActivity(this);
+        mHomeActivityPresenter.unregisterPlaceUpdates();
+        mHomeActivityPresenter.detachView();
         super.onDestroy();
     }
 
     @Override
     protected void initComponents() {
-        mHomeActivityPresenter = new HomeActivityPresenterImpl(this);
-        mHomeActivityPresenter.attachActivity(this);
-        mHomeActivityPresenter.animateToolbarCollapsing();
-        mHomeActivityPresenter.setTransparentStatusBar();
-        mHomeActivityPresenter.setupViewPager();
-
-        mLocationOperations = new LocationOperationsImpl(this);
-        mLocationOperations.registerPlaceListener(this);
-
         mPermissionsHelper = new PermissionsHelper();
+        mHomeActivityPresenter = new HomePresenterImpl(getApplicationContext());
+
+        mHomeActivityPresenter.attachView(this);
+        mHomeActivityPresenter.registerPlaceUpdates();
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @Override
+    public void setTransparentStatusBar() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        Window window = getWindow();
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
     @Override
-    public void onGotLastKnownPlace(Place lastKnownPlace) {
-        mHomeActivityPresenter.updateAddressText(lastKnownPlace.getAddress());
+    public void animateToolbarCollapsing() {
+
     }
 
     @Override
-    public void onLocationUpdated(Location newLocation) {
+    public void setToolbarTitle(@StringRes int titleRes) {
+        toolbar.setTitle(titleRes);
+    }
+
+    @Override
+    public void setupViewPager() {
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(CurrentPlaceFragment.newInstance());
+        fragments.add(SavedPlacesFragment.newInstance());
+        fragments.add(TrendingPlacesFragment.newInstance());
+
+        CommonPagerAdapter commonPagerAdapter = new CommonPagerAdapter(getSupportFragmentManager(), fragments);
+        pagerHome.setOffscreenPageLimit(fragments.size());
+        pagerHome.setAdapter(commonPagerAdapter);
+    }
+
+    @Override
+    public void updateAddressText(String address) {
 
     }
 }
