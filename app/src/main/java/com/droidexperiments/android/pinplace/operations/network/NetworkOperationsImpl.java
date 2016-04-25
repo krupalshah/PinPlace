@@ -39,7 +39,6 @@ public final class NetworkOperationsImpl implements NetworkOperations {
 
     @Override
     public void registerNetworkReceiver(NetworkUpdatesListener networkUpdatesListener) {
-        mContext.registerReceiver(mConnectivityChangeReceiver, mConnectivityIntentFilter);
         mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         mConnectivityIntentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         mConnectivityChangeReceiver = new BroadcastReceiver() {
@@ -52,6 +51,7 @@ public final class NetworkOperationsImpl implements NetworkOperations {
                 }
             }
         };
+        mContext.registerReceiver(mConnectivityChangeReceiver, mConnectivityIntentFilter);
     }
 
     @Override
@@ -59,7 +59,6 @@ public final class NetworkOperationsImpl implements NetworkOperations {
         if (mConnectivityManager == null) {
             mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         }
-
         NetworkInfo activeNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }

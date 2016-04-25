@@ -147,7 +147,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
             }
         }
         mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, (result) -> {
-            mCurrentPlace.setAddress(!TextUtils.isEmpty(result) ? result : mContext.getString(R.string.unknown));
+            mCurrentPlace.setAddress(!TextUtils.isEmpty(result) ? result : mContext.getApplicationContext().getString(R.string.unknown));
             callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
         });
         mFetchAddressTask.execute();
