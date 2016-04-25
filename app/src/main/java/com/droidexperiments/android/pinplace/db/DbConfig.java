@@ -12,21 +12,16 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.operations.network;
+package com.droidexperiments.android.pinplace.db;
+
+import com.raizlabs.android.dbflow.annotation.Database;
 
 /**
  * Author : Krupal Shah
- * Date : 02-Apr-16
+ * Date : 17-Apr-16
  */
-public interface NetworkUpdatesListener {
-
-    /**
-     * to be called when network becomes available
-     */
-    void onInternetConnected();
-
-    /**
-     * to be called when network becomes unavailable
-     */
-    void onInternetDisconnected();
+@Database(name = DbConfig.NAME, version = DbConfig.VERSION)
+public class DbConfig {
+    public static final String NAME = "PinPlaceDb";
+    public static final int VERSION = 0;
 }

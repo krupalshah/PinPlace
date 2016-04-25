@@ -12,11 +12,17 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.config;
+package com.droidexperiments.android.pinplace;
 
 /**
  * Author : Krupal Shah
- * Date : 17-Apr-16
+ * Date : 04-Apr-16
  */
-public class ServerConfig {
+public class AppConfig {
+
+    public interface LocationUpdates {
+        long NORMAL_LOCATION_UPDATE_INTERVAL = 20 * 1000;
+        long FASTEST_LOCATION_UPDATE_INTERVAL = 10 * 1000;
+    }
+
 }

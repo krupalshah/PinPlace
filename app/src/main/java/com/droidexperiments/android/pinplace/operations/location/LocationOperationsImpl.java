@@ -23,7 +23,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.droidexperiments.android.pinplace.R;
-import com.droidexperiments.android.pinplace.config.AppConfig;
+import com.droidexperiments.android.pinplace.AppConfig;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperations;
 import com.droidexperiments.android.pinplace.models.Place;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperationsImpl;
@@ -100,8 +100,8 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     @Override
     public void onConnected(Bundle bundle) {
         LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(AppConfig.LocationIntervals.NORMAL_LOCATION_UPDATE_INTERVAL);
-        locationRequest.setFastestInterval(AppConfig.LocationIntervals.FASTEST_LOCATION_UPDATE_INTERVAL);
+        locationRequest.setInterval(AppConfig.LocationUpdates.NORMAL_LOCATION_UPDATE_INTERVAL);
+        locationRequest.setFastestInterval(AppConfig.LocationUpdates.FASTEST_LOCATION_UPDATE_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
 
