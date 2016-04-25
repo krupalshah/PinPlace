@@ -14,11 +14,13 @@
 
 package com.droidexperiments.android.pinplace.models;
 
+import com.droidexperiments.android.pinplace.base.models.BaseModel;
+
 /**
  * Author : Krupal Shah
  * Date : 09-Apr-16
  */
-public class Place {
+public class Place extends BaseModel {
 
     private double latitude;
     private double longitude;
@@ -50,6 +52,11 @@ public class Place {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    protected boolean isValid() {
+        return true;
     }
 
     @Override
