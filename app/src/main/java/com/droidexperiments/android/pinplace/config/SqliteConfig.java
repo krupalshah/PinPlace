@@ -14,7 +14,11 @@
 
 package com.droidexperiments.android.pinplace.config;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.raizlabs.android.dbflow.annotation.Database;
+import com.raizlabs.android.dbflow.annotation.Migration;
+import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 
 /**
  * Author : Krupal Shah
@@ -25,16 +29,16 @@ public class SqliteConfig {
     @Database(name = OriginalConfig.NAME, version = OriginalConfig.VERSION)
     public interface OriginalConfig {
         String NAME = "PinPlaceDb";
-        int VERSION = 1;
+        int VERSION = 0;
     }
 
-   /* @Migration(version = MigrationConfig.VERSION, databaseName = OriginalConfig.NAME)
+    @Migration(version = MigrationConfig.VERSION, databaseName = OriginalConfig.NAME)
     public class MigrationConfig extends BaseMigration {
-        public static final int VERSION = 2;
+        public static final int VERSION = 0;
 
         @Override
         public void migrate(SQLiteDatabase sqLiteDatabase) {
 
         }
-    }*/
+    }
 }

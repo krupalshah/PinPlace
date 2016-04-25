@@ -49,7 +49,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     private NetworkOperations mNetworkOperations;
 
     public LocationOperationsImpl(Context context) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         mCurrentPlace = new Place();
     }
 

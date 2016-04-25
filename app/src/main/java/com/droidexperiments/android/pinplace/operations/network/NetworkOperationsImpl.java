@@ -34,7 +34,7 @@ public final class NetworkOperationsImpl implements NetworkOperations {
     private BroadcastReceiver mConnectivityChangeReceiver;
 
     public NetworkOperationsImpl(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
     }
 
     @Override
