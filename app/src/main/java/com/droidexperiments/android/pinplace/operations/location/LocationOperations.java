@@ -22,7 +22,7 @@ import android.support.annotation.NonNull;
  */
 public interface LocationOperations {
 
-    void registerPlaceUpdateCallbacks(PlaceUpdatesListener placeUpdatesListener);
+    void registerPlaceUpdateCallbacks(@NonNull PlaceUpdatesListener placeUpdatesListener);
 
     void startLocationUpdates();
 

@@ -15,6 +15,7 @@
 package com.droidexperiments.android.pinplace.base.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -66,6 +67,11 @@ public abstract class BaseFragment extends Fragment implements BaseContract.Base
     @Override
     public void dismissDialogs(Dialog... dialogs) {
         ((BaseActivity) getActivity()).dismissDialogs(dialogs);
+    }
+
+    @Override
+    public Context getComponentContext() {
+        return getActivity();
     }
 
     @Override

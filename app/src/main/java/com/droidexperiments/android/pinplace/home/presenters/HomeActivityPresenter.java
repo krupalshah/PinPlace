@@ -14,35 +14,29 @@
 
 package com.droidexperiments.android.pinplace.home.presenters;
 
-import android.content.Context;
 import android.location.Location;
 
 import com.droidexperiments.android.pinplace.R;
-import com.droidexperiments.android.pinplace.operations.location.LocationOperationsImpl;
 import com.droidexperiments.android.pinplace.base.presenters.BasePresenterImpl;
-import com.droidexperiments.android.pinplace.operations.location.GetPlaceCallback;
-import com.droidexperiments.android.pinplace.home.contracts.HomeContract;
-import com.droidexperiments.android.pinplace.operations.location.PlaceUpdatesListener;
-import com.droidexperiments.android.pinplace.operations.location.LocationOperations;
+import com.droidexperiments.android.pinplace.home.contracts.HomeActivityContract;
 import com.droidexperiments.android.pinplace.models.Place;
+import com.droidexperiments.android.pinplace.operations.location.GetPlaceCallback;
+import com.droidexperiments.android.pinplace.operations.location.LocationOperations;
+import com.droidexperiments.android.pinplace.operations.location.LocationOperationsImpl;
+import com.droidexperiments.android.pinplace.operations.location.PlaceUpdatesListener;
 
 /**
  * Author : Krupal Shah
  * Date : 25-Apr-16
  */
-public class HomePresenter extends BasePresenterImpl<HomeContract.View> implements HomeContract.Presenter, PlaceUpdatesListener {
+public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContract.View> implements HomeActivityContract.Presenter, PlaceUpdatesListener {
 
-    private static final String TAG = "HomePresenter";
+    private static final String TAG = "HomeActivityPresenter";
 
-    private Context mContext;
     private LocationOperations mLocationOperations;
 
-    public HomePresenter(Context mContext) {
-        this.mContext = mContext;
-    }
-
     @Override
-    public void attachView(HomeContract.View view) {
+    public void attachView(HomeActivityContract.View view) {
         super.attachView(view);
         view.setTransparentStatusBar();
         view.animateToolbarCollapsing();
@@ -57,7 +51,7 @@ public class HomePresenter extends BasePresenterImpl<HomeContract.View> implemen
 
     @Override
     public void registerPlaceUpdates() {
-        mLocationOperations = new LocationOperationsImpl(mContext);
+        mLocationOperations = new LocationOperationsImpl(getView().getComponentContext());
         mLocationOperations.registerPlaceUpdateCallbacks(this);
     }
 

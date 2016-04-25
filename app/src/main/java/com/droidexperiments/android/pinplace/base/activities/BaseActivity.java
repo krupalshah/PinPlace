@@ -15,6 +15,7 @@
 package com.droidexperiments.android.pinplace.base.activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -69,6 +70,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
         for (Dialog dialog : dialogs) {
             if (dialog != null && dialog.isShowing()) dialog.dismiss();
         }
+    }
+
+    @Override
+    public Context getComponentContext() {
+        return this;
     }
 
     @Override

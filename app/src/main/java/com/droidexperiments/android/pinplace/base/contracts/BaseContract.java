@@ -15,6 +15,7 @@
 package com.droidexperiments.android.pinplace.base.contracts;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.support.annotation.StringRes;
 import android.view.View;
 
@@ -25,6 +26,8 @@ import android.view.View;
 public interface BaseContract {
 
     interface BaseView {
+
+        Context getComponentContext();
 
         void showToast(@StringRes int msgResId);
 

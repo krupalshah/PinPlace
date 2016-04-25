@@ -34,8 +34,8 @@ import com.droidexperiments.android.pinplace.common.adapters.CommonPagerAdapter;
 import com.droidexperiments.android.pinplace.home.fragments.CurrentPlaceFragment;
 import com.droidexperiments.android.pinplace.home.fragments.SavedPlacesFragment;
 import com.droidexperiments.android.pinplace.home.fragments.TrendingPlacesFragment;
-import com.droidexperiments.android.pinplace.home.presenters.HomePresenter;
-import com.droidexperiments.android.pinplace.home.contracts.HomeContract;
+import com.droidexperiments.android.pinplace.home.presenters.HomeActivityPresenter;
+import com.droidexperiments.android.pinplace.home.contracts.HomeActivityContract;
 import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ import butterknife.ButterKnife;
  * Author : Krupal Shah
  * Date : 02-Apr-16
  */
-public final class HomeActivity extends BaseActivity implements HomeContract.View {
+public final class HomeActivity extends BaseActivity implements HomeActivityContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -63,7 +63,7 @@ public final class HomeActivity extends BaseActivity implements HomeContract.Vie
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    private HomeContract.Presenter mHomePresenter;
+    private HomeActivityContract.Presenter mHomeActivityPresenter;
     private PermissionsHelper mPermissionsHelper;
 
     @Override
@@ -78,7 +78,7 @@ public final class HomeActivity extends BaseActivity implements HomeContract.Vie
     protected void onStart() {
         super.onStart();
         if (mPermissionsHelper.askPermissionsIfNotGranted(this, LOCATION_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
-            mHomePresenter.startPlaceUpdates();
+            mHomeActivityPresenter.startPlaceUpdates();
         }
     }
 
@@ -88,7 +88,7 @@ public final class HomeActivity extends BaseActivity implements HomeContract.Vie
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE:
                 if (mPermissionsHelper.checkGrantResultsAndShowRationaleIfDenied(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
-                    mHomePresenter.startPlaceUpdates();
+                    mHomeActivityPresenter.startPlaceUpdates();
                 }
                 break;
         }
@@ -96,24 +96,24 @@ public final class HomeActivity extends BaseActivity implements HomeContract.Vie
 
     @Override
     protected void onStop() {
-        mHomePresenter.stopPlaceUpdates();
+        mHomeActivityPresenter.stopPlaceUpdates();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        mHomePresenter.unregisterPlaceUpdates();
-        mHomePresenter.detachView();
+        mHomeActivityPresenter.unregisterPlaceUpdates();
+        mHomeActivityPresenter.detachView();
         super.onDestroy();
     }
 
     @Override
     protected void initComponents() {
         mPermissionsHelper = new PermissionsHelper();
-        mHomePresenter = new HomePresenter(getApplicationContext());
+        mHomeActivityPresenter = new HomeActivityPresenter();
 
-        mHomePresenter.attachView(this);
-        mHomePresenter.registerPlaceUpdates();
+        mHomeActivityPresenter.attachView(this);
+        mHomeActivityPresenter.registerPlaceUpdates();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

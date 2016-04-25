@@ -22,7 +22,7 @@ import com.droidexperiments.android.pinplace.base.contracts.BaseContract;
  * Author : Krupal Shah
  * Date : 25-Apr-16
  */
-public interface HomeContract extends BaseContract {
+public interface HomeActivityContract extends BaseContract {
 
     interface View extends BaseView {
 
