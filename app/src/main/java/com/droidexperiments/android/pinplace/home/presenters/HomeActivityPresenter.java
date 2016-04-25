@@ -71,6 +71,7 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     public void unregisterPlaceUpdates() {
         checkPlaceUpdatesRegistered();
         mLocationOperations.unregisterPlaceUpdateCallbacks();
+        mLocationOperations = null;
     }
 
     @Override

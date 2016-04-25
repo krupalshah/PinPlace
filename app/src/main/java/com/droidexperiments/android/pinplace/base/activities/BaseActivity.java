@@ -62,13 +62,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     public void showDialog(Dialog dialog) {
-        if (dialog != null && !dialog.isShowing()) dialog.show();
+        if (dialog == null || dialog.isShowing()) return;
+        dialog.show();
     }
 
     @Override
     public void dismissDialogs(Dialog... dialogs) {
         for (Dialog dialog : dialogs) {
-            if (dialog != null && dialog.isShowing()) dialog.dismiss();
+            if (dialog == null || !dialog.isShowing()) continue;
+            dialog.dismiss();
         }
     }
 

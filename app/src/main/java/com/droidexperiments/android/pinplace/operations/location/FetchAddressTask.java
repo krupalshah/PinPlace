@@ -33,23 +33,22 @@ import java.util.Locale;
  */
 public class FetchAddressTask extends AsyncTask<Void, Void, String> {
 
-    private Context mContext;
-    private double mLatitude, mLongitude;
-    private AsyncTaskCallback<String> mCallback;
+    private final Geocoder mGeocoder;
+    private final double mLatitude, mLongitude;
+    private final AsyncTaskCallback<String> mCallback;
 
     public FetchAddressTask(Context context, double latitude, double longitude, @NonNull AsyncTaskCallback<String> asyncTaskCallback) {
-        mContext = context.getApplicationContext();
         mLatitude = latitude;
         mLongitude = longitude;
         mCallback = asyncTaskCallback;
+        mGeocoder = new Geocoder(context.getApplicationContext(), Locale.getDefault());
     }
 
     @Override
     protected String doInBackground(Void... params) {
         String strAddress = "";
-        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(mLatitude, mLongitude, 1);
+            List<Address> addresses = mGeocoder.getFromLocation(mLatitude, mLongitude, 1);
             if (addresses != null) {
                 strAddress = AppUtils.generateAddressLine(addresses.get(0));
             }

@@ -24,7 +24,7 @@
     <string name="err_no_internet">Internet not available!</string>
     <string name="home">Home</string>
     
-    <string name="montserrat" translatable="false">MontserratRegular.ttf</string>
-    <string name="sourcesans" translatable="false">SourceSansProRegular.ttf</string>
+    <string name="font_montserrat" translatable="false">MontserratRegular.ttf</string>
+    <string name="font_sourcesans" translatable="false">SourceSansProRegular.ttf</string>
 
 </resources>

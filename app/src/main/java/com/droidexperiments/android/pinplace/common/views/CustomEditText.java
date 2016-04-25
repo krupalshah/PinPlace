@@ -45,15 +45,15 @@ public class CustomEditText extends AppCompatEditText {
     }
 
     private void parseAttributeSet(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.customview);
-        String strTypeFace = typedArray.getString(R.styleable.customview_typeface);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.custom);
+        String strTypeFace = typedArray.getString(R.styleable.custom_typeface);
         typedArray.recycle();
 
         if (TextUtils.isEmpty(strTypeFace)) {
             return;
         }
-        String montserratFile = context.getString(R.string.montserrat);
-        String sourceSansFile = context.getString(R.string.sourcesans);
+        String montserratFile = context.getString(R.string.font_montserrat);
+        String sourceSansFile = context.getString(R.string.font_sourcesans);
         Typeface typeface;
         if (strTypeFace.equals(montserratFile)) {
             typeface = FontFactory.getInstance().getTypeFace(context, montserratFile);
