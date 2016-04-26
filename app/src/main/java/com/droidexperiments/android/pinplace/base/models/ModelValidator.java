@@ -16,9 +16,10 @@ package com.droidexperiments.android.pinplace.base.models;
 
 /**
  * Author : Krupal Shah
- * Date : 25-Apr-16
+ * Date : 26-Apr-16
  */
-public abstract class BaseModel {
+public interface ModelValidator {
 
-    protected abstract boolean isValid();
+    boolean isValid();
+
 }

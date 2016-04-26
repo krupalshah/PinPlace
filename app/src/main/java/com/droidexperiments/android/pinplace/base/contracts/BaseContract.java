@@ -16,6 +16,7 @@ package com.droidexperiments.android.pinplace.base.contracts;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.view.View;
 
@@ -31,7 +32,11 @@ public interface BaseContract {
 
         void showToast(@StringRes int msgResId);
 
-        void showSnakeBar(@StringRes int msg, @StringRes int action, View.OnClickListener actionListener);
+        void showToast(@NonNull String msg);
+
+        void showSnakeBarAtBottom(@StringRes int msg, @StringRes int action, View.OnClickListener actionListener);
+
+        void showSnakeBarAtBottom(@NonNull String msg, @StringRes int action, View.OnClickListener actionListener);
 
         void showDialog(Dialog dialog);
 

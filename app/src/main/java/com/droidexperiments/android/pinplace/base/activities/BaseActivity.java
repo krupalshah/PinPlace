@@ -17,6 +17,7 @@ package com.droidexperiments.android.pinplace.base.activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -32,7 +33,7 @@ import com.droidexperiments.android.pinplace.base.contracts.BaseContract;
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseContract.BaseView {
 
-    boolean isViewDestroyed = false;
+    private boolean isViewDestroyed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,19 +50,34 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     protected abstract void initComponents();
 
     @Override
-    public void showToast(@StringRes int msgResId) {
-        Toast.makeText(getApplicationContext(), msgResId, Toast.LENGTH_SHORT).show();
+    public void showToast(@NonNull String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showSnakeBar(@StringRes int msg, @StringRes int action, @Nullable View.OnClickListener actionListener) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content).getRootView(), msg, Snackbar.LENGTH_SHORT);
+    public void showToast(@StringRes int msgResId) {
+        showToast(getString(msgResId));
+    }
+
+    @Override
+    public void showSnakeBarAtBottom(@NonNull String msg, @StringRes int action, View.OnClickListener actionListener) {
+        final Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_INDEFINITE);
         if (actionListener != null) {
             snackbar.setAction(action, actionListener);
         } else {
-            snackbar.setAction(action, (view) -> snackbar.dismiss());
+            snackbar.setAction(action, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    snackbar.dismiss();
+                }
+            });
         }
         snackbar.show();
+    }
+
+    @Override
+    public void showSnakeBarAtBottom(@StringRes int msg, @StringRes int action, @Nullable View.OnClickListener actionListener) {
+        showSnakeBarAtBottom(getString(msg), action, actionListener);
     }
 
     @Override

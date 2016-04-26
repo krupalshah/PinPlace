@@ -14,13 +14,11 @@
 
 package com.droidexperiments.android.pinplace.base.models;
 
-import android.support.annotation.CallSuper;
-
 /**
  * Author : Krupal Shah
  * Date : 25-Apr-16
  */
-public abstract class BaseResponse extends BaseModel {
+public abstract class BaseResponse {
 
     private int statusCode;
     private String status;
@@ -45,12 +43,11 @@ public abstract class BaseResponse extends BaseModel {
         this.status = status;
     }
 
-    @CallSuper
     @Override
     public String toString() {
-        return "BaseResponse{" +
-                "statusCode=" + statusCode +
-                ", status='" + status + '\'' +
-                '}';
+        return "{\"BaseResponse\":{"
+                + "\"statusCode\":\"" + statusCode + "\""
+                + ", \"status\":\"" + status + "\""
+                + "}}";
     }
 }

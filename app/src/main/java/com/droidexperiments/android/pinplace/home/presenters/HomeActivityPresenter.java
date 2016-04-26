@@ -15,6 +15,7 @@
 package com.droidexperiments.android.pinplace.home.presenters;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.base.presenters.BasePresenterImpl;
@@ -41,6 +42,7 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
 
     @Override
     public void attachView(HomeActivityContract.View view) {
+        Log.d(TAG, "attachView ");
         super.attachView(view);
         view.setTransparentStatusBar();
         view.animateToolbarCollapsing();
@@ -50,49 +52,57 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
 
     @Override
     public void detachView() {
+        Log.d(TAG, "detachView ");
         super.detachView();
     }
 
     @Override
     public void registerPlaceUpdates() {
+        Log.d(TAG, "registerPlaceUpdates ");
         mLocationOperations = new LocationOperationsImpl(getView().getComponentContext());
         mLocationOperations.registerPlaceUpdateCallbacks(this);
     }
 
     @Override
     public void requestPlaceUpdates() {
+        Log.d(TAG, "requestPlaceUpdates ");
         mLocationOperations.connectApiClient();
     }
 
     @Override
     public void stopPlaceUpdates() {
+        Log.d(TAG, "stopPlaceUpdates ");
         mLocationOperations.removeLocationUpdates();
         mLocationOperations.disconnectApiClient();
     }
 
     @Override
     public void checkTurnOnLocationResult(LocationSettingsStates locationSettingsStates) {
+        Log.d(TAG, "checkTurnOnLocationResult() called with " + "locationSettingsStates = [" + locationSettingsStates + "]");
         if (locationSettingsStates.isLocationUsable()) {
             mLocationOperations.retrieveLastKnownPlace();
             mLocationOperations.scheduleLocationUpdates();
         } else {
-            getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+            getView().showSnakeBarAtBottom(R.string.unable_to_get_location, R.string.dismiss, null);
         }
     }
 
     @Override
     public void unregisterPlaceUpdates() {
+        Log.d(TAG, "unregisterPlaceUpdates ");
         mLocationOperations.unregisterPlaceUpdateCallbacks();
         mLocationOperations = null;
     }
 
     @Override
     public void onApiClientConnected() {
+        Log.d(TAG, "onApiClientConnected ");
         mLocationOperations.checkLocationSettings();
     }
 
     @Override
     public void onLocationSettingsResult(LocationSettingsResult locationSettingsResult) {
+        Log.d(TAG, "onLocationSettingsResult() called with " + "status = [" + locationSettingsResult.getStatus() + "]");
         Status status = locationSettingsResult.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS: //if location is on
@@ -105,21 +115,27 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
                 break;
 
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE: //if settings can not be changed
-                getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+                getView().showSnakeBarAtBottom(R.string.unable_to_get_location, R.string.dismiss, null);
                 break;
         }
     }
 
     @Override
     public void onGotLastKnownPlace(Place lastKnownPlace) {
+        Log.d(TAG, "onGotLastKnownPlace() called with " + "lastKnownPlace = [" + lastKnownPlace + "]");
         getView().updateAddressText(lastKnownPlace.getAddress());
     }
 
     @Override
     public void onLocationUpdated(Location newLocation) {
-        mLocationOperations.getCurrentPlace(true, (place, operationStatus) -> {
-            if (operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
-                mView.updateAddressText(place.getAddress());
+        Log.d(TAG, "onLocationUpdated() called with " + "newLocation = [" + newLocation + "]");
+        mLocationOperations.getCurrentPlace(true, new GetPlaceCallback() {
+            @Override
+            public void onGotPlace(Place place, @GetPlaceOperationStatus int operationStatus) {
+                Log.d(TAG, "onGotPlace() called with " + "place = [" + place + "], operationStatus = [" + operationStatus + "]");
+                if (operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
+                    mView.updateAddressText(place.getAddress());
+                }
             }
         });
     }

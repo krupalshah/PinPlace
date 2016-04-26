@@ -17,6 +17,7 @@ package com.droidexperiments.android.pinplace.base.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -30,7 +31,7 @@ import com.droidexperiments.android.pinplace.base.contracts.BaseContract;
  */
 public abstract class BaseFragment extends Fragment implements BaseContract.BaseView {
 
-    boolean isViewDestroyed = false;
+    private boolean isViewDestroyed = false;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -55,8 +56,18 @@ public abstract class BaseFragment extends Fragment implements BaseContract.Base
     }
 
     @Override
-    public void showSnakeBar(@StringRes int msg, @StringRes int action, View.OnClickListener actionListener) {
-        ((BaseActivity) getActivity()).showSnakeBar(msg, action, actionListener);
+    public void showToast(@NonNull String msg) {
+        ((BaseActivity) getActivity()).showToast(msg);
+    }
+
+    @Override
+    public void showSnakeBarAtBottom(@NonNull String msg, @StringRes int action, View.OnClickListener actionListener) {
+        ((BaseActivity) getActivity()).showSnakeBarAtBottom(msg, action, actionListener);
+    }
+
+    @Override
+    public void showSnakeBarAtBottom(@StringRes int msg, @StringRes int action, View.OnClickListener actionListener) {
+        ((BaseActivity) getActivity()).showSnakeBarAtBottom(msg, action, actionListener);
     }
 
     @Override

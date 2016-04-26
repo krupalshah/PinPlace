@@ -82,8 +82,8 @@
 -dontwarn okio.*
 
 #dbflow
+-keep class com.raizlabs.android.dbflow.config.** { *; }
 -keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
--keep class com.raizlabs.android.dbflow.config.GeneratedDatabaseHolder
 -keep class * extends com.raizlabs.android.dbflow.config.BaseDatabaseDefinition { *; }
 
 # eventbus
@@ -108,9 +108,6 @@
 -keep class com.fasterxml.jackson.databind.ObjectWriter {
      public ** writeValueAsString(**);
  }
-
-#retrolambda
--dontwarn java.lang.invoke.*
 
 # crashanalytics
 -keepattributes *Annotation*

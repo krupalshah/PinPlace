@@ -19,15 +19,18 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.droidexperiments.android.pinplace.AppConfig;
+import com.droidexperiments.android.pinplace.common.callbacks.AsyncTaskCallback;
 import com.droidexperiments.android.pinplace.models.Place;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperations;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperationsImpl;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -57,6 +60,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     @Override
     public void registerPlaceUpdateCallbacks(@NonNull PlaceUpdatesListener placeUpdatesListener) {
+        Log.d(TAG, "registerPlaceUpdateCallbacks ");
         mPLacePlaceUpdatesListener = placeUpdatesListener;
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addConnectionCallbacks(this)
@@ -67,11 +71,13 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     @Override
     public void connectApiClient() {
+        Log.d(TAG, "connectApiClient ");
         mGoogleApiClient.connect();
     }
 
     @Override
     public void checkLocationSettings() {
+        Log.d(TAG, "checkLocationSettings ");
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(AppConfig.LocationUpdates.NORMAL_LOCATION_UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(AppConfig.LocationUpdates.FASTEST_LOCATION_UPDATE_INTERVAL);
@@ -83,21 +89,29 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
 
         PendingResult<LocationSettingsResult> pendingResult = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, locationSettingsRequest);
-        pendingResult.setResultCallback((settingsResult) -> {
-            mPLacePlaceUpdatesListener.onLocationSettingsResult(settingsResult);
+        pendingResult.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
+                mPLacePlaceUpdatesListener.onLocationSettingsResult(locationSettingsResult);
+            }
         });
     }
 
     @Override
     public void retrieveLastKnownPlace() {
+        Log.d(TAG, "retrieveLastKnownPlace ");
         Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastKnownLocation != null) {
             mCurrentPlace.setLatitude(lastKnownLocation.getLatitude());
             mCurrentPlace.setLongitude(lastKnownLocation.getLongitude());
 
-            getCurrentPlace(true, (place, operationStatus) -> {
-                if (operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
-                    mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
+            getCurrentPlace(true, new GetPlaceCallback() {
+                @Override
+                public void onGotPlace(Place place, @GetPlaceOperationStatus int operationStatus) {
+                    Log.d(TAG, "onGotPlace() called with " + "place = [" + place + "], operationStatus = [" + operationStatus + "]");
+                    if (operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
+                        mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
+                    }
                 }
             });
         }
@@ -105,11 +119,13 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     @Override
     public void scheduleLocationUpdates() {
+        Log.d(TAG, "scheduleLocationUpdates ");
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
     public void removeLocationUpdates() {
+        Log.d(TAG, "removeLocationUpdates ");
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
@@ -123,6 +139,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     @Override
     public void disconnectApiClient() {
+        Log.d(TAG, "disconnectApiClient ");
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
@@ -144,7 +161,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     }
 
     @Override
-    public void getCurrentPlace(boolean needsUpdatedAddress, @NonNull GetPlaceCallback callback) {
+    public void getCurrentPlace(boolean needsUpdatedAddress, @NonNull final GetPlaceCallback callback) {
         Log.d(TAG, "getCurrentPlace() called with " + "needsUpdatedAddress = [" + needsUpdatedAddress + "], callback = [" + callback + "]");
         if (!needsUpdatedAddress) { //does not need place with updated address - just need location not address
             callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
@@ -162,15 +179,20 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
                 return;
             }
         }
-        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, (result) -> {
-            mCurrentPlace.setAddress(result);
-            callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
+        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, new AsyncTaskCallback<String>() {
+            @Override
+            public void onAsyncOperationCompleted(@Nullable String result) {
+                Log.d(TAG, "onAsyncOperationCompleted() called with " + "result = [" + result + "]");
+                mCurrentPlace.setAddress(result);
+                callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
+            }
         });
         mFetchAddressTask.execute();
     }
 
     @Override
     public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected() called with " + "bundle = [" + bundle + "]");
         mPLacePlaceUpdatesListener.onApiClientConnected();
     }
 

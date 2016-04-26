@@ -14,17 +14,31 @@
 
 package com.droidexperiments.android.pinplace.models;
 
-import com.droidexperiments.android.pinplace.base.models.BaseModel;
+import com.droidexperiments.android.pinplace.db.DbConfig;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 /**
  * Author : Krupal Shah
  * Date : 09-Apr-16
  */
+@Table(databaseName = DbConfig.NAME)
 public class Place extends BaseModel {
 
-    private double latitude;
-    private double longitude;
-    private String address;
+    @Column
+    @PrimaryKey(autoincrement = true)
+    long id;
+
+    @Column
+    double latitude;
+
+    @Column
+    double longitude;
+
+    @Column
+    String address;
 
     public Place() {
         address = "";
@@ -54,15 +68,12 @@ public class Place extends BaseModel {
         this.address = address;
     }
 
-    @Override
-    protected boolean isValid() {
-        return true;
-    }
 
     @Override
     public String toString() {
         return "Place{" +
-                "latitude=" + latitude +
+                "id=" + id +
+                ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", address='" + address + '\'' +
                 '}';

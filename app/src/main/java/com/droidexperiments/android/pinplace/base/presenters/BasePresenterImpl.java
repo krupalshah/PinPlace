@@ -15,6 +15,7 @@
 package com.droidexperiments.android.pinplace.base.presenters;
 
 import android.support.annotation.CallSuper;
+import android.util.Log;
 
 import com.droidexperiments.android.pinplace.base.contracts.BaseContract;
 
@@ -23,18 +24,21 @@ import com.droidexperiments.android.pinplace.base.contracts.BaseContract;
  * Date : 25-Apr-16
  */
 public abstract class BasePresenterImpl<T extends BaseContract.BaseView> implements BaseContract.BasePresenter<T> {
-
+    private static final String TAG = "BasePresenterImpl";
+    
     protected T mView;
 
     @Override
     @CallSuper
     public void attachView(T view) {
+        Log.d(TAG, "attachView ");
         mView = view;
     }
 
     @Override
     @CallSuper
     public void detachView() {
+        Log.d(TAG, "detachView ");
         mView = null;
     }
 

@@ -29,7 +29,6 @@ import android.net.NetworkInfo;
 public final class NetworkOperationsImpl implements NetworkOperations {
 
     private final Context mContext;
-    private IntentFilter mConnectivityIntentFilter;
     private ConnectivityManager mConnectivityManager;
     private BroadcastReceiver mConnectivityChangeReceiver;
 
@@ -38,9 +37,8 @@ public final class NetworkOperationsImpl implements NetworkOperations {
     }
 
     @Override
-    public void registerNetworkReceiver(NetworkUpdatesListener networkUpdatesListener) {
+    public void registerNetworkReceiver(final NetworkUpdatesListener networkUpdatesListener) {
         mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        mConnectivityIntentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         mConnectivityChangeReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -51,7 +49,7 @@ public final class NetworkOperationsImpl implements NetworkOperations {
                 }
             }
         };
-        mContext.registerReceiver(mConnectivityChangeReceiver, mConnectivityIntentFilter);
+        mContext.registerReceiver(mConnectivityChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
