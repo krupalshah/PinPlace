@@ -3,3 +3,4 @@
 app.iml
 app-release.apk
 fabric.properties
+/src/main/res/layout/test.xml
