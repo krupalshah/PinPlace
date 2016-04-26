@@ -101,7 +101,7 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
                 break;
 
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED://if to ask through dialog
-                getView().askToTurnOnLocation(status);
+                getView().showTurnOnLocationDialog(status);
                 break;
 
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE: //if settings can not be changed

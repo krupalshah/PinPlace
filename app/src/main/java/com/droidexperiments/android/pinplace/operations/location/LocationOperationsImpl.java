@@ -28,7 +28,6 @@ import com.droidexperiments.android.pinplace.operations.network.NetworkOperation
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -106,7 +105,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     @Override
     public void scheduleLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest,this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
@@ -144,7 +143,6 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
         }
     }
 
-
     @Override
     public void getCurrentPlace(boolean needsUpdatedAddress, @NonNull GetPlaceCallback callback) {
         Log.d(TAG, "getCurrentPlace() called with " + "needsUpdatedAddress = [" + needsUpdatedAddress + "], callback = [" + callback + "]");
@@ -175,7 +173,6 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     public void onConnected(Bundle bundle) {
         mPLacePlaceUpdatesListener.onApiClientConnected();
     }
-
 
     @Override
     public void onLocationChanged(Location location) {

@@ -36,7 +36,7 @@ public interface HomeActivityContract extends BaseContract {
 
         void setupViewPager();
 
-        void askToTurnOnLocation(Status locationStatus);
+        void showTurnOnLocationDialog(Status locationStatus);
 
         void updateAddressText(String address);
     }

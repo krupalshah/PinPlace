@@ -88,7 +88,7 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
     }
 
     @Override
-    public void askToTurnOnLocation(Status locationSettingsStatus) {
+    public void showTurnOnLocationDialog(Status locationSettingsStatus) {
         try {
             locationSettingsStatus.startResolutionForResult(HomeActivity.this, REQUEST_LOCATION_SETTINGS);
         } catch (IntentSender.SendIntentException e) {

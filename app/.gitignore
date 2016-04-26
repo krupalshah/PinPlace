@@ -2,3 +2,4 @@
 /src/main/res/values/secrets.xml
 app.iml
 app-release.apk
+fabric.properties
