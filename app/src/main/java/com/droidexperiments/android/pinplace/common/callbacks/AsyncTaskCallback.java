@@ -14,10 +14,12 @@
 
 package com.droidexperiments.android.pinplace.common.callbacks;
 
+import android.support.annotation.Nullable;
+
 /**
  * Author : Krupal Shah
  * Date : 09-Apr-16
  */
 public interface AsyncTaskCallback<T> {
-    void onAsyncOperationCompleted(T result);
+    void onAsyncOperationCompleted(@Nullable T result);
 }

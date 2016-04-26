@@ -20,6 +20,7 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.common.callbacks.AsyncTaskCallback;
 import com.droidexperiments.android.pinplace.utilities.AppUtils;
 
@@ -36,17 +37,25 @@ public class FetchAddressTask extends AsyncTask<Void, Void, String> {
     private Geocoder mGeocoder;
     private double mLatitude, mLongitude;
     private AsyncTaskCallback<String> mCallback;
+    private String strAddress;
+    private Context mContext;
 
     public FetchAddressTask(Context context, double latitude, double longitude, @NonNull AsyncTaskCallback<String> asyncTaskCallback) {
+        mContext = context.getApplicationContext();
         mLatitude = latitude;
         mLongitude = longitude;
         mCallback = asyncTaskCallback;
-        mGeocoder = new Geocoder(context.getApplicationContext(), Locale.getDefault());
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mGeocoder = new Geocoder(mContext, Locale.getDefault());
+        strAddress = mContext.getString(R.string.unknown);
     }
 
     @Override
     protected String doInBackground(Void... params) {
-        String strAddress = "";
         try {
             List<Address> addresses = mGeocoder.getFromLocation(mLatitude, mLongitude, 1);
             if (addresses != null) {

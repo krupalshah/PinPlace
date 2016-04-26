@@ -24,11 +24,19 @@ public interface LocationOperations {
 
     void registerPlaceUpdateCallbacks(@NonNull PlaceUpdatesListener placeUpdatesListener);
 
-    void startLocationUpdates();
+    void connectApiClient();
+
+    void checkLocationSettings();
+
+    void retrieveLastKnownPlace();
+
+    void scheduleLocationUpdates();
 
     void getCurrentPlace(boolean needsUpdatedAddress, @NonNull GetPlaceCallback callback);
 
-    void stopLocationUpdates();
+    void removeLocationUpdates();
+
+    void disconnectApiClient();
 
     void unregisterPlaceUpdateCallbacks();
 }

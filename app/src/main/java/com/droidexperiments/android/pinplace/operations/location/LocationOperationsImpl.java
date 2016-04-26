@@ -19,21 +19,21 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.AppConfig;
-import com.droidexperiments.android.pinplace.operations.network.NetworkOperations;
 import com.droidexperiments.android.pinplace.models.Place;
+import com.droidexperiments.android.pinplace.operations.network.NetworkOperations;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperationsImpl;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-
-import java.sql.CallableStatement;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
 
 /**
  * Author : Krupal Shah
@@ -43,16 +43,16 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     private static final String TAG = "LocationOperationsImpl";
 
-    private Context mContext, mAppContext;
+    private Context mContext;
     private Place mCurrentPlace;
     private GoogleApiClient mGoogleApiClient;
     private PlaceUpdatesListener mPLacePlaceUpdatesListener;
     private FetchAddressTask mFetchAddressTask;
     private NetworkOperations mNetworkOperations;
+    private LocationRequest mLocationRequest;
 
     public LocationOperationsImpl(Context context) {
         mContext = context;
-        mAppContext = context.getApplicationContext();
         mCurrentPlace = new Place();
     }
 
@@ -67,21 +67,65 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     }
 
     @Override
-    public void startLocationUpdates() {
+    public void connectApiClient() {
         mGoogleApiClient.connect();
     }
 
     @Override
-    public void stopLocationUpdates() {
+    public void checkLocationSettings() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(AppConfig.LocationUpdates.NORMAL_LOCATION_UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(AppConfig.LocationUpdates.FASTEST_LOCATION_UPDATE_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest)
+                .build();
+
+
+        PendingResult<LocationSettingsResult> pendingResult = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, locationSettingsRequest);
+        pendingResult.setResultCallback((settingsResult) -> {
+            mPLacePlaceUpdatesListener.onLocationSettingsResult(settingsResult);
+        });
+    }
+
+    @Override
+    public void retrieveLastKnownPlace() {
+        Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (lastKnownLocation != null) {
+            mCurrentPlace.setLatitude(lastKnownLocation.getLatitude());
+            mCurrentPlace.setLongitude(lastKnownLocation.getLongitude());
+
+            getCurrentPlace(true, (place, operationStatus) -> {
+                if (operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
+                    mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void scheduleLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest,this);
+    }
+
+    @Override
+    public void removeLocationUpdates() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            mGoogleApiClient.disconnect();
         }
         if (mFetchAddressTask != null) {
             if (mFetchAddressTask.getStatus() == AsyncTask.Status.RUNNING) {
                 mFetchAddressTask.cancel(true);
             }
             mFetchAddressTask = null;
+        }
+    }
+
+    @Override
+    public void disconnectApiClient() {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
         }
     }
 
@@ -99,6 +143,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
             mGoogleApiClient = null;
         }
     }
+
 
     @Override
     public void getCurrentPlace(boolean needsUpdatedAddress, @NonNull GetPlaceCallback callback) {
@@ -120,7 +165,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
             }
         }
         mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, (result) -> {
-            mCurrentPlace.setAddress(!TextUtils.isEmpty(result) ? result : mAppContext.getString(R.string.unknown));
+            mCurrentPlace.setAddress(result);
             callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
         });
         mFetchAddressTask.execute();
@@ -128,24 +173,9 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     @Override
     public void onConnected(Bundle bundle) {
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(AppConfig.LocationUpdates.NORMAL_LOCATION_UPDATE_INTERVAL);
-        locationRequest.setFastestInterval(AppConfig.LocationUpdates.FASTEST_LOCATION_UPDATE_INTERVAL);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
-
-        Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (lastKnownLocation != null) {
-            mCurrentPlace.setLatitude(lastKnownLocation.getLatitude());
-            mCurrentPlace.setLongitude(lastKnownLocation.getLongitude());
-
-            getCurrentPlace(true, (place, operationStatus) -> {
-                if (operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
-                    mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
-                }
-            });
-        }
+        mPLacePlaceUpdatesListener.onApiClientConnected();
     }
+
 
     @Override
     public void onLocationChanged(Location location) {

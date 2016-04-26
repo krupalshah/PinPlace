@@ -16,6 +16,8 @@ package com.droidexperiments.android.pinplace.home.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,7 +26,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -37,6 +38,8 @@ import com.droidexperiments.android.pinplace.home.fragments.TrendingPlacesFragme
 import com.droidexperiments.android.pinplace.home.presenters.HomeActivityPresenter;
 import com.droidexperiments.android.pinplace.home.contracts.HomeActivityContract;
 import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationSettingsStates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +60,9 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
 
     private static final String TAG = "HomeActivity";
 
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int REQUEST_LOCATION_SETTINGS = 1;
+    private static final int REQUEST_LOCATION_PERMISSION = 2;
+
     private static final String[] LOCATION_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -77,8 +82,28 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
     @Override
     protected void onStart() {
         super.onStart();
-        if (mPermissionsHelper.askPermissionsIfNotGranted(this, LOCATION_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
-            mHomeActivityPresenter.startPlaceUpdates();
+        if (mPermissionsHelper.askPermissionsIfNotGranted(this, REQUEST_LOCATION_PERMISSION, LOCATION_PERMISSIONS)) {
+            mHomeActivityPresenter.requestPlaceUpdates();
+        }
+    }
+
+    @Override
+    public void askToTurnOnLocation(Status locationSettingsStatus) {
+        try {
+            locationSettingsStatus.startResolutionForResult(HomeActivity.this, REQUEST_LOCATION_SETTINGS);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_LOCATION_SETTINGS:
+                LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
+                mHomeActivityPresenter.checkTurnOnLocationResult(locationSettingsStates);
+                break;
         }
     }
 
@@ -86,9 +111,9 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE:
-                if (mPermissionsHelper.checkGrantResultsAndShowRationaleIfDenied(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
-                    mHomeActivityPresenter.startPlaceUpdates();
+            case REQUEST_LOCATION_PERMISSION:
+                if (mPermissionsHelper.checkGrantResultsAndShowRationaleIfDenied(this, REQUEST_LOCATION_PERMISSION, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
+                    mHomeActivityPresenter.requestPlaceUpdates();
                 }
                 break;
         }
@@ -123,7 +148,7 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
             return;
         }
         Window window = getWindow();
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        window.getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE | android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(Color.TRANSPARENT);
         } else {

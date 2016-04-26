@@ -24,6 +24,10 @@ import com.droidexperiments.android.pinplace.operations.location.GetPlaceCallbac
 import com.droidexperiments.android.pinplace.operations.location.LocationOperations;
 import com.droidexperiments.android.pinplace.operations.location.LocationOperationsImpl;
 import com.droidexperiments.android.pinplace.operations.location.PlaceUpdatesListener;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 /**
  * Author : Krupal Shah
@@ -56,19 +60,54 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     }
 
     @Override
-    public void startPlaceUpdates() {
-        mLocationOperations.startLocationUpdates();
+    public void requestPlaceUpdates() {
+        mLocationOperations.connectApiClient();
     }
 
     @Override
     public void stopPlaceUpdates() {
-        mLocationOperations.stopLocationUpdates();
+        mLocationOperations.removeLocationUpdates();
+        mLocationOperations.disconnectApiClient();
+    }
+
+    @Override
+    public void checkTurnOnLocationResult(LocationSettingsStates locationSettingsStates) {
+        if (locationSettingsStates.isLocationUsable()) {
+            mLocationOperations.retrieveLastKnownPlace();
+            mLocationOperations.scheduleLocationUpdates();
+        } else {
+            getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+        }
     }
 
     @Override
     public void unregisterPlaceUpdates() {
         mLocationOperations.unregisterPlaceUpdateCallbacks();
         mLocationOperations = null;
+    }
+
+    @Override
+    public void onApiClientConnected() {
+        mLocationOperations.checkLocationSettings();
+    }
+
+    @Override
+    public void onLocationSettingsResult(LocationSettingsResult locationSettingsResult) {
+        Status status = locationSettingsResult.getStatus();
+        switch (status.getStatusCode()) {
+            case LocationSettingsStatusCodes.SUCCESS: //if location is on
+                mLocationOperations.retrieveLastKnownPlace();
+                mLocationOperations.scheduleLocationUpdates();
+                break;
+
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED://if to ask through dialog
+                getView().askToTurnOnLocation(status);
+                break;
+
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE: //if settings can not be changed
+                getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+                break;
+        }
     }
 
     @Override

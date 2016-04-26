@@ -17,6 +17,8 @@ package com.droidexperiments.android.pinplace.home.contracts;
 import android.support.annotation.StringRes;
 
 import com.droidexperiments.android.pinplace.base.contracts.BaseContract;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationSettingsStates;
 
 /**
  * Author : Krupal Shah
@@ -34,6 +36,8 @@ public interface HomeActivityContract extends BaseContract {
 
         void setupViewPager();
 
+        void askToTurnOnLocation(Status locationStatus);
+
         void updateAddressText(String address);
     }
 
@@ -41,7 +45,9 @@ public interface HomeActivityContract extends BaseContract {
 
         void registerPlaceUpdates();
 
-        void startPlaceUpdates();
+        void requestPlaceUpdates();
+
+        void checkTurnOnLocationResult(LocationSettingsStates locationSettingsStates);
 
         void stopPlaceUpdates();
 

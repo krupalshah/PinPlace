@@ -17,7 +17,7 @@ package com.droidexperiments.android.pinplace.base.activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -54,9 +54,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     }
 
     @Override
-    public void showSnakeBar(@StringRes int msg, @StringRes int action, @NonNull View.OnClickListener actionListener) {
+    public void showSnakeBar(@StringRes int msg, @StringRes int action, @Nullable View.OnClickListener actionListener) {
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content).getRootView(), msg, Snackbar.LENGTH_SHORT);
-        snackbar.setAction(action, actionListener);
+        if (actionListener != null) {
+            snackbar.setAction(action, actionListener);
+        } else {
+            snackbar.setAction(action, (view) -> snackbar.dismiss());
+        }
         snackbar.show();
     }
 

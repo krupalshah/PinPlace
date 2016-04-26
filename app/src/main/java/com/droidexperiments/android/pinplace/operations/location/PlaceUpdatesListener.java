@@ -17,6 +17,7 @@ package com.droidexperiments.android.pinplace.operations.location;
 import android.location.Location;
 
 import com.droidexperiments.android.pinplace.models.Place;
+import com.google.android.gms.location.LocationSettingsResult;
 
 /**
  * Author : Krupal Shah
@@ -24,7 +25,12 @@ import com.droidexperiments.android.pinplace.models.Place;
  */
 public interface PlaceUpdatesListener {
 
+    void onApiClientConnected();
+
+    void onLocationSettingsResult(LocationSettingsResult locationSettingsResult);
+
     void onGotLastKnownPlace(Place lastKnownPlace);
 
     void onLocationUpdated(Location newLocation);
+
 }
