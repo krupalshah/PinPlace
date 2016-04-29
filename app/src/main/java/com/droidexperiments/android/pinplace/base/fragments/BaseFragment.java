@@ -87,6 +87,6 @@ public abstract class BaseFragment extends Fragment implements BaseContract.Base
 
     @Override
     public boolean isViewDestroyed() {
-        return false;
+        return isViewDestroyed;
     }
 }
