@@ -22,6 +22,6 @@ import com.raizlabs.android.dbflow.annotation.Database;
  */
 @Database(name = DbConfig.NAME, version = DbConfig.VERSION)
 public class DbConfig {
-    public static final String NAME = "PinPlaceData";
+    public static final String NAME = "PinPlaceDataBase";
     public static final int VERSION = 0;
 }

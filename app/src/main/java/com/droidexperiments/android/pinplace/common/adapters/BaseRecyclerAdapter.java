@@ -15,8 +15,11 @@
 package com.droidexperiments.android.pinplace.common.adapters;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.droidexperiments.android.pinplace.common.interfaces.ItemClickListener;
 
 import java.util.List;
 
@@ -24,14 +27,30 @@ import java.util.List;
  * Author : Krupal Shah
  * Date : 08-May-16
  */
-public abstract class BaseRecyclerViewAdapter<T, S extends BaseRecyclerViewAdapter.BaseViewHolder> extends RecyclerView.Adapter<S> {
+public abstract class BaseRecyclerAdapter<S, T extends BaseRecyclerAdapter.BaseViewHolder> extends RecyclerView.Adapter<T> {
 
     private Context context;
-    private List<T> models;
+    private List<S> models;
 
-    public BaseRecyclerViewAdapter(Context context, List<T> models) {
+    private ItemClickListener<S> itemClickListener;
+
+    public BaseRecyclerAdapter(Context context, List<S> models) {
         this.context = context;
         this.models = models;
+    }
+
+    @CallSuper
+    @Override
+    public void onBindViewHolder(T holder, final int position) {
+        final S model = models.get(position);
+        if (itemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(model);
+                }
+            });
+        }
     }
 
     @Override
@@ -50,8 +69,12 @@ public abstract class BaseRecyclerViewAdapter<T, S extends BaseRecyclerViewAdapt
         return context;
     }
 
-    protected List<T> getModels() {
+    protected List<S> getModels() {
         return models;
+    }
+
+    public void setItemClickListener(ItemClickListener<S> itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
 }

@@ -87,7 +87,6 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
                 .addLocationRequest(mLocationRequest)
                 .build();
 
-
         PendingResult<LocationSettingsResult> pendingResult = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, locationSettingsRequest);
         pendingResult.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
