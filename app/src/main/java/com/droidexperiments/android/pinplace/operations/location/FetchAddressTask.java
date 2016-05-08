@@ -21,7 +21,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.droidexperiments.android.pinplace.R;
-import com.droidexperiments.android.pinplace.common.callbacks.AsyncTaskCallback;
+import com.droidexperiments.android.pinplace.common.interfaces.AsyncTaskCallback;
 import com.droidexperiments.android.pinplace.utilities.AppUtils;
 
 import java.io.IOException;

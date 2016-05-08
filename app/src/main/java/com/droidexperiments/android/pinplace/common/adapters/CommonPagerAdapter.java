@@ -25,20 +25,20 @@ import java.util.List;
  * Date : 09-Apr-16
  */
 public class CommonPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> mFragments;
+    private List<Fragment> fragments;
 
     public CommonPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
-        mFragments = fragments;
+        this.fragments = fragments;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return mFragments.get(position);
+        return fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return mFragments.size();
+        return fragments.size();
     }
 }

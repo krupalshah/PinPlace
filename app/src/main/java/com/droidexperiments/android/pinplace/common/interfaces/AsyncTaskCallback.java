@@ -12,7 +12,7 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.common.callbacks;
+package com.droidexperiments.android.pinplace.common.interfaces;
 
 import android.support.annotation.Nullable;
 

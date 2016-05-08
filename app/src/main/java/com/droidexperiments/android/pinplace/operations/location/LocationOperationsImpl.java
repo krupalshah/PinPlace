@@ -23,7 +23,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.droidexperiments.android.pinplace.AppConfig;
-import com.droidexperiments.android.pinplace.common.callbacks.AsyncTaskCallback;
+import com.droidexperiments.android.pinplace.common.interfaces.AsyncTaskCallback;
 import com.droidexperiments.android.pinplace.models.Place;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperations;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperationsImpl;
