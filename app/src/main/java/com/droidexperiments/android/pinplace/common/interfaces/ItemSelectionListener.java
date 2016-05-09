@@ -18,6 +18,6 @@ package com.droidexperiments.android.pinplace.common.interfaces;
  * Author : Krupal Shah
  * Date : 08-May-16
  */
-public interface ItemSelectionListener<T extends ISelection> {
+public interface ItemSelectionListener<T extends Selection> {
     void onItemSelectionChanged(T model);
 }

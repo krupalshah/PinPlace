@@ -17,7 +17,7 @@ package com.droidexperiments.android.pinplace.common.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.droidexperiments.android.pinplace.common.interfaces.ISelection;
+import com.droidexperiments.android.pinplace.common.interfaces.Selection;
 import com.droidexperiments.android.pinplace.common.interfaces.ItemSelectionListener;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
  * Author : Krupal Shah
  * Date : 08-May-16
  */
-public abstract class BaseSelectionAdapter<S extends ISelection, T extends BaseRecyclerAdapter.BaseViewHolder> extends BaseRecyclerAdapter<S, T> implements ItemSelectionListener<S> {
+public abstract   class BaseSelectionAdapter<S extends Selection, T extends BaseRecyclerAdapter.BaseViewHolder> extends BaseRecyclerAdapter<S, T> {
 
     private ItemSelectionListener<S> itemSelectionListener;
 
@@ -39,15 +39,16 @@ public abstract class BaseSelectionAdapter<S extends ISelection, T extends BaseR
         super.onBindViewHolder(holder, position);
         final S model = getModels().get(position);
         if (model.isSelected()) {
-            handleSelectedModelView(model, holder.itemView);
+            handleSelectedModelView(model, holder);
         } else {
-            handleUnSelectedModelView(model, holder.itemView);
+            handleUnSelectedModelView(model, holder);
         }
         if (itemSelectionListener != null) {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     model.setSelected(!model.isSelected());
+                    notifyItemChanged(position);
                     itemSelectionListener.onItemSelectionChanged(model);
                     return true;
                 }
@@ -55,9 +56,9 @@ public abstract class BaseSelectionAdapter<S extends ISelection, T extends BaseR
         }
     }
 
-    protected abstract void handleSelectedModelView(S model, View itemView);
+    protected abstract void handleSelectedModelView(S model, T holder);
 
-    protected abstract void handleUnSelectedModelView(S model, View itemView);
+    protected abstract void handleUnSelectedModelView(S model, T holder);
 
     public void setItemSelectionListener(ItemSelectionListener<S> itemSelectionListener) {
         this.itemSelectionListener = itemSelectionListener;

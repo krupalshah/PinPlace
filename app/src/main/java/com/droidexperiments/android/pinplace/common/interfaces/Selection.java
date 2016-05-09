@@ -18,7 +18,7 @@ package com.droidexperiments.android.pinplace.common.interfaces;
  * Author : Krupal Shah
  * Date : 08-May-16
  */
-public interface ISelection {
+public interface Selection {
 
     boolean isSelected();
 
