@@ -18,7 +18,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
-import android.view.View;
 
 import com.droidexperiments.android.pinplace.R;
 import com.droidexperiments.android.pinplace.base.activities.BaseActivity;
@@ -72,11 +71,8 @@ public final class PermissionsHelper {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(baseActivity, permission)) {
                     continue;
                 }
-                baseActivity.showSnakeBarAtBottom(rationaleMessage, R.string.allow, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        askPermissionsIfNotGranted(baseActivity, requestCode, permissionsAsked);
-                    }
+                baseActivity.showSnakeBarAtBottom(rationaleMessage, R.string.allow, view -> {
+                    askPermissionsIfNotGranted(baseActivity, requestCode, permissionsAsked);
                 });
                 break;
             }

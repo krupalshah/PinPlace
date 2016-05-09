@@ -15,10 +15,9 @@
 package com.droidexperiments.android.pinplace.common.adapters;
 
 import android.content.Context;
-import android.view.View;
 
-import com.droidexperiments.android.pinplace.common.interfaces.Selection;
 import com.droidexperiments.android.pinplace.common.interfaces.ItemSelectionListener;
+import com.droidexperiments.android.pinplace.common.interfaces.Selection;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public abstract class BaseSelectionAdapter<S extends Selection, T extends BaseRe
     }
 
     @Override
-    public void onBindViewHolder(T holder, final int position) {
+    public void onBindViewHolder(T holder, int position) {
         super.onBindViewHolder(holder, position);
         final S model = getModels().get(position);
         if (model.isSelected()) {
@@ -44,14 +43,11 @@ public abstract class BaseSelectionAdapter<S extends Selection, T extends BaseRe
             handleUnSelectedModelView(model, holder);
         }
         if (itemSelectionListener != null) {
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    model.setSelected(!model.isSelected());
-                    notifyItemChanged(position);
-                    itemSelectionListener.onItemSelectionChanged(model);
-                    return true;
-                }
+            holder.itemView.setOnLongClickListener(view -> {
+                model.setSelected(!model.isSelected());
+                notifyItemChanged(position);
+                itemSelectionListener.onItemSelectionChanged(model);
+                return true;
             });
         }
     }

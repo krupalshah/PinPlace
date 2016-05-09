@@ -129,13 +129,10 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     @Override
     public void onLocationUpdated(Location newLocation) {
         Log.d(TAG, "onLocationUpdated() called with " + "newLocation = [" + newLocation + "]");
-        mLocationOperations.getCurrentPlace(true, new GetPlaceCallback() {
-            @Override
-            public void onGotPlace(Place place, @GetPlaceOperationStatus int operationStatus) {
-                Log.d(TAG, "onGotPlace() called with " + "place = [" + place + "], operationStatus = [" + operationStatus + "]");
-                if (operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
-                    mView.updateAddressText(place.getAddress());
-                }
+        mLocationOperations.getCurrentPlace(true, (place, operationStatus) -> {
+            Log.d(TAG, "onGotPlace() called with " + "place = [" + place + "], operationStatus = [" + operationStatus + "]");
+            if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
+                mView.updateAddressText(place.getAddress());
             }
         });
     }

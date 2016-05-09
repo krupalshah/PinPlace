@@ -109,6 +109,9 @@
      public ** writeValueAsString(**);
  }
 
+#retrolambda
+ -dontwarn java.lang.invoke.*
+
 # crashanalytics
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable

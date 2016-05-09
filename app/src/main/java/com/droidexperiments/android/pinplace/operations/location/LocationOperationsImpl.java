@@ -24,14 +24,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.droidexperiments.android.pinplace.AppConfig;
-import com.droidexperiments.android.pinplace.common.interfaces.AsyncTaskCallback;
 import com.droidexperiments.android.pinplace.models.Place;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperations;
 import com.droidexperiments.android.pinplace.operations.network.NetworkOperationsImpl;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -89,12 +87,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
                 .build();
 
         PendingResult<LocationSettingsResult> pendingResult = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, locationSettingsRequest);
-        pendingResult.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-            @Override
-            public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
-                mPLacePlaceUpdatesListener.onLocationSettingsResult(locationSettingsResult);
-            }
-        });
+        pendingResult.setResultCallback(mPLacePlaceUpdatesListener::onLocationSettingsResult);
     }
 
     @Override
@@ -105,13 +98,10 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
             mCurrentPlace.setLatitude(lastKnownLocation.getLatitude());
             mCurrentPlace.setLongitude(lastKnownLocation.getLongitude());
 
-            getCurrentPlace(true, new GetPlaceCallback() {
-                @Override
-                public void onGotPlace(Place place, @GetPlaceOperationStatus int operationStatus) {
-                    Log.d(TAG, "onGotPlace() called with " + "place = [" + place + "], operationStatus = [" + operationStatus + "]");
-                    if (operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
-                        mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
-                    }
+            getCurrentPlace(true, (place, operationStatus) -> {
+                Log.d(TAG, "onGotPlace() called with " + "place = [" + place + "], operationStatus = [" + operationStatus + "]");
+                if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
+                    mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
                 }
             });
         }
@@ -179,16 +169,13 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
                 return;
             }
         }
-        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, new AsyncTaskCallback<String>() {
-            @Override
-            public void onAsyncOperationCompleted(@Nullable String result) {
-                Log.d(TAG, "onAsyncOperationCompleted() called with " + "result = [" + result + "]");
-                if (TextUtils.isEmpty(result)) {
-                    callback.onGotPlace(null, GetPlaceCallback.STATUS_UNKNOWN_FAILURE);
-                } else {
-                    mCurrentPlace.setAddress(result);
-                    callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
-                }
+        mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, result -> {
+            Log.d(TAG, "onAsyncOperationCompleted() called with " + "result = [" + result + "]");
+            if (TextUtils.isEmpty(result)) {
+                callback.onGotPlace(null, GetPlaceCallback.STATUS_UNKNOWN_FAILURE);
+            } else {
+                mCurrentPlace.setAddress(result);
+                callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
             }
         });
         mFetchAddressTask.execute();
