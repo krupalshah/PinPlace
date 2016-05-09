@@ -24,13 +24,15 @@ import com.droidexperiments.android.pinplace.models.Place;
  * Date : 17-Apr-16
  */
 public interface GetPlaceCallback {
-    int STATUS_NO_NETWORK = 1;
-    int STATUS_PREV_TASK_PENDING = 2;
-    int STATUS_SUCCESS = 3;
+
+    int STATUS_SUCCESS = 1;
+    int STATUS_NO_NETWORK = 2;
+    int STATUS_PREV_TASK_PENDING = 3;
     int STATUS_UNKNOWN_FAILURE = 4;
 
-    @IntDef({STATUS_NO_NETWORK, STATUS_PREV_TASK_PENDING, STATUS_SUCCESS,STATUS_UNKNOWN_FAILURE})
-    @interface GetPlaceOperationStatus {}
+    @IntDef({STATUS_NO_NETWORK, STATUS_PREV_TASK_PENDING, STATUS_SUCCESS, STATUS_UNKNOWN_FAILURE})
+    @interface GetPlaceOperationStatus {
+    }
 
     void onGotPlace(@Nullable Place place, @GetPlaceOperationStatus int operationStatus);
 }
