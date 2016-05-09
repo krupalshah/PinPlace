@@ -39,9 +39,9 @@ public abstract class BaseSelectionAdapter<S extends Selection, T extends BaseRe
         super.onBindViewHolder(holder, position);
         final S model = getModels().get(position);
         if (model.isSelected()) {
-            setupSelectedModelView(model, holder);
+            handleSelectedModelView(model, holder);
         } else {
-            setupUnSelectedModelView(model, holder);
+            handleUnSelectedModelView(model, holder);
         }
         if (itemSelectionListener != null) {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -56,9 +56,9 @@ public abstract class BaseSelectionAdapter<S extends Selection, T extends BaseRe
         }
     }
 
-    protected abstract void setupSelectedModelView(S model, T holder);
+    protected abstract void handleSelectedModelView(S model, T holder);
 
-    protected abstract void setupUnSelectedModelView(S model, T holder);
+    protected abstract void handleUnSelectedModelView(S model, T holder);
 
     public void setItemSelectionListener(ItemSelectionListener<S> itemSelectionListener) {
         this.itemSelectionListener = itemSelectionListener;
