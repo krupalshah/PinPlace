@@ -65,9 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
         if (actionListener != null) {
             snackbar.setAction(action, actionListener);
         } else {
-            snackbar.setAction(action, view -> {
-                snackbar.dismiss();
-            });
+            snackbar.setAction(action, view -> snackbar.dismiss());
         }
         snackbar.show();
     }
