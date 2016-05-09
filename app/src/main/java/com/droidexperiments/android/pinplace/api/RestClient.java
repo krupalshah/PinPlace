@@ -28,11 +28,11 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public class ApiProvider {
+public class RestClient {
 
     private static ApiRepository apiRepository;
 
-    public static ApiRepository provideApi() {
+    public static ApiRepository getWebServices() {
         if (apiRepository == null) {
             OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
                     .connectTimeout(ServerConfig.TimeOuts.CONNECT, TimeUnit.SECONDS)
