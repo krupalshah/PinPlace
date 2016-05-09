@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.droidexperiments.android.pinplace.AppConfig;
@@ -182,8 +183,12 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
             @Override
             public void onAsyncOperationCompleted(@Nullable String result) {
                 Log.d(TAG, "onAsyncOperationCompleted() called with " + "result = [" + result + "]");
-                mCurrentPlace.setAddress(result);
-                callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
+                if (TextUtils.isEmpty(result)) {
+                    callback.onGotPlace(null, GetPlaceCallback.STATUS_UNKNOWN_FAILURE);
+                } else {
+                    mCurrentPlace.setAddress(result);
+                    callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
+                }
             }
         });
         mFetchAddressTask.execute();
