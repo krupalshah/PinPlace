@@ -60,20 +60,13 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     public void registerPlaceUpdates() {
         Log.d(TAG, "registerPlaceUpdates ");
         mLocationOperations = new LocationOperationsImpl(getView().getComponentContext());
-        mLocationOperations.registerPlaceUpdateCallbacks(this);
+        mLocationOperations.registerUpdateCallbacks(this);
     }
 
     @Override
     public void requestPlaceUpdates() {
         Log.d(TAG, "requestPlaceUpdates ");
         mLocationOperations.connectApiClient();
-    }
-
-    @Override
-    public void stopPlaceUpdates() {
-        Log.d(TAG, "stopPlaceUpdates ");
-        mLocationOperations.removeLocationUpdates();
-        mLocationOperations.disconnectApiClient();
     }
 
     @Override
@@ -88,9 +81,16 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     }
 
     @Override
+    public void stopPlaceUpdates() {
+        Log.d(TAG, "stopPlaceUpdates ");
+        mLocationOperations.removeLocationUpdates();
+        mLocationOperations.disconnectApiClient();
+    }
+
+    @Override
     public void unregisterPlaceUpdates() {
         Log.d(TAG, "unregisterPlaceUpdates ");
-        mLocationOperations.unregisterPlaceUpdateCallbacks();
+        mLocationOperations.unregisterUpdateCallbacks();
         mLocationOperations = null;
     }
 

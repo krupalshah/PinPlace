@@ -58,8 +58,8 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     }
 
     @Override
-    public void registerPlaceUpdateCallbacks(@NonNull PlaceUpdatesListener placeUpdatesListener) {
-        Log.d(TAG, "registerPlaceUpdateCallbacks ");
+    public void registerUpdateCallbacks(@NonNull PlaceUpdatesListener placeUpdatesListener) {
+        Log.d(TAG, "registerUpdateCallbacks ");
         mPLacePlaceUpdatesListener = placeUpdatesListener;
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addConnectionCallbacks(this)
@@ -136,7 +136,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     }
 
     @Override
-    public void unregisterPlaceUpdateCallbacks() {
+    public void unregisterUpdateCallbacks() {
         mPLacePlaceUpdatesListener = null;
         mNetworkOperations = null;
         if (mGoogleApiClient != null) {

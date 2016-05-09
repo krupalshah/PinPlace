@@ -28,7 +28,7 @@ import android.net.NetworkInfo;
  */
 public final class NetworkOperationsImpl implements NetworkOperations {
 
-    private final Context mContext;
+    private Context mContext;
     private ConnectivityManager mConnectivityManager;
     private BroadcastReceiver mConnectivityChangeReceiver;
 
