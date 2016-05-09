@@ -26,7 +26,7 @@ import java.util.List;
  * Author : Krupal Shah
  * Date : 08-May-16
  */
-public abstract   class BaseSelectionAdapter<S extends Selection, T extends BaseRecyclerAdapter.BaseViewHolder> extends BaseRecyclerAdapter<S, T> {
+public abstract class BaseSelectionAdapter<S extends Selection, T extends BaseRecyclerAdapter.BaseViewHolder> extends BaseRecyclerAdapter<S, T> {
 
     private ItemSelectionListener<S> itemSelectionListener;
 
@@ -39,9 +39,9 @@ public abstract   class BaseSelectionAdapter<S extends Selection, T extends Base
         super.onBindViewHolder(holder, position);
         final S model = getModels().get(position);
         if (model.isSelected()) {
-            handleSelectedModelView(model, holder);
+            setSelectedModelView(model, holder);
         } else {
-            handleUnSelectedModelView(model, holder);
+            setUnSelectedModelView(model, holder);
         }
         if (itemSelectionListener != null) {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -56,9 +56,9 @@ public abstract   class BaseSelectionAdapter<S extends Selection, T extends Base
         }
     }
 
-    protected abstract void handleSelectedModelView(S model, T holder);
+    protected abstract void setSelectedModelView(S model, T holder);
 
-    protected abstract void handleUnSelectedModelView(S model, T holder);
+    protected abstract void setUnSelectedModelView(S model, T holder);
 
     public void setItemSelectionListener(ItemSelectionListener<S> itemSelectionListener) {
         this.itemSelectionListener = itemSelectionListener;
