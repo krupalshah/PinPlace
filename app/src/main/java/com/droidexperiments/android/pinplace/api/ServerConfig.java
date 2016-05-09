@@ -19,4 +19,16 @@ package com.droidexperiments.android.pinplace.api;
  * Date : 17-Apr-16
  */
 public class ServerConfig {
+
+    private static final String BASE_URL = "https://api.foursquare.com/v2/";
+
+    protected static String getBaseUrl() {
+        return BASE_URL;
+    }
+
+    public interface TimeOuts {
+        long CONNECT = 10;
+        long READ = 15;
+        long WRITE = 15;
+    }
 }
