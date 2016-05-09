@@ -32,7 +32,7 @@ public class ApiProvider {
 
     private static ApiRepository apiRepository;
 
-    public static ApiRepository getApi() {
+    public static ApiRepository provideApi() {
         if (apiRepository == null) {
             OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
                     .connectTimeout(ServerConfig.TimeOuts.CONNECT, TimeUnit.SECONDS)
