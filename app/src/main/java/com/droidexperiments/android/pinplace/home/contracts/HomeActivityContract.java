@@ -16,7 +16,7 @@ package com.droidexperiments.android.pinplace.home.contracts;
 
 import android.support.annotation.StringRes;
 
-import com.droidexperiments.android.pinplace.base.contracts.BaseContract;
+import com.experiments.commonlib.base.contracts.BaseContract;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStates;
 

@@ -18,13 +18,13 @@ import android.location.Location;
 import android.util.Log;
 
 import com.droidexperiments.android.pinplace.R;
-import com.droidexperiments.android.pinplace.base.presenters.BasePresenterImpl;
 import com.droidexperiments.android.pinplace.home.contracts.HomeActivityContract;
-import com.droidexperiments.android.pinplace.models.Place;
-import com.droidexperiments.android.pinplace.operations.location.GetPlaceCallback;
-import com.droidexperiments.android.pinplace.operations.location.LocationOperations;
-import com.droidexperiments.android.pinplace.operations.location.LocationOperationsImpl;
-import com.droidexperiments.android.pinplace.operations.location.PlaceUpdatesListener;
+import com.experiments.commonlib.base.presenters.BasePresenterImpl;
+import com.experiments.commonlib.location.GetPlaceCallback;
+import com.experiments.commonlib.location.LocationOperations;
+import com.experiments.commonlib.location.LocationOperationsImpl;
+import com.experiments.commonlib.location.PlaceUpdatesListener;
+import com.experiments.commonlib.models.Place;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
@@ -76,7 +76,7 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
             mLocationOperations.retrieveLastKnownPlace();
             mLocationOperations.scheduleLocationUpdates();
         } else {
-            getView().showSnakeBarAtBottom(R.string.unable_to_get_location, R.string.dismiss, null);
+            getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
         }
     }
 
@@ -115,7 +115,7 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
                 break;
 
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE: //if settings can not be changed
-                getView().showSnakeBarAtBottom(R.string.unable_to_get_location, R.string.dismiss, null);
+                getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
                 break;
         }
     }

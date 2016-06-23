@@ -12,4 +12,14 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.droidexperiments.android.pinplace.config;
+
+import com.experiments.commonlib.config.BaseConfig;
+
+/**
+ * Author : Krupal Shah
+ * Date : 04-Apr-16
+ */
+public class AppConfig extends BaseConfig {
+
+}

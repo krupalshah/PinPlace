@@ -12,4 +12,12 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.experiments.commonlib.interfaces;
+
+/**
+ * Author : Krupal Shah
+ * Date : 08-May-16
+ */
+public interface ItemSelectionListener<T extends Selection> {
+    void onItemSelectionChanged(T model);
+}

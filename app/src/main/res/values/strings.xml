@@ -26,7 +26,4 @@
     <string name="dismiss">Dismiss</string>
     <string name="unable_to_get_location">Unable to get location</string>
 
-    <string name="font_montserrat" translatable="false">MontserratRegular.ttf</string>
-    <string name="font_sourcesans" translatable="false">SourceSansProRegular.ttf</string>
-
 </resources>

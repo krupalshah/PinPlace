@@ -15,6 +15,7 @@
 package com.droidexperiments.android.pinplace.api;
 
 import com.droidexperiments.android.pinplace.BuildConfig;
+import com.droidexperiments.android.pinplace.config.ServerConfig;
 
 import java.util.concurrent.TimeUnit;
 

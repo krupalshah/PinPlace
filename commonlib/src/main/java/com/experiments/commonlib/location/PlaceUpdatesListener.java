@@ -12,4 +12,25 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.experiments.commonlib.location;
+
+import android.location.Location;
+
+import com.experiments.commonlib.models.Place;
+import com.google.android.gms.location.LocationSettingsResult;
+
+/**
+ * Author : Krupal Shah
+ * Date : 10-Apr-16
+ */
+public interface PlaceUpdatesListener {
+
+    void onApiClientConnected();
+
+    void onLocationSettingsResult(LocationSettingsResult locationSettingsResult);
+
+    void onGotLastKnownPlace(Place lastKnownPlace);
+
+    void onLocationUpdated(Location newLocation);
+
+}

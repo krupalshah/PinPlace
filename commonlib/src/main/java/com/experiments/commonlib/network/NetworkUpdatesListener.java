@@ -12,4 +12,21 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.experiments.commonlib.network;
+
+/**
+ * Author : Krupal Shah
+ * Date : 02-Apr-16
+ */
+public interface NetworkUpdatesListener {
+
+    /**
+     * to be called when network becomes available
+     */
+    void onInternetConnected();
+
+    /**
+     * to be called when network becomes unavailable
+     */
+    void onInternetDisconnected();
+}

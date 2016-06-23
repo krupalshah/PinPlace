@@ -12,4 +12,14 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.experiments.commonlib.interfaces;
+
+import android.support.annotation.Nullable;
+
+/**
+ * Author : Krupal Shah
+ * Date : 09-Apr-16
+ */
+public interface AsyncTaskCallback<T> {
+    void onAsyncOperationCompleted(@Nullable T result);
+}

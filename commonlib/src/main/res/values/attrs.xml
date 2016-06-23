@@ -13,4 +13,7 @@
   -->
 
 <resources>
+    <declare-styleable name="custom">
+        <attr name="typeface" format="string" />
+    </declare-styleable>
 </resources>

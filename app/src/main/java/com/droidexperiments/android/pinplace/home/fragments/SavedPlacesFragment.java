@@ -23,13 +23,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.droidexperiments.android.pinplace.R;
-import com.droidexperiments.android.pinplace.base.fragments.BaseFragment;
+import com.experiments.commonlib.base.fragments.BaseFragment;
 
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
 public class SavedPlacesFragment extends BaseFragment {
+
+    public static Fragment newInstance() {
+        return new SavedPlacesFragment();
+    }
 
     @Nullable
     @Override
@@ -45,10 +49,6 @@ public class SavedPlacesFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    public static Fragment newInstance() {
-        return new SavedPlacesFragment();
     }
 
     @Override

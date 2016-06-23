@@ -12,4 +12,16 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.experiments.commonlib.utilities;
+
+import android.location.Address;
+
+/**
+ * Author : Krupal Shah
+ * Date : 10-Apr-16
+ */
+public abstract class BaseUtils {
+    public static String generateAddressLine(Address address) {
+        return "";
+    }
+}

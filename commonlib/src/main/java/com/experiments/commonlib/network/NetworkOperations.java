@@ -12,4 +12,17 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.experiments.commonlib.network;
+
+/**
+ * Author : Krupal Shah
+ * Date : 10-Apr-16
+ */
+public interface NetworkOperations {
+
+    void registerNetworkReceiver(NetworkUpdatesListener networkUpdatesListener);
+
+    boolean isInternetAvailable();
+
+    void unregisterNetworkReceiver();
+}

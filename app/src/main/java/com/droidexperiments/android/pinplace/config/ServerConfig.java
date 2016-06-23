@@ -12,4 +12,25 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.droidexperiments.android.pinplace.config;
+
+import com.experiments.commonlib.config.BaseConfig;
+
+/**
+ * Author : Krupal Shah
+ * Date : 17-Apr-16
+ */
+public class ServerConfig extends BaseConfig {
+
+    private static final String BASE_URL = "https://api.foursquare.com/v2/";
+
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
+
+    public interface TimeOuts {
+        long CONNECT = 10;
+        long READ = 15;
+        long WRITE = 15;
+    }
+}

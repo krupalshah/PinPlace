@@ -30,14 +30,14 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.droidexperiments.android.pinplace.R;
-import com.droidexperiments.android.pinplace.base.activities.BaseActivity;
-import com.droidexperiments.android.pinplace.common.adapters.CommonPagerAdapter;
+import com.droidexperiments.android.pinplace.home.contracts.HomeActivityContract;
 import com.droidexperiments.android.pinplace.home.fragments.CurrentPlaceFragment;
 import com.droidexperiments.android.pinplace.home.fragments.SavedPlacesFragment;
 import com.droidexperiments.android.pinplace.home.fragments.TrendingPlacesFragment;
 import com.droidexperiments.android.pinplace.home.presenters.HomeActivityPresenter;
-import com.droidexperiments.android.pinplace.home.contracts.HomeActivityContract;
-import com.droidexperiments.android.pinplace.utilities.PermissionsHelper;
+import com.experiments.commonlib.base.activities.BaseActivity;
+import com.experiments.commonlib.base.adapters.CommonPagerAdapter;
+import com.experiments.commonlib.utilities.PermissionsHelper;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStates;
 
@@ -53,21 +53,17 @@ import butterknife.ButterKnife;
  */
 public final class HomeActivity extends BaseActivity implements HomeActivityContract.View {
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.pager_home)
-    ViewPager pagerHome;
-
     private static final String TAG = "HomeActivity";
-
     private static final int REQUEST_LOCATION_SETTINGS = 1;
     private static final int REQUEST_LOCATION_PERMISSION = 2;
-
     private static final String[] LOCATION_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.pager_home)
+    ViewPager pagerHome;
     private HomeActivityContract.Presenter mHomeActivityPresenter;
     private PermissionsHelper mPermissionsHelper;
 

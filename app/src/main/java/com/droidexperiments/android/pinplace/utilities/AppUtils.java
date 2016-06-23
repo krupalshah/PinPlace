@@ -14,14 +14,12 @@
 
 package com.droidexperiments.android.pinplace.utilities;
 
-import android.location.Address;
+import com.experiments.commonlib.utilities.BaseUtils;
 
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
 public final class AppUtils extends BaseUtils {
-    public static String generateAddressLine(Address address) {
-        return "";
-    }
+
 }

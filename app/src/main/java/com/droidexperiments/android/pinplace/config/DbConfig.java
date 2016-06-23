@@ -12,4 +12,17 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.droidexperiments.android.pinplace.config;
+
+import com.experiments.commonlib.config.BaseConfig;
+import com.raizlabs.android.dbflow.annotation.Database;
+
+/**
+ * Author : Krupal Shah
+ * Date : 17-Apr-16
+ */
+@Database(name = DbConfig.NAME, version = DbConfig.VERSION)
+public class DbConfig extends BaseConfig {
+    public static final String NAME = "PinPlaceDataBase";
+    public static final int VERSION = 0;
+}

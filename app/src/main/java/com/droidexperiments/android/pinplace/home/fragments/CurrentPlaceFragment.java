@@ -22,13 +22,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.droidexperiments.android.pinplace.R;
-import com.droidexperiments.android.pinplace.base.fragments.BaseFragment;
+import com.experiments.commonlib.base.fragments.BaseFragment;
 
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
 public class CurrentPlaceFragment extends BaseFragment {
+
+    public static CurrentPlaceFragment newInstance() {
+        return new CurrentPlaceFragment();
+    }
 
     @Nullable
     @Override
@@ -44,10 +48,6 @@ public class CurrentPlaceFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    public static CurrentPlaceFragment newInstance(){
-        return new CurrentPlaceFragment();
     }
 
     @Override

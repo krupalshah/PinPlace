@@ -12,4 +12,19 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.droidexperiments.android.pinplace.db;
+
+/**
+ * Author : Krupal Shah
+ * Date : 17-Apr-16
+ */
+public class PlacesDbController {
+    public static PlacesDbController instance;
+
+    public static synchronized PlacesDbController getInstance() {
+        if(instance==null){
+            instance = new PlacesDbController();
+        }
+        return instance;
+    }
+}

@@ -12,4 +12,20 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.droidexperiments.android.pinplace.api;
+
+/**
+ * Author : Krupal Shah
+ * Date : 17-Apr-16
+ */
+public class PlacesApiController {
+
+    public static PlacesApiController instance;
+
+    public static synchronized PlacesApiController getInstance() {
+        if (instance == null) {
+            instance = new PlacesApiController();
+        }
+        return instance;
+    }
+}

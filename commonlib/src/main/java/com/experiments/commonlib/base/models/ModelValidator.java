@@ -12,4 +12,14 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-include ':app', ':commonlib'
+package com.experiments.commonlib.base.models;
+
+/**
+ * Author : Krupal Shah
+ * Date : 26-Apr-16
+ */
+public interface ModelValidator {
+
+    boolean isValid();
+
+}
