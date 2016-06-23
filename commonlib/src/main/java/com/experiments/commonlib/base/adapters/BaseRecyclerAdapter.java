@@ -44,7 +44,9 @@ public abstract class BaseRecyclerAdapter<S, T extends BaseRecyclerAdapter.BaseV
     @CallSuper
     @Override
     public void onBindViewHolder(T holder, final int position) {
+
         final S model = models.get(position);
+
         if (itemClickListener != null) {
             holder.itemView.setOnClickListener(view -> itemClickListener.onItemClicked(model));
         }
