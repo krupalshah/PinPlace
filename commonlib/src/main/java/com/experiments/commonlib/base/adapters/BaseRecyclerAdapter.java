@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.experiments.commonlib.interfaces.ItemClickListener;
+import com.experiments.commonlib.interfaces.ItemLongClickListener;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public abstract class BaseRecyclerAdapter<S, T extends BaseRecyclerAdapter.BaseV
     private List<S> models;
 
     private ItemClickListener<S> itemClickListener;
+    private ItemLongClickListener<S> itemLongClickListener;
 
     public BaseRecyclerAdapter(Context context, List<S> models) {
         this.context = context;
@@ -44,11 +46,13 @@ public abstract class BaseRecyclerAdapter<S, T extends BaseRecyclerAdapter.BaseV
     public void onBindViewHolder(T holder, final int position) {
         final S model = models.get(position);
         if (itemClickListener != null) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onItemClick(model);
-                }
+            holder.itemView.setOnClickListener(view -> itemClickListener.onItemClicked(model));
+        }
+
+        if (itemLongClickListener != null) {
+            holder.itemView.setOnLongClickListener(view -> {
+                itemLongClickListener.onItemLongClicked(model);
+                return true;
             });
         }
     }
@@ -68,6 +72,10 @@ public abstract class BaseRecyclerAdapter<S, T extends BaseRecyclerAdapter.BaseV
 
     public void setItemClickListener(ItemClickListener<S> itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setItemLongClickListener(ItemLongClickListener<S> itemLongClickListener) {
+        this.itemLongClickListener = itemLongClickListener;
     }
 
     protected static class BaseViewHolder extends RecyclerView.ViewHolder {

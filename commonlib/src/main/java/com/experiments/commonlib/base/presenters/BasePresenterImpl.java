@@ -24,6 +24,7 @@ import com.experiments.commonlib.base.contracts.BaseContract;
  * Date : 25-Apr-16
  */
 public abstract class BasePresenterImpl<T extends BaseContract.BaseView> implements BaseContract.BasePresenter<T> {
+
     private static final String TAG = "BasePresenterImpl";
     
     protected T mView;
