@@ -18,12 +18,12 @@ package com.droidexperiments.android.pinplace.db;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public class PlacesDbController {
-    public static PlacesDbController instance;
+public class DbController {
+    public static DbController instance;
 
-    public static synchronized PlacesDbController getInstance() {
+    public static synchronized DbController getInstance() {
         if(instance==null){
-            instance = new PlacesDbController();
+            instance = new DbController();
         }
         return instance;
     }
