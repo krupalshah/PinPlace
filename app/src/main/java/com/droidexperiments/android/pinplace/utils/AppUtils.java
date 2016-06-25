@@ -20,6 +20,6 @@ import com.experiments.common.utilities.BaseUtils;
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public final class AppUtils extends BaseUtils {
+public class AppUtils extends BaseUtils {
 
 }

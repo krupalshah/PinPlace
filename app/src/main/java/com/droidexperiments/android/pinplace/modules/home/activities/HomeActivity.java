@@ -51,7 +51,7 @@ import butterknife.ButterKnife;
  * Author : Krupal Shah
  * Date : 02-Apr-16
  */
-public final class HomeActivity extends BaseActivity implements HomeActivityContract.View {
+public class HomeActivity extends BaseActivity implements HomeActivityContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;

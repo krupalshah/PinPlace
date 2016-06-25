@@ -42,7 +42,7 @@ import hugo.weaving.DebugLog;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public final class LocationOperationsImpl implements LocationOperations, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class LocationOperationsImpl implements LocationOperations, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private final Context mContext;
     private final Place mCurrentPlace;

@@ -26,7 +26,7 @@ import hugo.weaving.DebugLog;
  * Author : Krupal Shah
  * Date : 03-Apr-16
  */
-public final class PermissionsChecker {
+public class PermissionsChecker {
 
     /**
      * checks permission and asks if not granted

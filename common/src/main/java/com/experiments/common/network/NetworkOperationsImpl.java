@@ -28,7 +28,7 @@ import hugo.weaving.DebugLog;
  * Author : Krupal Shah
  * Date : 10-Apr-16
  */
-public final class NetworkOperationsImpl implements NetworkOperations {
+public class NetworkOperationsImpl implements NetworkOperations {
 
     private final Context mContext;
     private ConnectivityManager mConnectivityManager;
