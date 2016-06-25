@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">commonLib</string>
-    <string name="unknown">Unknown</string>
-
-
-    <string name="font_montserrat" translatable="false">MontserratRegular.ttf</string>
-    <string name="font_sourcesans" translatable="false">SourceSansProRegular.ttf</string>
-</resources>

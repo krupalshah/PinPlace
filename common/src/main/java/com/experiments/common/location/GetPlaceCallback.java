@@ -12,17 +12,28 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.droidexperiments.android.pinplace.config;
+package com.experiments.common.location;
 
-import com.experiments.common.config.BaseConfig;
-import com.raizlabs.android.dbflow.annotation.Database;
+import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
+
+import com.experiments.common.models.Place;
+
 
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-@Database(name = DbConfig.NAME, version = DbConfig.VERSION)
-public class DbConfig extends BaseConfig {
-    public static final String NAME = "PinPlaceDataBase";
-    public static final int VERSION = 0;
+public interface GetPlaceCallback {
+
+    int STATUS_SUCCESS = 1;
+    int STATUS_NO_NETWORK = 2;
+    int STATUS_PREV_TASK_PENDING = 3;
+    int STATUS_UNKNOWN_FAILURE = 4;
+
+    void onGotPlace(@Nullable Place place, @GetPlaceOperationStatus int operationStatus);
+
+    @IntDef({STATUS_NO_NETWORK, STATUS_PREV_TASK_PENDING, STATUS_SUCCESS, STATUS_UNKNOWN_FAILURE})
+    @interface GetPlaceOperationStatus {
+    }
 }

@@ -14,7 +14,7 @@
 
 package com.droidexperiments.android.pinplace.config;
 
-import com.experiments.commonlib.config.BaseConfig;
+import com.experiments.common.config.BaseConfig;
 
 /**
  * Author : Krupal Shah
