@@ -30,8 +30,8 @@ import java.util.List;
  */
 public abstract class BaseRecyclerAdapter<A, B extends BaseRecyclerAdapter.BaseViewHolder> extends RecyclerView.Adapter<B> {
 
-    private Context context;
-    private List<A> models;
+    private final Context context;
+    private final List<A> models;
 
     private ItemClickListener<A> itemClickListener;
     private ItemLongClickListener<A> itemLongClickListener;

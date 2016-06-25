@@ -25,7 +25,7 @@ import java.util.List;
  * Date : 09-Apr-16
  */
 public class CommonPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragments;
+    private final List<Fragment> fragments;
 
     public CommonPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);

@@ -20,7 +20,7 @@ package com.droidexperiments.android.pinplace.api.controllers;
  */
 public class ApiController {
 
-    public static ApiController instance;
+    private static ApiController instance;
 
     public static synchronized ApiController getInstance() {
         if (instance == null) {

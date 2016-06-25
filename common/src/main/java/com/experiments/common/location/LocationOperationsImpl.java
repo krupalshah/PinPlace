@@ -14,11 +14,13 @@
 
 package com.experiments.common.location;
 
+import android.Manifest;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 import android.text.TextUtils;
 
 import com.experiments.common.config.BaseConfig;
@@ -42,8 +44,8 @@ import hugo.weaving.DebugLog;
  */
 public final class LocationOperationsImpl implements LocationOperations, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private Context mContext;
-    private Place mCurrentPlace;
+    private final Context mContext;
+    private final Place mCurrentPlace;
     private GoogleApiClient mGoogleApiClient;
     private PlaceUpdatesListener mPLacePlaceUpdatesListener;
     private FetchAddressTask mFetchAddressTask;
@@ -90,6 +92,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     @Override
     @DebugLog
+    @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void retrieveLastKnownPlace() {
         Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastKnownLocation != null) {
@@ -106,6 +109,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
 
     @Override
     @DebugLog
+    @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void scheduleLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }

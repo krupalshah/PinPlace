@@ -30,7 +30,7 @@ import hugo.weaving.DebugLog;
  */
 public final class NetworkOperationsImpl implements NetworkOperations {
 
-    private Context mContext;
+    private final Context mContext;
     private ConnectivityManager mConnectivityManager;
     private BroadcastReceiver mConnectivityChangeReceiver;
 

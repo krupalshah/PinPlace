@@ -53,15 +53,16 @@ import butterknife.ButterKnife;
  */
 public final class HomeActivity extends BaseActivity implements HomeActivityContract.View {
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.pager_home)
+
     private static final int REQUEST_LOCATION_SETTINGS = 1;
     private static final int REQUEST_LOCATION_PERMISSION = 2;
     private static final String[] LOCATION_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.pager_home)
     ViewPager pagerHome;
     private HomeActivityContract.Presenter mHomeActivityPresenter;
     private PermissionsHelper mPermissionsHelper;

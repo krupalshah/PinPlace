@@ -20,13 +20,10 @@ package com.experiments.common.models;
  */
 public class Place {
 
-    long id;
-
-    double latitude;
-
-    double longitude;
-
-    String address;
+    private long id;
+    private double latitude;
+    private double longitude;
+    private String address;
 
     public Place() {
         address = "";

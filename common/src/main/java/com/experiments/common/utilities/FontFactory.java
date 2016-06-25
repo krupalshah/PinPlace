@@ -28,7 +28,7 @@ import java.util.Map;
 public class FontFactory {
 
     private static FontFactory instance;
-    private Map<String, Typeface> mapFonts;
+    private final Map<String, Typeface> mapFonts;
 
     private FontFactory() {
         mapFonts = new HashMap<>();

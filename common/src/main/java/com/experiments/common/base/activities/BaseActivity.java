@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     public void showSnakeBar(@NonNull String msg, @StringRes int action, View.OnClickListener actionListener) {
-        final Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_INDEFINITE);
+        final Snackbar snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), msg, Snackbar.LENGTH_INDEFINITE);
         if (actionListener != null) {
             snackbar.setAction(action, actionListener);
         } else {

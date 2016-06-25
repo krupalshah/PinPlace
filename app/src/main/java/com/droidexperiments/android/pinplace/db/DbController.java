@@ -19,7 +19,7 @@ package com.droidexperiments.android.pinplace.db;
  * Date : 17-Apr-16
  */
 public class DbController {
-    public static DbController instance;
+    private static DbController instance;
 
     public static synchronized DbController getInstance() {
         if(instance==null){

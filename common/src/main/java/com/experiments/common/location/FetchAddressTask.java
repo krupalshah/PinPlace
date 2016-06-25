@@ -37,10 +37,11 @@ import hugo.weaving.DebugLog;
 public class FetchAddressTask extends AsyncTask<Void, Void, String> {
 
     private Geocoder mGeocoder;
-    private double mLatitude, mLongitude;
-    private AsyncTaskCallback<String> mCallback;
+    private final double mLatitude;
+    private final double mLongitude;
+    private final AsyncTaskCallback<String> mCallback;
     private String strAddress;
-    private Context mContext;
+    private final Context mContext;
 
     @DebugLog
     public FetchAddressTask(Context context, double latitude, double longitude, @NonNull AsyncTaskCallback<String> asyncTaskCallback) {
