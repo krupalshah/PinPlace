@@ -56,6 +56,7 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.pager_home)
+    ViewPager pagerHome;
 
     private static final int REQUEST_LOCATION_SETTINGS = 1;
     private static final int REQUEST_LOCATION_PERMISSION = 2;
@@ -64,7 +65,6 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    ViewPager pagerHome;
     private HomeActivityContract.Presenter mHomePresenter;
     private PermissionsChecker mPermissionsChecker;
 
