@@ -130,7 +130,7 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     public void onLocationUpdated(Location newLocation) {
         mLocationOperations.getCurrentPlace(true, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
-                mView.updateAddressText(place.getAddress());
+                getView().updateAddressText(place.getAddress());
             }
         });
     }

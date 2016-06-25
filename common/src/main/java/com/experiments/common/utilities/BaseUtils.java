@@ -15,6 +15,7 @@
 package com.experiments.common.utilities;
 
 import android.location.Address;
+import android.support.annotation.NonNull;
 
 import hugo.weaving.DebugLog;
 
@@ -25,7 +26,7 @@ import hugo.weaving.DebugLog;
 public abstract class BaseUtils {
 
     @DebugLog
-    public static String generateAddressLine(Address address) {
+    public static String generateAddressLine(@NonNull Address address) {
         return "";
     }
 }

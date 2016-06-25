@@ -26,7 +26,7 @@ import hugo.weaving.DebugLog;
  * Author : Krupal Shah
  * Date : 03-Apr-16
  */
-public final class PermissionsHelper {
+public final class PermissionsChecker {
 
     /**
      * checks permission and asks if not granted
@@ -63,7 +63,7 @@ public final class PermissionsHelper {
      * @return true if all permissions asked have been granted; false otherwise
      */
     @DebugLog
-    public final boolean checkGrantResultsAndShowRationaleIfDenied(final AppCompatActivity appCompatActivity, final int requestCode, int[] grantResults, @StringRes int rationaleMessage, final String... permissionsAsked) {
+    public final boolean checkGrantResults(final AppCompatActivity appCompatActivity, final int requestCode, int[] grantResults, @StringRes int rationaleMessage, final String... permissionsAsked) {
         boolean allPermissionGranted = true;
         for (int grantResult : grantResults) {
             if (grantResult == PermissionChecker.PERMISSION_GRANTED) {

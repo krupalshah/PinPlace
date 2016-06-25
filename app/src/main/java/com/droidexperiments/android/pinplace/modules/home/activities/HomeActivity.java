@@ -37,7 +37,7 @@ import com.droidexperiments.android.pinplace.modules.home.fragments.TrendingPlac
 import com.droidexperiments.android.pinplace.modules.home.presenters.HomeActivityPresenter;
 import com.experiments.common.base.activities.BaseActivity;
 import com.experiments.common.base.adapters.CommonPagerAdapter;
-import com.experiments.common.utilities.PermissionsHelper;
+import com.experiments.common.utilities.PermissionsChecker;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStates;
 
@@ -63,9 +63,10 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+
     ViewPager pagerHome;
-    private HomeActivityContract.Presenter mHomeActivityPresenter;
-    private PermissionsHelper mPermissionsHelper;
+    private HomeActivityContract.Presenter mHomePresenter;
+    private PermissionsChecker mPermissionsChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,8 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
     @Override
     protected void onStart() {
         super.onStart();
-        if (mPermissionsHelper.askPermissionsIfNotGranted(this, REQUEST_LOCATION_PERMISSION, LOCATION_PERMISSIONS)) {
-            mHomeActivityPresenter.requestPlaceUpdates();
+        if (mPermissionsChecker.askPermissionsIfNotGranted(this, REQUEST_LOCATION_PERMISSION, LOCATION_PERMISSIONS)) {
+            mHomePresenter.requestPlaceUpdates();
         }
     }
 
@@ -98,7 +99,7 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
         switch (requestCode) {
             case REQUEST_LOCATION_SETTINGS:
                 LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
-                mHomeActivityPresenter.checkTurnOnLocationResult(locationSettingsStates);
+                mHomePresenter.checkTurnOnLocationResult(locationSettingsStates);
                 break;
         }
     }
@@ -108,8 +109,8 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_LOCATION_PERMISSION:
-                if (mPermissionsHelper.checkGrantResultsAndShowRationaleIfDenied(this, REQUEST_LOCATION_PERMISSION, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
-                    mHomeActivityPresenter.requestPlaceUpdates();
+                if (mPermissionsChecker.checkGrantResults(this, REQUEST_LOCATION_PERMISSION, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
+                    mHomePresenter.requestPlaceUpdates();
                 }
                 break;
         }
@@ -117,24 +118,24 @@ public final class HomeActivity extends BaseActivity implements HomeActivityCont
 
     @Override
     protected void onStop() {
-        mHomeActivityPresenter.stopPlaceUpdates();
+        mHomePresenter.stopPlaceUpdates();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        mHomeActivityPresenter.unregisterPlaceUpdates();
-        mHomeActivityPresenter.detachView();
+        mHomePresenter.unregisterPlaceUpdates();
+        mHomePresenter.detachView();
         super.onDestroy();
     }
 
     @Override
     protected void initComponents() {
-        mPermissionsHelper = new PermissionsHelper();
-        mHomeActivityPresenter = new HomeActivityPresenter();
+        mPermissionsChecker = new PermissionsChecker();
+        mHomePresenter = new HomeActivityPresenter();
 
-        mHomeActivityPresenter.attachView(this);
-        mHomeActivityPresenter.registerPlaceUpdates();
+        mHomePresenter.attachView(this);
+        mHomePresenter.registerPlaceUpdates();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

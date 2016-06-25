@@ -20,7 +20,6 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.experiments.common.R;
 import com.experiments.common.interfaces.AsyncTaskCallback;
 import com.experiments.common.utilities.BaseUtils;
 
@@ -39,7 +38,7 @@ public class FetchAddressTask extends AsyncTask<Void, Void, String> {
     private Geocoder mGeocoder;
     private final double mLatitude;
     private final double mLongitude;
-    private final AsyncTaskCallback<String> mCallback;
+    private final AsyncTaskCallback<String> mTaskCallback;
     private String strAddress;
     private final Context mContext;
 
@@ -48,7 +47,7 @@ public class FetchAddressTask extends AsyncTask<Void, Void, String> {
         mContext = context.getApplicationContext();
         mLatitude = latitude;
         mLongitude = longitude;
-        mCallback = asyncTaskCallback;
+        mTaskCallback = asyncTaskCallback;
     }
 
     @Override
@@ -56,7 +55,6 @@ public class FetchAddressTask extends AsyncTask<Void, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         mGeocoder = new Geocoder(mContext, Locale.getDefault());
-        strAddress = mContext.getString(R.string.unknown);
     }
 
     @Override
@@ -64,9 +62,8 @@ public class FetchAddressTask extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... params) {
         try {
             List<Address> addresses = mGeocoder.getFromLocation(mLatitude, mLongitude, 1);
-            if (addresses != null) {
-                strAddress = BaseUtils.generateAddressLine(addresses.get(0));
-            }
+            if (addresses == null || addresses.isEmpty()) return strAddress;
+            strAddress = BaseUtils.generateAddressLine(addresses.get(0));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,6 +74,6 @@ public class FetchAddressTask extends AsyncTask<Void, Void, String> {
     @DebugLog
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        mCallback.onAsyncOperationCompleted(result);
+        mTaskCallback.onAsyncOperationCompleted(result);
     }
 }

@@ -95,16 +95,15 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void retrieveLastKnownPlace() {
         Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (lastKnownLocation != null) {
-            mCurrentPlace.setLatitude(lastKnownLocation.getLatitude());
-            mCurrentPlace.setLongitude(lastKnownLocation.getLongitude());
+        if (lastKnownLocation == null) return;
+        mCurrentPlace.setLatitude(lastKnownLocation.getLatitude());
+        mCurrentPlace.setLongitude(lastKnownLocation.getLongitude());
 
-            getCurrentPlace(true, (place, operationStatus) -> {
-                if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
-                    mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
-                }
-            });
-        }
+        getCurrentPlace(true, (place, operationStatus) -> {
+            if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
+                mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
+            }
+        });
     }
 
     @Override
@@ -165,7 +164,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
             return;
         }
         double lat = mCurrentPlace.getLatitude(), lng = mCurrentPlace.getLongitude();
-        if (mFetchAddressTask != null) {
+        if (mFetchAddressTask != null) { //if previous address fetching task is already running : block executing another task
             if (mFetchAddressTask.getStatus() == AsyncTask.Status.RUNNING || mFetchAddressTask.getStatus() == AsyncTask.Status.PENDING) {
                 callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_PREV_TASK_PENDING);
                 return;
@@ -173,7 +172,7 @@ public final class LocationOperationsImpl implements LocationOperations, GoogleA
         }
         mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, result -> {
             if (TextUtils.isEmpty(result)) {
-                callback.onGotPlace(null, GetPlaceCallback.STATUS_UNKNOWN_FAILURE);
+                callback.onGotPlace(null, GetPlaceCallback.STATUS_UNKNOWN_FAILURE); //got empty address in callback
             } else {
                 mCurrentPlace.setAddress(result);
                 callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
