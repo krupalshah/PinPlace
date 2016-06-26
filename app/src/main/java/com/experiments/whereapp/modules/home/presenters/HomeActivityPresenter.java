@@ -38,6 +38,7 @@ import hugo.weaving.DebugLog;
 public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContract.View> implements HomeActivityContract.Presenter, PlaceUpdatesListener {
 
     private LocationOperations mLocationOperations;
+    private Location tempLocation;
 
     @Override
     @DebugLog
@@ -128,6 +129,9 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     @Override
     @DebugLog
     public void onLocationUpdated(Location newLocation) {
+        if (newLocation.distanceTo(tempLocation) < 100) {
+            return;
+        }
         mLocationOperations.getCurrentPlace(true, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
                 getView().updateAddressText(place.getAddress());

@@ -54,7 +54,7 @@ public class FetchAddressTask extends AsyncTask<Void, Void, String> {
     @DebugLog
     protected void onPreExecute() {
         super.onPreExecute();
-        mGeocoder = new Geocoder(mContext, Locale.getDefault());
+        mGeocoder = new Geocoder(mContext, Locale.ENGLISH);
     }
 
     @Override

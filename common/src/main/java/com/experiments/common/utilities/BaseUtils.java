@@ -25,8 +25,32 @@ import hugo.weaving.DebugLog;
  */
 public abstract class BaseUtils {
 
+    public static final String COMMA_SEPARATOR = ",";
+
     @DebugLog
+    @NonNull
     public static String generateAddressLine(@NonNull Address address) {
-        return "";
+        String addressLine = null;
+        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+            addressLine += address.getAddressLine(i);
+        }
+        String city = address.getLocality();
+        String state = address.getAdminArea();
+        String country = address.getCountryName();
+        String postalCode = address.getPostalCode();
+
+        String[] resultLines = new String[]{addressLine, city, state, country, postalCode};
+        StringBuilder resultBuilder = new StringBuilder();
+
+        int length = resultLines.length;
+        for (int i = 0; i < length; i++) {
+            if (resultLines[i] == null) continue;
+            if (i == length - 1) {
+                resultBuilder.append(resultLines[i]);
+            } else {
+                resultBuilder.append(resultLines[i]).append(COMMA_SEPARATOR);
+            }
+        }
+        return resultBuilder.toString();
     }
 }
