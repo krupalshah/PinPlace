@@ -24,7 +24,6 @@ import android.support.annotation.RequiresPermission;
 import android.text.TextUtils;
 
 import com.experiments.common.config.BaseConfig;
-import com.experiments.common.models.Place;
 import com.experiments.common.network.NetworkOperations;
 import com.experiments.common.network.NetworkOperationsImpl;
 import com.google.android.gms.common.ConnectionResult;

@@ -18,6 +18,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 
+import com.experiments.common.R;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,8 +47,9 @@ public class FontFactory {
     @Nullable
     public Typeface getTypeFace(Context context, String fontFileNameWithExt) {
         Typeface typeface;
+        Context mContext = context.getApplicationContext();
         if (!mapFonts.containsKey(fontFileNameWithExt)) {
-            typeface = Typeface.createFromAsset(context.getApplicationContext().getResources().getAssets(), "fonts/" + fontFileNameWithExt);
+            typeface = Typeface.createFromAsset(mContext.getAssets(), mContext.getString(R.string.fonts_folder_path_without_trailing_separator) + File.separator + fontFileNameWithExt);
             mapFonts.put(fontFileNameWithExt, typeface);
             return typeface;
         }

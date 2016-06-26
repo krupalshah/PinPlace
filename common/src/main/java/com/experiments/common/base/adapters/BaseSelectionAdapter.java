@@ -16,8 +16,8 @@ package com.experiments.common.base.adapters;
 
 import android.content.Context;
 
-import com.experiments.common.interfaces.ItemSelectionListener;
-import com.experiments.common.interfaces.Selection;
+import com.experiments.common.listeners.ItemSelectionListener;
+import com.experiments.common.listeners.Selection;
 
 import java.util.List;
 

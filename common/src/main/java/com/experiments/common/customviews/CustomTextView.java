@@ -37,12 +37,12 @@ public class CustomTextView extends AppCompatTextView {
 
     public CustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        parseAttributeSet(context, attrs);
+        if (!isInEditMode()) parseAttributeSet(context, attrs);
     }
 
     public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        parseAttributeSet(context, attrs);
+        if (!isInEditMode()) parseAttributeSet(context, attrs);
     }
 
     private void parseAttributeSet(Context context, AttributeSet attrs) {

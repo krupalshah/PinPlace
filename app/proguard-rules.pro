@@ -19,8 +19,8 @@
 -keep class * extends android.** { *; }
 -keep interface android.** { *; }
 
--keep class com.droidexperiments.android.pinplace.** { *; }
--keep interface com.droidexperiments.android.pinplace.** { *; }
+-keep class where.** { *; }
+-keep interface where.** { *; }
 
  # butterknife
 -keep class butterknife.** { *; }

@@ -17,8 +17,6 @@ package com.experiments.common.location;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 
-import com.experiments.common.models.Place;
-
 
 /**
  * Author : Krupal Shah

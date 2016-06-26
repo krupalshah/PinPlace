@@ -3,4 +3,5 @@
     <string name="unknown">Unknown</string>
     <string name="font_montserrat" translatable="false">MontserratRegular.ttf</string>
     <string name="font_sourcesans" translatable="false">SourceSansProRegular.ttf</string>
+    <string name="fonts_folder_path_without_trailing_separator">fonts</string>
 </resources>

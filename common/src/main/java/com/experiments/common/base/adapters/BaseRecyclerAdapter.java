@@ -19,8 +19,8 @@ import android.support.annotation.CallSuper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.experiments.common.interfaces.ItemClickListener;
-import com.experiments.common.interfaces.ItemLongClickListener;
+import com.experiments.common.listeners.ItemClickListener;
+import com.experiments.common.listeners.ItemLongClickListener;
 
 import java.util.List;
 

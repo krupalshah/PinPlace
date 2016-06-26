@@ -25,12 +25,24 @@ import java.util.List;
  * Date : 09-Apr-16
  */
 public class CommonPagerAdapter extends FragmentPagerAdapter {
+
     private final List<Fragment> fragments;
+    private List<String> titles;
 
     public CommonPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         this.fragments = fragments;
     }
+
+    public CommonPagerAdapter(FragmentManager fm, List<Fragment> fragments, List<String> titles) {
+        super(fm);
+        this.fragments = fragments;
+        this.titles = titles;
+        if (fragments.size() != titles.size()) {
+            throw new IllegalArgumentException("no. of titles and no. of fragments must be same in size");
+        }
+    }
+
 
     @Override
     public Fragment getItem(int position) {
@@ -40,5 +52,10 @@ public class CommonPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return fragments.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titles != null ? titles.get(position) : null;
     }
 }

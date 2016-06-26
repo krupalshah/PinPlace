@@ -20,7 +20,7 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.experiments.common.interfaces.AsyncTaskCallback;
+import com.experiments.common.listeners.AsyncTaskCallback;
 import com.experiments.common.utilities.BaseUtils;
 
 import java.io.IOException;
@@ -35,12 +35,12 @@ import hugo.weaving.DebugLog;
  */
 public class FetchAddressTask extends AsyncTask<Void, Void, String> {
 
-    private Geocoder mGeocoder;
     private final double mLatitude;
     private final double mLongitude;
     private final AsyncTaskCallback<String> mTaskCallback;
-    private String strAddress;
     private final Context mContext;
+    private Geocoder mGeocoder;
+    private String strAddress;
 
     @DebugLog
     public FetchAddressTask(Context context, double latitude, double longitude, @NonNull AsyncTaskCallback<String> asyncTaskCallback) {

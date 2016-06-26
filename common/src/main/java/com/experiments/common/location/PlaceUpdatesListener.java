@@ -16,7 +16,6 @@ package com.experiments.common.location;
 
 import android.location.Location;
 
-import com.experiments.common.models.Place;
 import com.google.android.gms.location.LocationSettingsResult;
 
 /**

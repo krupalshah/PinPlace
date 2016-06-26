@@ -98,4 +98,5 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     public boolean isViewDestroyed() {
         return isViewDestroyed;
     }
+
 }
