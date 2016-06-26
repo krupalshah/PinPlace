@@ -10,9 +10,10 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
  * Created by Krupal Shah on 26-Jun-16.
  */
 @Table(databaseName = DbConfig.NAME)
-public class PlaceId extends BaseModel {
+public class Venue extends BaseModel {
 
     @Column
     @PrimaryKey
-    long placeId;
+    long venueId;
+
 }

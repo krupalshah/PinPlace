@@ -59,10 +59,12 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.pager_home)
     ViewPager pagerHome;
+
     private HomeActivityContract.Presenter mHomePresenter;
     private PermissionsChecker mPermissionsChecker;
 
