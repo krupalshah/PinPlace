@@ -19,8 +19,8 @@
 -keep class * extends android.** { *; }
 -keep interface android.** { *; }
 
--keep class where.** { *; }
--keep interface where.** { *; }
+-keep class com.experiments.whereapp.** { *; }
+-keep interface com.experiments.whereapp.** { *; }
 
  # butterknife
 -keep class butterknife.** { *; }
