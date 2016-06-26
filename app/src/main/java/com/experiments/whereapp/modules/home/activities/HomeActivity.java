@@ -172,6 +172,22 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
         CommonPagerAdapter commonPagerAdapter = new CommonPagerAdapter(getSupportFragmentManager(), fragments);
         pagerHome.setOffscreenPageLimit(fragments.size());
         pagerHome.setAdapter(commonPagerAdapter);
+        pagerHome.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
