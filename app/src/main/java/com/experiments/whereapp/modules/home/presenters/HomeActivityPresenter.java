@@ -53,6 +53,7 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     @Override
     @DebugLog
     public void detachView() {
+        getView().removeListeners();
         super.detachView();
     }
 
@@ -129,9 +130,10 @@ public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContrac
     @Override
     @DebugLog
     public void onLocationUpdated(Location newLocation) {
-        if (newLocation.distanceTo(tempLocation) < 100) {
+        if (tempLocation != null && newLocation.distanceTo(tempLocation) < 100) {
             return;
         }
+        tempLocation = newLocation;
         mLocationOperations.getCurrentPlace(true, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
                 getView().updateAddressText(place.getAddress());

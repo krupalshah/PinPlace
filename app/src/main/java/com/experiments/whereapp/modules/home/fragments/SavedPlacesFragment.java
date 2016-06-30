@@ -55,4 +55,9 @@ public class SavedPlacesFragment extends BaseFragment {
     protected void initComponents() {
 
     }
+
+    @Override
+    public void removeListeners() {
+
+    }
 }

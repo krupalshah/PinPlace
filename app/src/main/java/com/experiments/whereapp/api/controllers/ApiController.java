@@ -19,11 +19,14 @@ import com.experiments.common.base.controllers.BaseApiController;
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
+ * <p>
+ * controller for all api calls
  */
 public class ApiController extends BaseApiController {
 
     private static ApiController instance;
 
+    //singleton
     public static synchronized ApiController getInstance() {
         if (instance == null) {
             instance = new ApiController();

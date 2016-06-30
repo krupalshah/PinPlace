@@ -19,15 +19,25 @@ import com.experiments.common.config.BaseConfig;
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
+ * <p>
+ * configuration class specific to server and apis
  */
 public class ServerConfig extends BaseConfig {
 
     private static final String BASE_URL = "https://api.foursquare.com/v2/";
 
-    public static String getBaseUrl() {
+    /**
+     * to get base url for all apis
+     *
+     * @return base url including trailing path identifier ('/')
+     */
+    public static String baseUrl() {
         return BASE_URL;
     }
 
+    /**
+     * defines connection, read and write timeout for apis in seconds
+     */
     public interface TimeOuts {
         long CONNECT = 10;
         long READ = 15;

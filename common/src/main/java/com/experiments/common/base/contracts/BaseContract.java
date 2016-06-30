@@ -43,6 +43,8 @@ public interface BaseContract {
         void dismissDialogs(Dialog... dialogs);
 
         boolean isViewDestroyed();
+
+        void removeListeners();
     }
 
     interface BasePresenter<T extends BaseView> {

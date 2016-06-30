@@ -19,6 +19,8 @@ import com.experiments.common.config.BaseConfig;
 /**
  * Author : Krupal Shah
  * Date : 04-Apr-16
+ * <p>
+ * configuration class for things applicable to nothing specific; auth keys for example.
  */
 public class AppConfig extends BaseConfig {
 

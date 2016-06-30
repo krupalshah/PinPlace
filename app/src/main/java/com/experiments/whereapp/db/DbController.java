@@ -19,10 +19,14 @@ import com.experiments.common.base.controllers.BaseDbController;
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
+ * <p>
+ * controller for all local db related jobs
  */
 public class DbController extends BaseDbController {
+
     private static DbController instance;
 
+    //singleton
     public static synchronized DbController getInstance() {
         if (instance == null) {
             instance = new DbController();

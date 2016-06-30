@@ -46,15 +46,29 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
  */
-public class HomeActivity extends BaseActivity implements HomeActivityContract.View {
+public class HomeActivity extends BaseActivity implements HomeActivityContract.View, ViewPager.OnPageChangeListener {
 
+    private static final String TAG = "HomeActivity";
+
+    /**
+     * request code to ask for location settings if not on for the app
+     */
     private static final int REQUEST_LOCATION_SETTINGS = 1;
+
+    /**
+     * request code for asking location permissions
+     */
     private static final int REQUEST_LOCATION_PERMISSION = 2;
+
+    /**
+     * array of permissions to be asked for getting location access
+     */
     private static final String[] LOCATION_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -65,7 +79,14 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
     @Bind(R.id.pager_home)
     ViewPager pagerHome;
 
+    /**
+     * presenter for home activity
+     */
     private HomeActivityContract.Presenter mHomePresenter;
+
+    /**
+     * permission helper
+     */
     private PermissionsChecker mPermissionsChecker;
 
     @Override
@@ -170,26 +191,32 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
         CommonPagerAdapter commonPagerAdapter = new CommonPagerAdapter(getSupportFragmentManager(), fragments);
         pagerHome.setOffscreenPageLimit(fragments.size());
         pagerHome.setAdapter(commonPagerAdapter);
-        pagerHome.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        pagerHome.addOnPageChangeListener(this);
     }
 
     @Override
     public void updateAddressText(String address) {
+
+    }
+
+    @Override
+    public void removeListeners() {
+        pagerHome.clearOnPageChangeListeners();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @DebugLog
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
 
     }
 }

@@ -28,26 +28,38 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
+ * <p>
+ * configures OkHttp client and provides {@link WebServices}
  */
 public class ApiProvider {
 
     private static WebServices webServices;
 
+    /**
+     * builds api client and provides reference to {@link WebServices}
+     *
+     * @return reference to {@link WebServices} created with retrofit
+     */
     public static WebServices getWebServices() {
-        if (webServices == null) {
+
+        if (webServices == null) {  //don't build it every time
+
+            //configuring OkHttp client with timeouts defined
             OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
                     .connectTimeout(ServerConfig.TimeOuts.CONNECT, TimeUnit.SECONDS)
                     .readTimeout(ServerConfig.TimeOuts.READ, TimeUnit.SECONDS)
                     .writeTimeout(ServerConfig.TimeOuts.WRITE, TimeUnit.SECONDS);
 
+            //enabling logging interceptor for debug builds
             if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
                 httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                 okHttpClientBuilder.addInterceptor(httpLoggingInterceptor);
             }
 
+            //configuring retrofit with jackson converter and rxjava call adapter
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(ServerConfig.getBaseUrl())
+                    .baseUrl(ServerConfig.baseUrl())
                     .client(okHttpClientBuilder.build())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(JacksonConverterFactory.create())

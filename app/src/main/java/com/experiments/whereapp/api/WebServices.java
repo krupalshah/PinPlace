@@ -17,6 +17,8 @@ package com.experiments.whereapp.api;
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
+ * <p>
+ * repository interface of all apis
  */
 public interface WebServices {
 

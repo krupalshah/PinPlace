@@ -20,6 +20,8 @@ import com.raizlabs.android.dbflow.annotation.Database;
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
+ * <p>
+ * configuration class specific for local db
  */
 @Database(name = DbConfig.NAME, version = DbConfig.VERSION)
 public class DbConfig extends BaseConfig {
