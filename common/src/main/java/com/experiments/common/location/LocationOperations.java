@@ -14,7 +14,9 @@
 
 package com.experiments.common.location;
 
+import android.Manifest;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 
 /**
  * Author : Krupal Shah
@@ -28,8 +30,10 @@ public interface LocationOperations {
 
     void checkLocationSettings();
 
+    @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void retrieveLastKnownPlace();
 
+    @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void scheduleLocationUpdates();
 
     void getCurrentPlace(boolean needsUpdatedAddress, @NonNull GetPlaceCallback callback);
