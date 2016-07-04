@@ -37,7 +37,7 @@ public class CurrentPlaceFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.test,container,false);
+        return inflater.inflate(R.layout.test, container, false);
     }
 
     @Override

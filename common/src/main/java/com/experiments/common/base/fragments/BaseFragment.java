@@ -28,27 +28,27 @@ import com.experiments.common.base.contracts.BaseContract;
 /**
  * Author : Krupal Shah
  * Date : 09-Apr-16
- *
+ * <p>
  * base class for all fragments in project
  */
 public abstract class BaseFragment extends Fragment implements BaseContract.BaseView {
 
-    private boolean isViewDestroyed = false;
+    private boolean isFragmentViewDestroyed = false;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        isViewDestroyed = false;
+        isFragmentViewDestroyed = false;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isViewDestroyed = true;
+        isFragmentViewDestroyed = true;
     }
 
     /**
-     * initialize components here
+     * initialize required components here
      */
     protected abstract void initComponents();
 
@@ -89,6 +89,6 @@ public abstract class BaseFragment extends Fragment implements BaseContract.Base
 
     @Override
     public boolean isComponentDestroyed() {
-        return isViewDestroyed;
+        return isFragmentViewDestroyed;
     }
 }

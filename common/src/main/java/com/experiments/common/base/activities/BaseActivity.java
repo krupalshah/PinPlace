@@ -35,22 +35,22 @@ import com.experiments.common.base.contracts.BaseContract;
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseContract.BaseView {
 
-    private boolean isViewDestroyed = false;
+    private boolean isActivityDestoyed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isViewDestroyed = false;
+        isActivityDestoyed = false;
     }
 
     @Override
     protected void onDestroy() {
-        isViewDestroyed = true;
+        isActivityDestoyed = true;
         super.onDestroy();
     }
 
     /**
-     * initializes requires components
+     * initialize required components here
      */
     protected abstract void initComponents();
 
@@ -101,7 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     public boolean isComponentDestroyed() {
-        return isViewDestroyed;
+        return isActivityDestoyed;
     }
 
 }

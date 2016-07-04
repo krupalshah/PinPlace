@@ -3,7 +3,7 @@ package com.experiments.common.config;
 /**
  * Author : Krupal Shah
  * Date : 23-Jun-16
- *
+ * <p>
  * base class for all configuration classes
  */
 public abstract class BaseConfig {
