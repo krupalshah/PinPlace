@@ -27,6 +27,9 @@ import java.util.List;
 /**
  * Author : Krupal Shah
  * Date : 08-May-16
+ * <p>
+ * base class for all recyclerview adapters in project.<br/>
+ * sets click and long click listeners if specified.
  */
 public abstract class BaseRecyclerAdapter<A, B extends BaseRecyclerAdapter.BaseViewHolder> extends RecyclerView.Adapter<B> {
 
@@ -35,6 +38,7 @@ public abstract class BaseRecyclerAdapter<A, B extends BaseRecyclerAdapter.BaseV
 
     private ItemClickListener<A> itemClickListener;
     private ItemLongClickListener<A> itemLongClickListener;
+
 
     public BaseRecyclerAdapter(Context context, List<A> models) {
         this.context = context;

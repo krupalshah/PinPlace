@@ -28,6 +28,8 @@ import com.experiments.common.base.contracts.BaseContract;
 /**
  * Author : Krupal Shah
  * Date : 09-Apr-16
+ *
+ * base class for all fragments in project
  */
 public abstract class BaseFragment extends Fragment implements BaseContract.BaseView {
 
@@ -86,7 +88,7 @@ public abstract class BaseFragment extends Fragment implements BaseContract.Base
     }
 
     @Override
-    public boolean isViewDestroyed() {
+    public boolean isComponentDestroyed() {
         return isViewDestroyed;
     }
 }

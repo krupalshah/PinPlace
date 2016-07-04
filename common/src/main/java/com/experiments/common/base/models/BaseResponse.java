@@ -17,6 +17,8 @@ package com.experiments.common.base.models;
 /**
  * Author : Krupal Shah
  * Date : 25-Apr-16
+ * <p>
+ * base class for all responses from apis
  */
 public abstract class BaseResponse {
 

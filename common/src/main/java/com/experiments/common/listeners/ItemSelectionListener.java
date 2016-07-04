@@ -17,6 +17,8 @@ package com.experiments.common.listeners;
 /**
  * Author : Krupal Shah
  * Date : 08-May-16
+ * <p>
+ * selection change listener for item in selection list
  */
 public interface ItemSelectionListener<T extends Selection> {
     void onItemSelectionChanged(T model);

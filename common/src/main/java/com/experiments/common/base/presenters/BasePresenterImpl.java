@@ -17,12 +17,15 @@ package com.experiments.common.base.presenters;
 import android.support.annotation.CallSuper;
 
 import com.experiments.common.base.contracts.BaseContract;
+import com.experiments.common.base.contracts.BaseContract.BasePresenter;
 
 import hugo.weaving.DebugLog;
 
 /**
  * Author : Krupal Shah
  * Date : 25-Apr-16
+ * <p>
+ * implementation of {@link BasePresenter}
  */
 public abstract class BasePresenterImpl<T extends BaseContract.BaseView> implements BaseContract.BasePresenter<T> {
 

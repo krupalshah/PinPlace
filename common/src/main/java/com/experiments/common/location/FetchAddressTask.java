@@ -32,6 +32,9 @@ import hugo.weaving.DebugLog;
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
+ * <p>
+ * fetches address using {@link Geocoder} from given latitude and longitude
+ * gives address in callback. address can be null
  */
 public class FetchAddressTask extends AsyncTask<Void, Void, String> {
 

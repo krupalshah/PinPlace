@@ -23,7 +23,7 @@ import com.experiments.common.location.LocationOperations;
 import com.experiments.common.location.LocationOperationsImpl;
 import com.experiments.common.location.Place;
 import com.experiments.common.location.PlaceUpdatesListener;
-import com.experiments.whereapp.modules.home.contracts.HomeActivityContract;
+import com.experiments.whereapp.modules.home.contracts.HomeScreenContract;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
@@ -34,17 +34,19 @@ import hugo.weaving.DebugLog;
 /**
  * Author : Krupal Shah
  * Date : 25-Apr-16
+ * <p>
+ * presenter implementation for home screen
  */
-public class HomeActivityPresenter extends BasePresenterImpl<HomeActivityContract.View> implements HomeActivityContract.Presenter, PlaceUpdatesListener {
+public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.View> implements HomeScreenContract.Presenter, PlaceUpdatesListener {
 
     private LocationOperations mLocationOperations;
     private Location tempLocation;
 
     @Override
     @DebugLog
-    public void attachView(HomeActivityContract.View view) {
+    public void attachView(HomeScreenContract.View view) {
         super.attachView(view);
-        view.setTransparentStatusBar();
+        view.makeStatusBarTransparent();
         view.animateToolbarCollapsing();
         view.setToolbarTitle(R.string.home);
         view.setupViewPager();

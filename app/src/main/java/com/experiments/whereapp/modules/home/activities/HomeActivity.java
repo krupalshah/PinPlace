@@ -33,11 +33,11 @@ import com.droidexperiments.android.where.R;
 import com.experiments.common.base.activities.BaseActivity;
 import com.experiments.common.base.adapters.CommonPagerAdapter;
 import com.experiments.common.utilities.PermissionsChecker;
-import com.experiments.whereapp.modules.home.contracts.HomeActivityContract;
+import com.experiments.whereapp.modules.home.contracts.HomeScreenContract;
 import com.experiments.whereapp.modules.home.fragments.CurrentPlaceFragment;
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.TrendingPlacesFragment;
-import com.experiments.whereapp.modules.home.presenters.HomeActivityPresenter;
+import com.experiments.whereapp.modules.home.presenters.HomeScreenPresenter;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStates;
 
@@ -51,8 +51,10 @@ import hugo.weaving.DebugLog;
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
+ * <p>
+ * first activity after launch screen ends
  */
-public class HomeActivity extends BaseActivity implements HomeActivityContract.View, ViewPager.OnPageChangeListener {
+public class HomeActivity extends BaseActivity implements HomeScreenContract.View, ViewPager.OnPageChangeListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -82,10 +84,10 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
     /**
      * presenter for home activity
      */
-    private HomeActivityContract.Presenter mHomePresenter;
+    private HomeScreenContract.Presenter mHomeScreenPresenter;
 
     /**
-     * permission helper
+     * permission checker
      */
     private PermissionsChecker mPermissionsChecker;
 
@@ -98,10 +100,18 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
     }
 
     @Override
+    protected void initComponents() {
+        mPermissionsChecker = new PermissionsChecker();
+        mHomeScreenPresenter = new HomeScreenPresenter();
+        mHomeScreenPresenter.attachView(this);
+        mHomeScreenPresenter.registerPlaceUpdates();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         if (mPermissionsChecker.askPermissionsIfNotGranted(this, REQUEST_LOCATION_PERMISSION, LOCATION_PERMISSIONS)) {
-            mHomePresenter.requestPlaceUpdates();
+            mHomeScreenPresenter.requestPlaceUpdates();
         }
     }
 
@@ -110,8 +120,9 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_LOCATION_SETTINGS:
+                //got result from resolution dialog
                 LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
-                mHomePresenter.checkTurnOnLocationResult(locationSettingsStates);
+                mHomeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
                 break;
         }
     }
@@ -121,8 +132,9 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_LOCATION_PERMISSION:
+                //requesting location updates if permissions granted
                 if (mPermissionsChecker.checkGrantResults(this, REQUEST_LOCATION_PERMISSION, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
-                    mHomePresenter.requestPlaceUpdates();
+                    mHomeScreenPresenter.requestPlaceUpdates();
                 }
                 break;
         }
@@ -130,28 +142,21 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
 
     @Override
     protected void onStop() {
-        mHomePresenter.stopPlaceUpdates();
+        mHomeScreenPresenter.stopPlaceUpdates();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        mHomePresenter.unregisterPlaceUpdates();
-        mHomePresenter.detachView();
+        mHomeScreenPresenter.unregisterPlaceUpdates();
+        mHomeScreenPresenter.detachView();
         super.onDestroy();
-    }
-
-    @Override
-    protected void initComponents() {
-        mPermissionsChecker = new PermissionsChecker();
-        mHomePresenter = new HomeActivityPresenter();
-        mHomePresenter.attachView(this);
-        mHomePresenter.registerPlaceUpdates();
     }
 
     @Override
     public void showTurnOnLocationDialog(Status locationSettingsStatus) {
         try {
+            //this will show location dialog to user
             locationSettingsStatus.startResolutionForResult(HomeActivity.this, REQUEST_LOCATION_SETTINGS);
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
@@ -160,7 +165,7 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
-    public void setTransparentStatusBar() {
+    public void makeStatusBarTransparent() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
         Window window = getWindow();
         window.getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE | android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -204,17 +209,19 @@ public class HomeActivity extends BaseActivity implements HomeActivityContract.V
         pagerHome.clearOnPageChangeListeners();
     }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
     @DebugLog
     @Override
     public void onPageSelected(int position) {
 
     }
 
+    @DebugLog
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @DebugLog
     @Override
     public void onPageScrollStateChanged(int state) {
 

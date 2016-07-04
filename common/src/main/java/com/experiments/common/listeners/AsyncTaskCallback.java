@@ -19,6 +19,9 @@ import android.support.annotation.Nullable;
 /**
  * Author : Krupal Shah
  * Date : 09-Apr-16
+ * <p>
+ * callback for {@link AsyncTaskCallback}.<br/>
+ * to avoid nested inner classes for async tasks.
  */
 public interface AsyncTaskCallback<T> {
     void onAsyncOperationCompleted(@Nullable T result);

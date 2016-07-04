@@ -27,9 +27,9 @@ public class ServerConfig extends BaseConfig {
     private static final String BASE_URL = "https://api.foursquare.com/v2/";
 
     /**
-     * to get base url for all apis
+     * to get api endpoint
      *
-     * @return base url including trailing path identifier ('/')
+     * @return api base url including trailing slash ('/')
      */
     public static String baseUrl() {
         return BASE_URL;

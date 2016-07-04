@@ -17,6 +17,8 @@ package com.experiments.common.base.models;
 /**
  * Author : Krupal Shah
  * Date : 26-Apr-16
+ * <p>
+ * validates model before using it
  */
 public interface ModelValidator {
 

@@ -19,6 +19,8 @@ import com.experiments.common.utilities.BaseUtils;
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
+ * <p>
+ * contains application specific utility methods
  */
 public class AppUtils extends BaseUtils {
 

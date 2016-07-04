@@ -23,6 +23,10 @@ import java.util.List;
 /**
  * Author : Krupal Shah
  * Date : 09-Apr-16
+ * <p>
+ * common class for all view pager adapters
+ * there are two overloaded constructors. one is without titles and other is with titles<br/>
+ * if titles are given; it will call {@link FragmentPagerAdapter#getPageTitle(int)} to set title
  */
 public class CommonPagerAdapter extends FragmentPagerAdapter {
 

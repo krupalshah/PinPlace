@@ -30,6 +30,8 @@ import com.experiments.common.base.contracts.BaseContract;
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
+ * <p>
+ * base class for all activities in project
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseContract.BaseView {
 
@@ -47,6 +49,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
         super.onDestroy();
     }
 
+    /**
+     * initializes requires components
+     */
     protected abstract void initComponents();
 
     @Override
@@ -95,7 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     }
 
     @Override
-    public boolean isViewDestroyed() {
+    public boolean isComponentDestroyed() {
         return isViewDestroyed;
     }
 

@@ -17,6 +17,8 @@ package com.experiments.common.listeners;
 /**
  * Author : Krupal Shah
  * Date : 08-May-16
+ * <p>
+ * interface which defines methods for retaining state during selection of an item
  */
 public interface Selection {
 
