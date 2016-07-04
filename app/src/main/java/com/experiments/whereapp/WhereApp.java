@@ -27,6 +27,8 @@ import io.fabric.sdk.android.Fabric;
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
+ * <p>
+ * application class
  */
 public class WhereApp extends Application {
 
