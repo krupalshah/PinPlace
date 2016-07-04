@@ -78,15 +78,16 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
     @Override
     @DebugLog
     public void checkLocationSettings() {
+        //creating location request and configuring intervals
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(BaseConfig.LocationUpdates.NORMAL_LOCATION_UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(BaseConfig.LocationUpdates.FASTEST_LOCATION_UPDATE_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
+        //checking for location settings
         LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest)
                 .build();
-
         PendingResult<LocationSettingsResult> pendingResult = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, locationSettingsRequest);
         pendingResult.setResultCallback(mPLacePlaceUpdatesListener::onLocationSettingsResult);
     }
@@ -94,13 +95,18 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
     @Override
     @DebugLog
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    public void retrieveLastKnownPlace() {
+    public void retrieveLastKnownPlace(boolean needsAddress) {
+
+        //getting last known location from fused location provider
         Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastKnownLocation == null) return;
+
+        //setting latlng to place object and calling getCurrentPlace()
         mCurrentPlace.setLatitude(lastKnownLocation.getLatitude());
         mCurrentPlace.setLongitude(lastKnownLocation.getLongitude());
 
-        getCurrentPlace(true, (place, operationStatus) -> {
+        //giving updated place object from getCurrentPlace in callback
+        getCurrentPlace(needsAddress, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
                 mPLacePlaceUpdatesListener.onGotLastKnownPlace(place);
             }
@@ -111,15 +117,18 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
     @DebugLog
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void scheduleLocationUpdates() {
+        //scheduling location updates for created location request
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
     @DebugLog
     public void removeLocationUpdates() {
+        //reoving location updates from fused location provider
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
+        //canceling address fetching task if running
         if (mFetchAddressTask != null) {
             if (mFetchAddressTask.getStatus() == AsyncTask.Status.RUNNING) {
                 mFetchAddressTask.cancel(true);
@@ -141,6 +150,8 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
     public void unregisterUpdateCallbacks() {
         mPLacePlaceUpdatesListener = null;
         mNetworkOperations = null;
+
+        //unregistering callbacks associated with google api client
         if (mGoogleApiClient != null) {
             if (mGoogleApiClient.isConnectionCallbacksRegistered(this)) {
                 mGoogleApiClient.unregisterConnectionCallbacks(this);
@@ -154,8 +165,8 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
 
     @Override
     @DebugLog
-    public void getCurrentPlace(boolean needsUpdatedAddress, @NonNull final GetPlaceCallback callback) {
-        if (!needsUpdatedAddress) { //does not need place with updated address - just need location not address
+    public void getCurrentPlace(boolean needsAddress, @NonNull final GetPlaceCallback callback) {
+        if (!needsAddress) { //does not need place with updated address - just need location not address
             callback.onGotPlace(mCurrentPlace, GetPlaceCallback.STATUS_SUCCESS);
             return;
         }
@@ -171,6 +182,8 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
                 return;
             }
         }
+
+        //executing address fetching task
         mFetchAddressTask = new FetchAddressTask(mContext, lat, lng, result -> {
             if (TextUtils.isEmpty(result)) {
                 callback.onGotPlace(null, GetPlaceCallback.STATUS_UNKNOWN_FAILURE); //got empty address in callback
@@ -191,8 +204,11 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
     @Override
     @DebugLog
     public void onLocationChanged(Location location) {
+        //when location is changed, assigning latlng to current place object
         mCurrentPlace.setLatitude(location.getLatitude());
         mCurrentPlace.setLongitude(location.getLongitude());
+
+        //dispatching callback about location update
         mPLacePlaceUpdatesListener.onLocationUpdated(location);
     }
 

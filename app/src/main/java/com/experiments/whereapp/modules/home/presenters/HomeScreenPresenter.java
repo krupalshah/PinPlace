@@ -39,7 +39,19 @@ import hugo.weaving.DebugLog;
  */
 public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.View> implements HomeScreenContract.Presenter, PlaceUpdatesListener {
 
+    /**
+     * minimum distance from old location for which address text should be refreshed
+     */
+    private static double MIN_DISTANCE_IN_METERS = 50.00;
+
+    /**
+     * reference to location operations interface
+     */
     private LocationOperations mLocationOperations;
+
+    /**
+     * temporary location to check whether new updated location has not more distance from old than {@link #MIN_DISTANCE_IN_METERS}
+     */
     private Location tempLocation;
 
     @Override
@@ -76,7 +88,7 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
     @DebugLog
     public void checkTurnOnLocationResult(LocationSettingsStates locationSettingsStates) {
         if (locationSettingsStates.isLocationUsable()) {
-            mLocationOperations.retrieveLastKnownPlace();
+            mLocationOperations.retrieveLastKnownPlace(false);
             mLocationOperations.scheduleLocationUpdates();
         } else {
             getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
@@ -109,7 +121,7 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
         Status status = locationSettingsResult.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS: //if location is on
-                mLocationOperations.retrieveLastKnownPlace();
+                mLocationOperations.retrieveLastKnownPlace(false);
                 mLocationOperations.scheduleLocationUpdates();
                 break;
 
@@ -132,10 +144,12 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
     @Override
     @DebugLog
     public void onLocationUpdated(Location newLocation) {
-        if (tempLocation != null && newLocation.distanceTo(tempLocation) < 100) {
+        //if new location is not more than just : say 50 meters away - do not refresh view
+        if (tempLocation != null && newLocation.distanceTo(tempLocation) < MIN_DISTANCE_IN_METERS) {
             return;
         }
         tempLocation = newLocation;
+        //othwerwise get place with updated address and refresh text on view
         mLocationOperations.getCurrentPlace(true, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
                 getView().updateAddressText(place.getAddress());

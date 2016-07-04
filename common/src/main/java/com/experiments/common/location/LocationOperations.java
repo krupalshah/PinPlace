@@ -48,9 +48,11 @@ public interface LocationOperations {
 
     /**
      * fetches the last known place
+     *
+     * @param needsAddress true if it also need to fetch the address for the place, false if only interested in location(lat-lng).
      */
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    void retrieveLastKnownPlace();
+    void retrieveLastKnownPlace(boolean needsAddress);
 
     /**
      * schedules location updates accordingly intervals defines in {@link BaseConfig.LocationUpdates}
@@ -61,10 +63,10 @@ public interface LocationOperations {
     /**
      * to get current place
      *
-     * @param needsUpdatedAddress true if it also need to fetch the address for the place, false if only interested in lat-lng.
-     * @param callback            callback when gets the place
+     * @param needsAddress true if it also need to fetch the address for the place, false if only interested in location (lat-lng).
+     * @param callback     callback when gets the place
      */
-    void getCurrentPlace(boolean needsUpdatedAddress, @NonNull GetPlaceCallback callback);
+    void getCurrentPlace(boolean needsAddress, @NonNull GetPlaceCallback callback);
 
     /**
      * removes location updates from fused location api provider<br/>
