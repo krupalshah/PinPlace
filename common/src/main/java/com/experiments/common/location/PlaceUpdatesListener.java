@@ -21,15 +21,35 @@ import com.google.android.gms.location.LocationSettingsResult;
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
+ * <p>
+ * callback to listen place updates from {@link LocationOperations}
  */
 public interface PlaceUpdatesListener {
 
+    /**
+     * will be called when google api client is connected
+     */
     void onApiClientConnected();
 
+    /**
+     * will be called when got result for location settings
+     *
+     * @param locationSettingsResult result
+     */
     void onLocationSettingsResult(LocationSettingsResult locationSettingsResult);
 
+    /**
+     * will be called when got last known place
+     *
+     * @param lastKnownPlace last place
+     */
     void onGotLastKnownPlace(Place lastKnownPlace);
 
+    /**
+     * will be called whenever location is updated
+     *
+     * @param newLocation new location
+     */
     void onLocationUpdated(Location newLocation);
 
 }

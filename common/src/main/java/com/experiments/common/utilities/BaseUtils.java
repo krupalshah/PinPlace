@@ -22,11 +22,19 @@ import hugo.weaving.DebugLog;
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
+ * <p>
+ * base class for all utility classes
  */
 public abstract class BaseUtils {
 
     public static final String COMMA_SEPARATOR = ",";
 
+    /**
+     * generates readable comma saperated address string from parts
+     *
+     * @param address address object
+     * @return address string
+     */
     @DebugLog
     @NonNull
     public static String generateAddressLine(@NonNull Address address) {
@@ -39,15 +47,18 @@ public abstract class BaseUtils {
         String country = address.getCountryName();
         String postalCode = address.getPostalCode();
 
+        //put parts in array
         String[] resultLines = new String[]{addressLine, city, state, country, postalCode};
+
+        //build string from parts
         StringBuilder resultBuilder = new StringBuilder();
 
         int length = resultLines.length;
         for (int i = 0; i < length; i++) {
             if (resultLines[i] == null) continue;
-            if (i == length - 1) {
+            if (i == length - 1) { //if last part - append without comma
                 resultBuilder.append(resultLines[i]);
-            } else {
+            } else { //else append with comma
                 resultBuilder.append(resultLines[i]).append(COMMA_SEPARATOR);
             }
         }

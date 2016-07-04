@@ -40,6 +40,8 @@ import hugo.weaving.DebugLog;
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
+ * <p>
+ * implementation of {@link LocationOperations}
  */
 public class LocationOperationsImpl implements LocationOperations, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 

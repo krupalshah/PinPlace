@@ -21,12 +21,12 @@ package com.experiments.common.network;
 public interface NetworkUpdatesListener {
 
     /**
-     * to be called when network becomes available
+     * will be called when network becomes available
      */
     void onInternetConnected();
 
     /**
-     * to be called when network becomes unavailable
+     * will be called when network becomes unavailable
      */
     void onInternetDisconnected();
 }

@@ -17,12 +17,28 @@ package com.experiments.common.network;
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
+ * <p>
+ * contractor interface for operations related to network operations
  */
 public interface NetworkOperations {
 
+    /**
+     * registers network receiver.
+     *
+     * @param networkUpdatesListener callback for network updates
+     */
     void registerNetworkReceiver(NetworkUpdatesListener networkUpdatesListener);
 
+    /**
+     * checks if internet is available
+     *
+     * @return ture if available, false otherwise
+     */
     boolean isInternetAvailable();
 
+    /**
+     * unregisters network receiver<br/>
+     * also unregisters network update listener
+     */
     void unregisterNetworkReceiver();
 }

@@ -21,6 +21,8 @@ import android.support.annotation.Nullable;
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
+ * <p>
+ * callback from {@link LocationOperations#getCurrentPlace}
  */
 public interface GetPlaceCallback {
 
@@ -29,8 +31,22 @@ public interface GetPlaceCallback {
     int STATUS_PREV_TASK_PENDING = 3;
     int STATUS_UNKNOWN_FAILURE = 4;
 
+    /**
+     * called when operating for getting place is completed
+     *
+     * @param place           place object
+     * @param operationStatus operation status defined in {@link GetPlaceOperationStatus}
+     */
     void onGotPlace(@Nullable Place place, @GetPlaceOperationStatus int operationStatus);
 
+    /**
+     * defines following constants for get place operation:
+     * <p>
+     * STATUS_SUCCESS - for successful operation<br/>
+     * STATUS_NO_NETWORK - if network was not available during operation<br/>
+     * STATUS_PREV_TASK_PENDING - if previous operation is pending <br/>
+     * STATUS_UNKNOWN_FAILURE - unknown failure while getting place (such as address could not be fetched or any other exception)
+     */
     @IntDef({STATUS_NO_NETWORK, STATUS_PREV_TASK_PENDING, STATUS_SUCCESS, STATUS_UNKNOWN_FAILURE})
     @interface GetPlaceOperationStatus {
     }

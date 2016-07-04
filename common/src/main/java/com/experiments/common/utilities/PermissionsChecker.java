@@ -28,9 +28,15 @@ import hugo.weaving.DebugLog;
 /**
  * Author : Krupal Shah
  * Date : 03-Apr-16
+ * <p>
+ * handles marshmallow permission checking
  */
 public class PermissionsChecker {
 
+    /**
+     * list of non granted permissions<br/>
+     * should be clear everytime checking new permissions
+     */
     private final List<String> nonGrantedPermissions;
 
     public PermissionsChecker() {
@@ -49,12 +55,12 @@ public class PermissionsChecker {
     public final boolean askPermissionsIfNotGranted(AppCompatActivity appCompatActivity, int requestCode, String... permissionsToCheck) {
         nonGrantedPermissions.clear();
         for (String permission : permissionsToCheck) {
-            if (ContextCompat.checkSelfPermission(appCompatActivity, permission) == PermissionChecker.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(appCompatActivity, permission) == PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
                 continue;
             }
-            nonGrantedPermissions.add(permission);
+            nonGrantedPermissions.add(permission); //otherwise add it to list
         }
-        if (nonGrantedPermissions.size() > 0) {
+        if (nonGrantedPermissions.size() > 0) { //request only non granted permissions
             ActivityCompat.requestPermissions(appCompatActivity, nonGrantedPermissions.toArray(new String[nonGrantedPermissions.size()]), requestCode);
             return false;
         } else {
@@ -78,9 +84,10 @@ public class PermissionsChecker {
     public final boolean checkGrantResults(final AppCompatActivity appCompatActivity, final int requestCode, int[] grantResults, @StringRes int rationaleMessage, final String... permissionsAsked) {
         boolean allPermissionGranted = true;
         for (int grantResult : grantResults) {
-            if (grantResult == PermissionChecker.PERMISSION_GRANTED) {
+            if (grantResult == PermissionChecker.PERMISSION_GRANTED) { //if granted - ship iteration
                 continue;
             }
+            // TODO: 05-Jul-16 find better solution for rationale
             for (String permission : permissionsAsked) {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(appCompatActivity, permission)) {
                     continue;
@@ -90,7 +97,7 @@ public class PermissionsChecker {
                 });*/
                 break;
             }
-            allPermissionGranted = false;
+            allPermissionGranted = false; //otherwise break loop and return false
             break;
         }
 
