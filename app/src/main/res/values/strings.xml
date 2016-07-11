@@ -24,5 +24,8 @@
     <string name="dismiss">Dismiss</string>
     <string name="unable_to_get_location">Unable to get location</string>
     <string name="title">Title</string>
+    <string name="explore">Explore</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="search_places">Search Places</string>
 
 </resources>

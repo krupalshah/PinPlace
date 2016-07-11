@@ -23,15 +23,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.droidexperiments.android.where.R;
 import com.experiments.common.base.activities.BaseActivity;
 import com.experiments.common.base.adapters.CommonPagerAdapter;
+import com.experiments.common.customviews.CustomTextView;
 import com.experiments.common.utilities.PermissionsChecker;
 import com.experiments.whereapp.modules.home.contracts.HomeScreenContract;
 import com.experiments.whereapp.modules.home.fragments.CurrentPlaceFragment;
@@ -76,10 +79,15 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+
     @Bind(R.id.pager_home)
     ViewPager pagerHome;
+    @Bind(R.id.tabs_home)
+    TabLayout tabsHome;
+    @Bind(R.id.tv_title_toolbar)
+    CustomTextView tvTitleToolbar;
+    @Bind(R.id.iv_search_toolbar)
+    ImageView ivSearchToolbar;
 
     /**
      * presenter for home activity
@@ -90,6 +98,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
      * permission checker
      */
     private PermissionsChecker mPermissionsChecker;
+    private List<Integer> mToolbarTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +111,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     @Override
     protected void initComponents() {
         mPermissionsChecker = new PermissionsChecker();
+
         mHomeScreenPresenter = new HomeScreenPresenter();
         mHomeScreenPresenter.attachView(this);
         mHomeScreenPresenter.registerPlaceUpdates();
@@ -168,7 +178,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     public void makeStatusBarTransparent() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
         Window window = getWindow();
-        window.getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE | android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(Color.TRANSPARENT);
         } else {
@@ -183,7 +193,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
 
     @Override
     public void setToolbarTitle(@StringRes int titleRes) {
-        toolbar.setTitle(titleRes);
+        tvTitleToolbar.setText(titleRes);
     }
 
     @Override
@@ -193,10 +203,36 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
         fragments.add(SavedPlacesFragment.newInstance());
         fragments.add(TrendingPlacesFragment.newInstance());
 
+        //setting pager adapter
         CommonPagerAdapter commonPagerAdapter = new CommonPagerAdapter(getSupportFragmentManager(), fragments);
         pagerHome.setOffscreenPageLimit(fragments.size());
         pagerHome.setAdapter(commonPagerAdapter);
         pagerHome.addOnPageChangeListener(this);
+
+        //setting up tabs having only icons
+        tabsHome.setupWithViewPager(pagerHome);
+        for (int i = 0; i < tabsHome.getTabCount(); i++) {
+            TabLayout.Tab tab = tabsHome.getTabAt(i);
+            if (tab == null) continue;
+            switch (i) {
+                case 0:
+                    tab.setIcon(R.drawable.ic_home_white_24dp);
+                    break;
+                case 1:
+                    tab.setIcon(R.drawable.ic_explore_white_24dp);
+                    break;
+                case 2:
+                    tab.setIcon(R.drawable.ic_bookmark_white_24dp);
+                    break;
+            }
+        }
+
+        //creating toolbar titles for equivalent tabs
+        mToolbarTitles = new ArrayList<>(tabsHome.getTabCount());
+        mToolbarTitles.add(R.string.home);
+        mToolbarTitles.add(R.string.explore);
+        mToolbarTitles.add(R.string.bookmarks);
+        setToolbarTitle(mToolbarTitles.get(0));
     }
 
     @Override
@@ -212,7 +248,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     @DebugLog
     @Override
     public void onPageSelected(int position) {
-
+        setToolbarTitle(mToolbarTitles.get(position));
     }
 
     @DebugLog

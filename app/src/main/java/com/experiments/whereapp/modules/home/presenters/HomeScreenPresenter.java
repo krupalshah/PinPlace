@@ -60,7 +60,6 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
         super.attachView(view);
         view.makeStatusBarTransparent();
         view.animateToolbarCollapsing();
-        view.setToolbarTitle(R.string.home);
         view.setupViewPager();
     }
 
