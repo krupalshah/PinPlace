@@ -26,8 +26,12 @@ import java.util.List;
  * Date : 08-May-16
  * <p>
  * base class for selection related recyclerivew adapter<br/>
- * given dataset model must have to implement {@link Selection} interface to retain state information with them
+ * given dataset model must have to implement {@link Selection} to retain state information with them
+ *
+ * @param <A> item model that implements {@link Selection}
+ * @param <B> item view holder
  */
+
 public abstract class BaseSelectionAdapter<A extends Selection, B extends BaseRecyclerAdapter.BaseViewHolder> extends BaseRecyclerAdapter<A, B> {
 
     private ItemSelectionListener<A> itemSelectionListener;

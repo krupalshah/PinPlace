@@ -124,7 +124,7 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
     @Override
     @DebugLog
     public void removeLocationUpdates() {
-        //reoving location updates from fused location provider
+        //removing location updates from fused location provider
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }

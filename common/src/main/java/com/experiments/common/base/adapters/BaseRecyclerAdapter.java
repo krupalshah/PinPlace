@@ -30,6 +30,9 @@ import java.util.List;
  * <p>
  * base class for all recycler view adapters in project.<br/>
  * sets click and long click listeners if specified.
+ *
+ * @param <A> item model
+ * @param <B> item view holder
  */
 public abstract class BaseRecyclerAdapter<A, B extends BaseRecyclerAdapter.BaseViewHolder> extends RecyclerView.Adapter<B> {
 

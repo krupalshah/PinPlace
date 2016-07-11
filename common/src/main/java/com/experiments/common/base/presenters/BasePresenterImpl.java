@@ -26,6 +26,8 @@ import hugo.weaving.DebugLog;
  * Date : 25-Apr-16
  * <p>
  * implementation of {@link BasePresenter}
+ *
+ * @param <T> MVP view
  */
 public abstract class BasePresenterImpl<T extends BaseContract.BaseView> implements BaseContract.BasePresenter<T> {
 

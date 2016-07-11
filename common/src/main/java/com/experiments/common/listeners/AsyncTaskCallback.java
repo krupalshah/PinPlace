@@ -14,6 +14,7 @@
 
 package com.experiments.common.listeners;
 
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
 /**
@@ -22,6 +23,8 @@ import android.support.annotation.Nullable;
  * <p>
  * callback for {@link AsyncTaskCallback}.<br/>
  * to avoid nested inner classes for async tasks.
+ *
+ * @param <T> type of result wanted in {@link AsyncTask#onPostExecute}
  */
 public interface AsyncTaskCallback<T> {
     void onAsyncOperationCompleted(@Nullable T result);

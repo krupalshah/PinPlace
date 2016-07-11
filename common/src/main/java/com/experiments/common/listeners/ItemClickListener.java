@@ -19,6 +19,8 @@ package com.experiments.common.listeners;
  * Date : 08-May-16
  * <p>
  * click listener for item in list
+ *
+ * @param <T> item model
  */
 public interface ItemClickListener<T> {
     void onItemClicked(T model);
