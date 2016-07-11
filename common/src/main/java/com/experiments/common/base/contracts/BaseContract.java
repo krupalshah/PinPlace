@@ -112,14 +112,14 @@ public interface BaseContract {
     interface BasePresenter<T extends BaseView> {
 
         /**
-         * attaches view to a presenter
+         * attaches view to presenter
          *
          * @param view view
          */
         void attachView(T view);
 
         /**
-         * detaches view from apresenter
+         * detaches view from presenter
          */
         void detachView();
 
