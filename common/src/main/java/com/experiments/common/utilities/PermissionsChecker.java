@@ -54,7 +54,7 @@ public class PermissionsChecker {
     @DebugLog
     public final boolean askPermissionsIfNotGranted(BaseActivity baseActivity, int requestCode, String... permissionsToCheck) {
         nonGrantedPermissions.clear();
-        for (String permission : permissionsToCheck) {
+        for (String permission : permissionsToCheck) { //iterating through permission given in params
             if (ContextCompat.checkSelfPermission(baseActivity, permission) == PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
                 continue;
             }
@@ -71,7 +71,7 @@ public class PermissionsChecker {
     /**
      * checks permission and asks if not granted - same as its activity variant but intended for fragments
      *
-     * @param baseFragment           fragment
+     * @param baseFragment       fragment
      * @param requestCode        permission request code
      * @param permissionsToCheck permissions to check and ask
      * @return true if all asked permissionsToCheck are granted; false otherwise
@@ -79,7 +79,7 @@ public class PermissionsChecker {
     @DebugLog
     public final boolean askPermissionsIfNotGranted(BaseFragment baseFragment, int requestCode, String... permissionsToCheck) {
         nonGrantedPermissions.clear();
-        for (String permission : permissionsToCheck) {
+        for (String permission : permissionsToCheck) { //iterating through permission given in params
             if (ContextCompat.checkSelfPermission(baseFragment.getContext(), permission) == PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
                 continue;
             }
@@ -98,25 +98,25 @@ public class PermissionsChecker {
      * <br> Shows snake bar with rationale message if permission denied.
      * <br> Asks again if user allow on showing rationale
      *
-     * @param baseActivity activity
-     * @param requestCode       permission request code
-     * @param grantResults      grant results from {@link ActivityCompat.OnRequestPermissionsResultCallback}
-     * @param rationaleMessage  message resource id for rationale
-     * @param permissionsAsked  asked permissions for given request code
+     * @param baseActivity     activity
+     * @param requestCode      permission request code
+     * @param grantResults     grant results from {@link ActivityCompat.OnRequestPermissionsResultCallback}
+     * @param rationaleMessage message resource id for rationale
+     * @param permissionsAsked asked permissions for given request code
      * @return true if all permissions asked have been granted; false otherwise
      */
     @DebugLog
     public final boolean checkGrantResults(final BaseActivity baseActivity, final int requestCode, int[] grantResults, @StringRes int rationaleMessage, final String... permissionsAsked) {
         boolean allPermissionGranted = true;
-        for (int grantResult : grantResults) {
-            if (grantResult == PermissionChecker.PERMISSION_GRANTED) { //if granted - ship iteration
+        for (int grantResult : grantResults) { //iterating through grant results
+            if (grantResult == PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
                 continue;
             }
-            for (String permission : permissionsAsked) {
+            for (String permission : permissionsAsked) { //if not granted - checking if can show rationale
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(baseActivity, permission)) {
                     continue;
                 }
-                baseActivity.showSnakeBar(rationaleMessage, R.string.allow, view -> {
+                baseActivity.showSnakeBar(rationaleMessage, R.string.allow, view -> { //show rationale snake bar for non-granted permissions and break the rationale checking loop
                     askPermissionsIfNotGranted(baseActivity, requestCode, permissionsAsked);
                 });
                 break;
