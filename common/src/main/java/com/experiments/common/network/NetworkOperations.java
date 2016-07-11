@@ -18,7 +18,7 @@ package com.experiments.common.network;
  * Author : Krupal Shah
  * Date : 10-Apr-16
  * <p>
- * contractor interface for operations related to network operations
+ * contractor for operations related to network operations
  */
 public interface NetworkOperations {
 

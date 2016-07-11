@@ -41,6 +41,7 @@ public class NetworkOperationsImpl implements NetworkOperations {
     @Override
     @DebugLog
     public void registerNetworkReceiver(final NetworkUpdatesListener networkUpdatesListener) {
+        //registering receiver on connectivity action
         mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         mConnectivityChangeReceiver = new BroadcastReceiver() {
             @Override

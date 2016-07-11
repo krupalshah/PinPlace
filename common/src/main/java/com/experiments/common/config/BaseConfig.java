@@ -9,7 +9,7 @@ package com.experiments.common.config;
 public abstract class BaseConfig {
 
     /**
-     * repository interface for defining location update intervals
+     * repository for defining location update intervals
      */
     public interface LocationUpdates {
         long NORMAL_LOCATION_UPDATE_INTERVAL = 20 * 1000;

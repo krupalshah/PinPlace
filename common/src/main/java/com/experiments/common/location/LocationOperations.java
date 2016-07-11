@@ -25,7 +25,7 @@ import com.google.android.gms.location.LocationSettingsResult;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  * <p>
- * contractor interface for operations related to location updates
+ * contractor for operations related to location updates
  */
 public interface LocationOperations {
 

@@ -149,7 +149,7 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
             return;
         }
         tempLocation = newLocation;
-        //othwerwise get place with updated address and refresh text on view
+        //otherwise get place with updated address and refresh text on view
         mLocationOperations.getCurrentPlace(true, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
                 getView().updateAddressText(place.getAddress());

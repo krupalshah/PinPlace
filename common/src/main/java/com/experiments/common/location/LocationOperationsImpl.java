@@ -151,7 +151,7 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
         mPLacePlaceUpdatesListener = null;
         mNetworkOperations = null;
 
-        //unregistering callbacks associated with google api client
+        //unregister callbacks associated with google api client
         if (mGoogleApiClient != null) {
             if (mGoogleApiClient.isConnectionCallbacksRegistered(this)) {
                 mGoogleApiClient.unregisterConnectionCallbacks(this);

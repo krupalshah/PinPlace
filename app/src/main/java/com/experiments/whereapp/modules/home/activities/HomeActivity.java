@@ -52,7 +52,7 @@ import hugo.weaving.DebugLog;
  * Author : Krupal Shah
  * Date : 02-Apr-16
  * <p>
- * first activity after launch screen ends
+ * home screen activity after launch screen ends
  */
 public class HomeActivity extends BaseActivity implements HomeScreenContract.View, ViewPager.OnPageChangeListener {
 

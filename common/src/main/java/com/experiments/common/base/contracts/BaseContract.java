@@ -27,7 +27,7 @@ import android.view.View;
  * base class for all contracts defined for MVP structure
  * <p>
  * <b>side note:</b> contracts are easy way to avoid naming and packaging conflicts for MVP views and presenters<br/>
- * they just define views and presenters nad work as a packager between both.
+ * they just define views and presenters and work as a packager of both.
  */
 public interface BaseContract {
 
