@@ -43,7 +43,7 @@ public interface PlaceUpdatesListener {
      *
      * @param lastKnownPlace last place
      */
-    void onGotLastKnownPlace(Place lastKnownPlace);
+    void onGotLastKnownPlace(PlaceModel lastKnownPlace);
 
     /**
      * will be called whenever location is updated

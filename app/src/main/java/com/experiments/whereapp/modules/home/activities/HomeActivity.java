@@ -21,6 +21,7 @@ import android.content.IntentSender;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.TabLayout;
@@ -41,14 +42,18 @@ import com.experiments.whereapp.modules.home.fragments.CurrentPlaceFragment;
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.TrendingPlacesFragment;
 import com.experiments.whereapp.modules.home.presenters.HomeScreenPresenter;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 
 /**
@@ -64,12 +69,12 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     /**
      * request code to ask for location settings if not on for the app
      */
-    private static final int REQUEST_LOCATION_SETTINGS = 1;
+    private static final int LOCATION_SETTINGS_REQUEST_CODE = 1;
 
     /**
      * request code for asking location permissions
      */
-    private static final int REQUEST_LOCATION_PERMISSION = 2;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
 
     /**
      * array of permissions to be asked for getting location access
@@ -78,6 +83,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 11;
 
 
     @Bind(R.id.pager_home)
@@ -119,8 +125,9 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
 
     @Override
     protected void onStart() {
+        Debug.waitForDebugger();
         super.onStart();
-        if (mPermissionsChecker.askPermissionsIfNotGranted(this, REQUEST_LOCATION_PERMISSION, LOCATION_PERMISSIONS)) {
+        if (mPermissionsChecker.askPermissionsIfNotGranted(this, LOCATION_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
             mHomeScreenPresenter.requestPlaceUpdates();
         }
     }
@@ -129,10 +136,14 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_LOCATION_SETTINGS:
+            case LOCATION_SETTINGS_REQUEST_CODE:
                 //got result from resolution dialog
                 LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
                 mHomeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
+                break;
+
+            case PLACE_AUTOCOMPLETE_REQUEST_CODE:
+                mHomeScreenPresenter.checkPlaceAutoCompleteResult(resultCode, data);
                 break;
         }
     }
@@ -141,9 +152,9 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQUEST_LOCATION_PERMISSION:
+            case LOCATION_PERMISSION_REQUEST_CODE:
                 //requesting location updates if permissions granted
-                if (mPermissionsChecker.checkGrantResults(this, REQUEST_LOCATION_PERMISSION, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
+                if (mPermissionsChecker.checkGrantResults(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
                     mHomeScreenPresenter.requestPlaceUpdates();
                 }
                 break;
@@ -167,7 +178,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     public void showTurnOnLocationDialog(Status locationSettingsStatus) {
         try {
             //this will show location dialog to user
-            locationSettingsStatus.startResolutionForResult(HomeActivity.this, REQUEST_LOCATION_SETTINGS);
+            locationSettingsStatus.startResolutionForResult(HomeActivity.this, LOCATION_SETTINGS_REQUEST_CODE);
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
@@ -184,11 +195,6 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
         } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-    }
-
-    @Override
-    public void animateToolbarCollapsing() {
-
     }
 
     @Override
@@ -261,5 +267,35 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @OnClick({R.id.iv_search_toolbar, R.id.iv_settings_toolbar})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_search_toolbar:
+                onSearchPlacesClick();
+                break;
+            case R.id.iv_settings_toolbar:
+                onSettingsClick();
+                break;
+        }
+    }
+
+    @Override
+    public void onSettingsClick() {
+
+    }
+
+    @Override
+    public void onSearchPlacesClick() {
+        try {
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+            e.printStackTrace();
+        }
     }
 }

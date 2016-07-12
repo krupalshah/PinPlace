@@ -15,6 +15,7 @@
 package com.experiments.whereapp.modules.home.contracts;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.StringRes;
 
@@ -39,11 +40,6 @@ public interface HomeScreenContract extends BaseContract {
          */
         @TargetApi(Build.VERSION_CODES.KITKAT)
         void makeStatusBarTransparent();
-
-        /**
-         * for collapsing animation on toolbar
-         */
-        void animateToolbarCollapsing();
 
         /**
          * sets title on toolbar
@@ -71,6 +67,10 @@ public interface HomeScreenContract extends BaseContract {
          * @param address address
          */
         void updateAddressText(String address);
+
+        void onSettingsClick();
+
+        void onSearchPlacesClick();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -101,5 +101,7 @@ public interface HomeScreenContract extends BaseContract {
          * unregisters all place update callbacks
          */
         void unregisterPlaceUpdates();
+
+        void checkPlaceAutoCompleteResult(int resultCode, Intent data);
     }
 }

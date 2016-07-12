@@ -1,33 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:gravity="center">
+    android:gravity="center_vertical"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
+    app:contentInsetStart="0dp">
 
     <com.experiments.common.customviews.CustomTextView
         android:id="@+id/tv_title_toolbar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:gravity="center"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:textColor="@color/md_white_1000"
         android:textSize="18sp"
         custom:typeface="@string/font_montserrat" />
 
-    <ImageView
-        android:id="@+id/iv_search_toolbar"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end|center_vertical"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:contentDescription="@string/search_places"
-        android:gravity="center"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:src="@drawable/ic_search_white_24dp" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/iv_search_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/search_places"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_search_white_24dp" />
+
+        <ImageView
+            android:id="@+id/iv_settings_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/settings"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_settings_white_24dp" />
+    </LinearLayout>
 </android.support.v7.widget.Toolbar>

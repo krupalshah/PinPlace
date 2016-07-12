@@ -46,7 +46,7 @@ import hugo.weaving.DebugLog;
 public class LocationOperationsImpl implements LocationOperations, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private final Context mContext;
-    private final Place mCurrentPlace;
+    private final PlaceModel mCurrentPlace;
     private GoogleApiClient mGoogleApiClient;
     private PlaceUpdatesListener mPLacePlaceUpdatesListener;
     private FetchAddressTask mFetchAddressTask;
@@ -55,7 +55,7 @@ public class LocationOperationsImpl implements LocationOperations, GoogleApiClie
 
     public LocationOperationsImpl(Context context) {
         mContext = context;
-        mCurrentPlace = new Place();
+        mCurrentPlace = new PlaceModel();
     }
 
     @Override

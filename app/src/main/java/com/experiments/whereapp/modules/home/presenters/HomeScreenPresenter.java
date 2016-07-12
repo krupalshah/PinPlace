@@ -14,20 +14,25 @@
 
 package com.experiments.whereapp.modules.home.presenters;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.location.Location;
+import android.util.Log;
 
 import com.droidexperiments.android.where.R;
 import com.experiments.common.base.presenters.BasePresenterImpl;
 import com.experiments.common.location.GetPlaceCallback;
 import com.experiments.common.location.LocationOperations;
 import com.experiments.common.location.LocationOperationsImpl;
-import com.experiments.common.location.Place;
+import com.experiments.common.location.PlaceModel;
 import com.experiments.common.location.PlaceUpdatesListener;
 import com.experiments.whereapp.modules.home.contracts.HomeScreenContract;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import hugo.weaving.DebugLog;
 
@@ -39,6 +44,7 @@ import hugo.weaving.DebugLog;
  */
 public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.View> implements HomeScreenContract.Presenter, PlaceUpdatesListener {
 
+    private static final String TAG = "HomeScreenPresenter";
     /**
      * minimum distance from old location for which address text should be refreshed
      */
@@ -59,7 +65,6 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
     public void attachView(HomeScreenContract.View view) {
         super.attachView(view);
         view.makeStatusBarTransparent();
-        view.animateToolbarCollapsing();
         view.setupViewPager();
     }
 
@@ -134,9 +139,21 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
         }
     }
 
+    @DebugLog
+    @Override
+    public void checkPlaceAutoCompleteResult(int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            Place place = PlaceAutocomplete.getPlace(getView().getComponentContext(), data);
+            Log.e(TAG, "Place from autocomplete: " + place.getName());
+        } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+            Status status = PlaceAutocomplete.getStatus(getView().getComponentContext(), data);
+            Log.e(TAG, status.getStatusMessage());
+        }
+    }
+
     @Override
     @DebugLog
-    public void onGotLastKnownPlace(Place lastKnownPlace) {
+    public void onGotLastKnownPlace(PlaceModel lastKnownPlace) {
         getView().updateAddressText(lastKnownPlace.getAddress());
     }
 

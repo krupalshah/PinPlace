@@ -18,13 +18,13 @@ package com.experiments.common.location;
  * Author : Krupal Shah
  * Date : 09-Apr-16
  */
-public class Place {
+public class PlaceModel {
 
     private double latitude;
     private double longitude;
     private String address;
 
-    public Place() {
+    public PlaceModel() {
         address = "";
     }
 
@@ -55,7 +55,7 @@ public class Place {
 
     @Override
     public String toString() {
-        return "Place{" +
+        return "PlaceModel{" +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", address='" + address + '\'' +

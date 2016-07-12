@@ -24,7 +24,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.droidexperiments.android.where"
+        applicationId "com.droidexperiments.where"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 6

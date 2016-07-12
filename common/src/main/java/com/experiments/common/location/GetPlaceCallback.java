@@ -37,7 +37,7 @@ public interface GetPlaceCallback {
      * @param place           place object
      * @param operationStatus operation status defined in {@link GetPlaceOperationStatus}
      */
-    void onGotPlace(@Nullable Place place, @GetPlaceOperationStatus int operationStatus);
+    void onGotPlace(@Nullable PlaceModel place, @GetPlaceOperationStatus int operationStatus);
 
     /**
      * defines following constants for get place operation:

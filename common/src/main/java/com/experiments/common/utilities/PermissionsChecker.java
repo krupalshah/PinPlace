@@ -107,24 +107,25 @@ public class PermissionsChecker {
      */
     @DebugLog
     public final boolean checkGrantResults(final BaseActivity baseActivity, final int requestCode, int[] grantResults, @StringRes int rationaleMessage, final String... permissionsAsked) {
-        boolean allPermissionGranted = true;
+        boolean allPermissionGranted = false;
         for (int grantResult : grantResults) { //iterating through grant results
-            if (grantResult == PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
-                continue;
-            }
-            for (String permission : permissionsAsked) { //if not granted - checking if can show rationale
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(baseActivity, permission)) {
-                    continue;
-                }
-                baseActivity.showSnakeBar(rationaleMessage, R.string.allow, view -> { //show rationale snake bar for non-granted permissions and break the rationale checking loop
-                    askPermissionsIfNotGranted(baseActivity, requestCode, permissionsAsked);
-                });
-                break;
-            }
-            allPermissionGranted = false; //otherwise break loop and return false
-            break;
-        }
+            if (grantResult != PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
 
+                for (String permission : permissionsAsked) { //if not granted - checking if can show rationale
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(baseActivity, permission)) {
+                        continue;
+                    }
+                    baseActivity.showSnakeBar(rationaleMessage, R.string.allow, view -> { //show rationale snake bar for non-granted permissions and break the rationale checking loop
+                        askPermissionsIfNotGranted(baseActivity, requestCode, permissionsAsked);
+                    });
+                    break;
+                }
+                allPermissionGranted = false; //otherwise break loop and return false
+                break;
+            } else {
+                allPermissionGranted = true;
+            }
+        }
         return allPermissionGranted;
     }
 

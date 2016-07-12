@@ -27,5 +27,6 @@
     <string name="explore">Explore</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="search_places">Search Places</string>
+    <string name="settings">settings</string>
 
 </resources>
