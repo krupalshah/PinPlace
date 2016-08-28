@@ -61,7 +61,13 @@ public interface HomeView extends BaseView {
      */
     void updateAddressText(String address);
 
+    /**
+     * navigates to settings screen
+     */
     void navigateToSettings();
 
+    /**
+     * opens place picker for google places lib.
+     */
     void openPlacePicker();
 }

@@ -71,6 +71,17 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     @Override
+    public void hideKeyBoard() {
+        ((BaseActivity) getActivity()).hideKeyBoard();
+    }
+
+    @Override
+    public void hideSnakeBar() {
+        ((BaseActivity) getActivity()).hideSnakeBar();
+    }
+
+
+    @Override
     public void showDialog(Dialog dialog) {
         ((BaseActivity) getActivity()).showDialog(dialog);
     }

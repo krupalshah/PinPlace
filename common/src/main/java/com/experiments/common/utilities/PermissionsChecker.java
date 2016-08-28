@@ -1,15 +1,16 @@
 /*
- *   Copyright 2016 Krupal Shah, Harsh Bhavsar
+ *   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 
 package com.experiments.common.utilities;
@@ -107,7 +108,9 @@ public class PermissionsChecker {
      */
     @DebugLog
     public final boolean checkGrantResults(final BaseActivity baseActivity, final int requestCode, int[] grantResults, @StringRes int rationaleMessage, final String... permissionsAsked) {
+        //initializing granted flag to false is mandatory since array of grant results can be empty
         boolean allPermissionGranted = false;
+
         for (int grantResult : grantResults) { //iterating through grant results
             if (grantResult != PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
 
@@ -123,6 +126,8 @@ public class PermissionsChecker {
                 allPermissionGranted = false; //otherwise break loop and return false
                 break;
             } else {
+                //if granted, don't forgot to dismiss any previous snake bar showing for rationale
+                baseActivity.hideSnakeBar();
                 allPermissionGranted = true;
             }
         }

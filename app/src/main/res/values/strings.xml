@@ -17,7 +17,6 @@
 
     <string name="app_name">Where</string>
 
-    <string name="allow">Allow</string>
     <string name="allow_location_updates">Location permission is required for app to work</string>
     <string name="allow_place_search">Location permission is required for searching places</string>
     <string name="err_no_internet">Internet not available</string>

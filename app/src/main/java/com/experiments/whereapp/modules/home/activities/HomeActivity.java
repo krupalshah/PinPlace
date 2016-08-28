@@ -67,15 +67,15 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     private static final String TAG = "HomeActivity";
 
     //request code to ask for location settings if not on for the app
-    private static final int LOCATION_SETTINGS_REQUEST_CODE = 100;
+    private static final int REQUEST_LOCATION_SETTINGS = 100;
     //request code for google place picker
-    private static final int PLACE_PICKER_REQUEST_CODE = 101;
+    private static final int REQUEST_PLACE_PICKER = 101;
 
-    //request code for asking location permissions
-    private static final int LOCATION_UPDATES_PERMISSION_REQUEST_CODE = 200;
+    //request code for asking location permissions for updating location
+    private static final int PERMISSION_LOCATION_UPDATES = 200;
 
-    //request code for asking location permissions
-    private static final int PLACE_PICKER_PERMISSION_REQUEST_CODE = 201;
+    //request code for asking location permissions for place picker
+    private static final int PERMISSION_PLACE_PICKER = 201;
 
 
     //array of permissions to be asked for getting location access
@@ -122,7 +122,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     @Override
     protected void onStart() {
         super.onStart();
-        if (!permissionsChecker.askPermissionsIfNotGranted(this, LOCATION_UPDATES_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
+        if (!permissionsChecker.askPermissionsIfNotGranted(this, PERMISSION_LOCATION_UPDATES, LOCATION_PERMISSIONS)) {
             return;
         }
         homeScreenPresenter.requestPlaceUpdates();
@@ -132,13 +132,13 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case LOCATION_SETTINGS_REQUEST_CODE:
+            case REQUEST_LOCATION_SETTINGS:
                 //got result from resolution dialog
                 LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
                 homeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
                 break;
 
-            case PLACE_PICKER_REQUEST_CODE:
+            case REQUEST_PLACE_PICKER:
                 homeScreenPresenter.checkPlacePickerResult(resultCode, data);
                 break;
         }
@@ -148,13 +148,13 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case LOCATION_UPDATES_PERMISSION_REQUEST_CODE:
+            case PERMISSION_LOCATION_UPDATES:
                 //requesting location updates if permissions granted
                 if (permissionsChecker.checkGrantResults(this, requestCode, grantResults, R.string.allow_location_updates, LOCATION_PERMISSIONS)) {
                     homeScreenPresenter.requestPlaceUpdates();
                 }
                 break;
-            case PLACE_PICKER_PERMISSION_REQUEST_CODE:
+            case PERMISSION_PLACE_PICKER:
                 //opening place picker if permissions granted
                 if (permissionsChecker.checkGrantResults(this, requestCode, grantResults, R.string.allow_place_search, LOCATION_PERMISSIONS)) {
                     openPlacePicker();
@@ -176,11 +176,12 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
         super.onDestroy();
     }
 
+
     @Override
     public void showTurnOnLocationDialog(Status locationSettingsStatus) {
         try {
             //this will show location dialog to user
-            locationSettingsStatus.startResolutionForResult(HomeActivity.this, LOCATION_SETTINGS_REQUEST_CODE);
+            locationSettingsStatus.startResolutionForResult(HomeActivity.this, REQUEST_LOCATION_SETTINGS);
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
@@ -275,6 +276,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
     @OnClick({R.id.iv_search_toolbar, R.id.iv_settings_toolbar})
     public void onClick(View view) {
+        super.onClick(view);
         switch (view.getId()) {
             case R.id.iv_search_toolbar:
                 openPlacePicker();
@@ -293,14 +295,14 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     @Override
     public void openPlacePicker() {
         //place picker requires location permissions
-        if (!permissionsChecker.askPermissionsIfNotGranted(this, PLACE_PICKER_REQUEST_CODE, LOCATION_PERMISSIONS)) {
+        if (!permissionsChecker.askPermissionsIfNotGranted(this, PERMISSION_PLACE_PICKER, LOCATION_PERMISSIONS)) {
             return;
         }
 
         //building place picker intent and starting activity for result
         try {
             PlacePicker.IntentBuilder placeIntentBuilder = new PlacePicker.IntentBuilder();
-            startActivityForResult(placeIntentBuilder.build(this), PLACE_PICKER_REQUEST_CODE);
+            startActivityForResult(placeIntentBuilder.build(this), REQUEST_PLACE_PICKER);
         } catch (GooglePlayServicesRepairableException e) {
             showSnakeBar(R.string.err_play_services_disabled, android.R.string.ok, null);
             e.printStackTrace();

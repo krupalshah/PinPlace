@@ -22,10 +22,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.experiments.common.R;
 import com.experiments.common.mvp.views.BaseView;
 
 /**
@@ -34,10 +37,11 @@ import com.experiments.common.mvp.views.BaseView;
  * <p>
  * base class for all activities in app
  */
-public abstract class BaseActivity extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity extends AppCompatActivity implements BaseView, View.OnClickListener {
 
     //flag to manage if activity's onDestroy() has been called or not (since not available for minSDK < 17)
     private boolean isDestroyed;
+    private Snackbar snackbar;
 
 
     @CallSuper
@@ -64,13 +68,38 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void showSnakeBar(@NonNull String msg, @StringRes int action, View.OnClickListener actionListener) {
-        final Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_INDEFINITE);
+        hideSnakeBar();
+        snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG);
+        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.md_red_A200));
         if (actionListener != null) {
             snackbar.setAction(action, actionListener);
         } else {
             snackbar.setAction(action, view -> snackbar.dismiss());
         }
         snackbar.show();
+    }
+
+    @CallSuper
+    @Override
+    public void onClick(View view) {
+        hideKeyBoard();
+        hideSnakeBar();
+    }
+
+    @Override
+    public void hideSnakeBar() {
+        if (snackbar != null && snackbar.isShownOrQueued()) {
+            snackbar.dismiss();
+        }
+    }
+
+    @Override
+    public void hideKeyBoard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Override

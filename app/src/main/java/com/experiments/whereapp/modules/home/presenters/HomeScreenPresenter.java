@@ -47,7 +47,7 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
     private static final String TAG = "HomeScreenPresenter";
 
     //minimum distance from old location for which address text should be refreshed
-    private static final double MIN_DISTANCE_IN_METERS = 50.00;
+    private static final double MIN_DISTANCE_IN_METERS = 100.00;
 
     //helper for location updates
     private LocationUpdatesHelper locationUpdatesHelper;
@@ -153,8 +153,9 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
     @Override
     @DebugLog
     public void onLocationUpdated(Location newLocation) {
-        //if new location is not more than just : say 50 meters away - do not refresh view
-        if (tempLocation != null && newLocation.distanceTo(tempLocation) < MIN_DISTANCE_IN_METERS) {
+        //if new location is not more than just : say 50<n<100 meters away - do not refresh view
+        if (tempLocation != null && newLocation.distanceTo(tempLocation) <= MIN_DISTANCE_IN_METERS) {
+            Log.e(TAG, "onLocationUpdated: newLocation : " + newLocation + " tempLocation: " + tempLocation + "\n distance between: " + newLocation.distanceTo(tempLocation) + "is less than threshold : " + MIN_DISTANCE_IN_METERS + " meters");
             return;
         }
         tempLocation = newLocation;
