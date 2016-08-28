@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~   Copyright 2016 Krupal Shah, Harsh Bhavsar
+  ~   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
   ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
+  ~   http://www.apache.org/licenses/LICENSE-2.0
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
   -->
 
 <resources>
@@ -17,7 +18,8 @@
     <string name="app_name">Where</string>
 
     <string name="allow">Allow</string>
-    <string name="rationale_access_location">You need to allow app to get location</string>
+    <string name="allow_location_updates">Location permission is required for app to work</string>
+    <string name="allow_place_search">Location permission is required for searching places</string>
     <string name="err_no_internet">Internet not available</string>
     <string name="home">Home</string>
 
@@ -28,5 +30,7 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="search_places">Search Places</string>
     <string name="settings">settings</string>
+    <string name="err_play_services_not_available">Google play services are not available</string>
+    <string name="err_play_services_disabled">Google play services are either not updated or disabled</string>
 
 </resources>

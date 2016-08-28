@@ -1,15 +1,16 @@
 /*
- *   Copyright 2016 Krupal Shah, Harsh Bhavsar
+ *   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 
 package com.experiments.whereapp.modules.home.activities;
@@ -45,12 +46,12 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hugo.weaving.DebugLog;
@@ -65,46 +66,39 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
     private static final String TAG = "HomeActivity";
 
-    /**
-     * request code to ask for location settings if not on for the app
-     */
-    private static final int LOCATION_SETTINGS_REQUEST_CODE = 11;
+    //request code to ask for location settings if not on for the app
+    private static final int LOCATION_SETTINGS_REQUEST_CODE = 100;
+    //request code for google place picker
+    private static final int PLACE_PICKER_REQUEST_CODE = 101;
 
-    /**
-     * request code for asking location permissions
-     */
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 12;
+    //request code for asking location permissions
+    private static final int LOCATION_UPDATES_PERMISSION_REQUEST_CODE = 200;
 
-    /**
-     * array of permissions to be asked for getting location access
-     */
+    //request code for asking location permissions
+    private static final int PLACE_PICKER_PERMISSION_REQUEST_CODE = 201;
+
+
+    //array of permissions to be asked for getting location access
     private static final String[] LOCATION_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 13;
+
+    //tab positions in view pager
     private static final int TAB_POSITION_HOME = 0;
     private static final int TAB_POSITION_EXPLORE = 1;
     private static final int TAB_POSITION_BOOKMARKS = 2;
 
-
-    @Bind(R.id.pager_home)
-    ViewPager pagerHome;
-    @Bind(R.id.tabs_home)
-    TabLayout tabsHome;
-    @Bind(R.id.tv_title_toolbar)
+    @BindView(R.id.tv_title_toolbar)
     CustomTextView tvTitleToolbar;
-    @Bind(R.id.iv_search_toolbar)
+    @BindView(R.id.iv_search_toolbar)
     ImageView ivSearchToolbar;
+    @BindView(R.id.tabs_home)
+    TabLayout tabsHome;
+    @BindView(R.id.pager_home)
+    ViewPager pagerHome;
 
-    /**
-     * presenter for home activity
-     */
     private HomeScreenPresenter homeScreenPresenter;
-
-    /**
-     * permission checker
-     */
     private PermissionsChecker permissionsChecker;
     private List<Integer> toolbarTitles;
 
@@ -128,9 +122,10 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     @Override
     protected void onStart() {
         super.onStart();
-        if (permissionsChecker.askPermissionsIfNotGranted(this, LOCATION_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
-            homeScreenPresenter.requestPlaceUpdates();
+        if (!permissionsChecker.askPermissionsIfNotGranted(this, LOCATION_UPDATES_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
+            return;
         }
+        homeScreenPresenter.requestPlaceUpdates();
     }
 
     @Override
@@ -143,8 +138,8 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
                 homeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
                 break;
 
-            case PLACE_AUTOCOMPLETE_REQUEST_CODE:
-                homeScreenPresenter.checkPlaceAutoCompleteResult(resultCode, data);
+            case PLACE_PICKER_REQUEST_CODE:
+                homeScreenPresenter.checkPlacePickerResult(resultCode, data);
                 break;
         }
     }
@@ -153,10 +148,16 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE:
+            case LOCATION_UPDATES_PERMISSION_REQUEST_CODE:
                 //requesting location updates if permissions granted
-                if (permissionsChecker.checkGrantResults(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
+                if (permissionsChecker.checkGrantResults(this, requestCode, grantResults, R.string.allow_location_updates, LOCATION_PERMISSIONS)) {
                     homeScreenPresenter.requestPlaceUpdates();
+                }
+                break;
+            case PLACE_PICKER_PERMISSION_REQUEST_CODE:
+                //opening place picker if permissions granted
+                if (permissionsChecker.checkGrantResults(this, requestCode, grantResults, R.string.allow_place_search, LOCATION_PERMISSIONS)) {
+                    openPlacePicker();
                 }
                 break;
         }
@@ -276,25 +277,35 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_search_toolbar:
-                onSearchPlacesClick();
+                openPlacePicker();
                 break;
             case R.id.iv_settings_toolbar:
-                onSettingsClick();
+                navigateToSettings();
                 break;
         }
     }
 
     @Override
-    public void onSettingsClick() {
+    public void navigateToSettings() {
 
     }
 
     @Override
-    public void onSearchPlacesClick() {
+    public void openPlacePicker() {
+        //place picker requires location permissions
+        if (!permissionsChecker.askPermissionsIfNotGranted(this, PLACE_PICKER_REQUEST_CODE, LOCATION_PERMISSIONS)) {
+            return;
+        }
+
+        //building place picker intent and starting activity for result
         try {
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            PlacePicker.IntentBuilder placeIntentBuilder = new PlacePicker.IntentBuilder();
+            startActivityForResult(placeIntentBuilder.build(this), PLACE_PICKER_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            showSnakeBar(R.string.err_play_services_disabled, android.R.string.ok, null);
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            showSnakeBar(R.string.err_play_services_not_available, android.R.string.ok, null);
             e.printStackTrace();
         }
     }

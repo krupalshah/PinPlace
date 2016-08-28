@@ -13,25 +13,13 @@
  *   limitations under the License.
  */
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url 'https://maven.fabric.io/public' }
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.3'
-        classpath 'io.fabric.tools:gradle:1.20.1'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-    }
-}
+package com.experiments.common;
 
-allprojects {
-    repositories {
-        jcenter()
-        maven { url "https://jitpack.io" }
-        maven { url 'https://maven.fabric.io/public' }
-    }
+import android.app.Application;
+
+/**
+ * Created by Krupal Shah on 28-Aug-16.
+ */
+public class Common extends Application {
+
 }

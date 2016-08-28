@@ -1,21 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~   Copyright 2016 Krupal Shah, Harsh Bhavsar
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
   ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
+  ~   http://www.apache.org/licenses/LICENSE-2.0
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.droidexperiments.android.where">
-
 
     <application
         android:name="com.experiments.whereapp.WhereApp"
@@ -25,6 +24,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
+        <!--activities-->
         <activity
             android:name="com.experiments.whereapp.modules.home.activities.HomeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
@@ -35,6 +35,10 @@
             </intent-filter>
         </activity>
 
+        <!--meta data-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/places_library_api_key" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="49b4ff3925e769d711a02714e8965b593ab1e897" />

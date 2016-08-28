@@ -1,22 +1,22 @@
 /*
- *   Copyright 2016 Krupal Shah, Harsh Bhavsar
+ *   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 
 package com.experiments.common.android.activities;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,14 +36,9 @@ import com.experiments.common.mvp.views.BaseView;
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
-    private boolean isDestroyed = false;
+    //flag to manage if activity's onDestroy() has been called or not (since not available for minSDK < 17)
+    private boolean isDestroyed;
 
-    @CallSuper
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        isDestroyed = false;
-    }
 
     @CallSuper
     @Override

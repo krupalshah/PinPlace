@@ -1,15 +1,16 @@
 /*
- *   Copyright 2016 Krupal Shah, Harsh Bhavsar
+ *   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 
 package com.experiments.whereapp.modules.home.presenters;
@@ -23,14 +24,15 @@ import com.droidexperiments.android.where.R;
 import com.experiments.common.location.GetPlaceCallback;
 import com.experiments.common.location.LocationUpdatesHelper;
 import com.experiments.common.location.LocationUpdatesListener;
-import com.experiments.common.location.Place;
+import com.experiments.common.location.PlaceModel;
 import com.experiments.common.mvp.presenters.BasePresenter;
 import com.experiments.whereapp.modules.home.views.HomeView;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import hugo.weaving.DebugLog;
 
@@ -43,19 +45,14 @@ import hugo.weaving.DebugLog;
 public class HomeScreenPresenter extends BasePresenter<HomeView> implements LocationUpdatesListener {
 
     private static final String TAG = "HomeScreenPresenter";
-    /**
-     * minimum distance from old location for which address text should be refreshed
-     */
+
+    //minimum distance from old location for which address text should be refreshed
     private static final double MIN_DISTANCE_IN_METERS = 50.00;
 
-    /**
-     * reference to location operations interface
-     */
+    //helper for location updates
     private LocationUpdatesHelper locationUpdatesHelper;
 
-    /**
-     * temporary location to check whether new updated location has not more distance from old than {@link #MIN_DISTANCE_IN_METERS}
-     */
+    //temporary location to check whether new updated location has not more distance from old than {@link #MIN_DISTANCE_IN_METERS}
     private Location tempLocation;
 
     @Override
@@ -132,19 +129,24 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
     }
 
     @DebugLog
-    public void checkPlaceAutoCompleteResult(int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            com.google.android.gms.location.places.Place place = PlaceAutocomplete.getPlace(getView().getContext(), data);
-            Log.e(TAG, "Place from autocomplete: " + place.getName());
-        } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-            Status status = PlaceAutocomplete.getStatus(getView().getContext(), data);
-            Log.e(TAG, status.getStatusMessage());
+    public void checkPlacePickerResult(int resultCode, Intent data) {
+        switch (resultCode) {
+            case Activity.RESULT_OK:
+                Place place = PlacePicker.getPlace(getView().getContext(), data);
+                if (place == null) return;
+                Log.e(TAG, "got place from place picker: " + place.getName());
+                break;
+
+            case PlacePicker.RESULT_ERROR:
+                Status status = PlacePicker.getStatus(getView().getContext(), data);
+                Log.e(TAG, "error from place picker" + status.getStatusMessage());
+                break;
         }
     }
 
     @Override
     @DebugLog
-    public void onGotLastKnownPlace(Place lastKnownPlace) {
+    public void onGotLastKnownPlace(PlaceModel lastKnownPlace) {
         getView().updateAddressText(lastKnownPlace.getAddress());
     }
 
