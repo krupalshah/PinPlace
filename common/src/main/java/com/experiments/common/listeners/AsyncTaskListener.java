@@ -12,26 +12,20 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.experiments.whereapp.api.controllers;
+package com.experiments.common.listeners;
 
-
-import com.experiments.common.controllers.BaseApiController;
+import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 
 /**
  * Author : Krupal Shah
- * Date : 17-Apr-16
+ * Date : 09-Apr-16
  * <p>
- * controller for all api calls
+ * callback for {@link AsyncTaskListener}.<br/>
+ * to avoid nested inner classes for async tasks.
+ *
+ * @param <T> type of result wanted in {@link AsyncTask#onPostExecute}
  */
-public class ApiController extends BaseApiController {
-
-    private static ApiController instance;
-
-    //singleton
-    public static synchronized ApiController getInstance() {
-        if (instance == null) {
-            instance = new ApiController();
-        }
-        return instance;
-    }
+public interface AsyncTaskListener<T> {
+    void onAsyncOperationCompleted(@Nullable T result);
 }

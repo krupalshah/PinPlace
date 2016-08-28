@@ -20,8 +20,8 @@ package com.experiments.common.listeners;
  * <p>
  * selection change listener for item in selection list
  *
- * @param <T> item model that implements {@link Selection}
+ * @param <T> item model that implements {@link Selector}
  */
-public interface ItemSelectionListener<T extends Selection> {
+public interface ItemSelectionListener<T extends Selector> {
     void onItemSelectionChanged(T model);
 }

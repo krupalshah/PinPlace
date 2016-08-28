@@ -21,7 +21,6 @@ import android.content.IntentSender;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.TabLayout;
@@ -33,15 +32,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.droidexperiments.android.where.R;
-import com.experiments.common.base.activities.BaseActivity;
-import com.experiments.common.base.adapters.CommonPagerAdapter;
-import com.experiments.common.customviews.CustomTextView;
+import com.experiments.common.android.activities.BaseActivity;
+import com.experiments.common.android.adapters.CommonPagerAdapter;
+import com.experiments.common.android.views.CustomTextView;
 import com.experiments.common.utilities.PermissionsChecker;
-import com.experiments.whereapp.modules.home.contracts.HomeScreenContract;
-import com.experiments.whereapp.modules.home.fragments.CurrentPlaceFragment;
+import com.experiments.whereapp.modules.home.fragments.ExplorePlacesFragment;
+import com.experiments.whereapp.modules.home.fragments.RecommendedPlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;
-import com.experiments.whereapp.modules.home.fragments.TrendingPlacesFragment;
 import com.experiments.whereapp.modules.home.presenters.HomeScreenPresenter;
+import com.experiments.whereapp.modules.home.views.HomeView;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -62,19 +61,19 @@ import hugo.weaving.DebugLog;
  * <p>
  * home screen activity after launch screen ends
  */
-public class HomeActivity extends BaseActivity implements HomeScreenContract.View, ViewPager.OnPageChangeListener {
+public class HomeActivity extends BaseActivity implements HomeView, ViewPager.OnPageChangeListener {
 
     private static final String TAG = "HomeActivity";
 
     /**
      * request code to ask for location settings if not on for the app
      */
-    private static final int LOCATION_SETTINGS_REQUEST_CODE = 1;
+    private static final int LOCATION_SETTINGS_REQUEST_CODE = 11;
 
     /**
      * request code for asking location permissions
      */
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 12;
 
     /**
      * array of permissions to be asked for getting location access
@@ -83,7 +82,10 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 11;
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 13;
+    private static final int TAB_POSITION_HOME = 0;
+    private static final int TAB_POSITION_EXPLORE = 1;
+    private static final int TAB_POSITION_BOOKMARKS = 2;
 
 
     @Bind(R.id.pager_home)
@@ -98,13 +100,13 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     /**
      * presenter for home activity
      */
-    private HomeScreenContract.Presenter mHomeScreenPresenter;
+    private HomeScreenPresenter homeScreenPresenter;
 
     /**
      * permission checker
      */
-    private PermissionsChecker mPermissionsChecker;
-    private List<Integer> mToolbarTitles;
+    private PermissionsChecker permissionsChecker;
+    private List<Integer> toolbarTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,19 +118,18 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
 
     @Override
     protected void initComponents() {
-        mPermissionsChecker = new PermissionsChecker();
+        permissionsChecker = new PermissionsChecker();
 
-        mHomeScreenPresenter = new HomeScreenPresenter();
-        mHomeScreenPresenter.attachView(this);
-        mHomeScreenPresenter.registerPlaceUpdates();
+        homeScreenPresenter = new HomeScreenPresenter();
+        homeScreenPresenter.attachView(this);
+        homeScreenPresenter.registerPlaceUpdates();
     }
 
     @Override
     protected void onStart() {
-        Debug.waitForDebugger();
         super.onStart();
-        if (mPermissionsChecker.askPermissionsIfNotGranted(this, LOCATION_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
-            mHomeScreenPresenter.requestPlaceUpdates();
+        if (permissionsChecker.askPermissionsIfNotGranted(this, LOCATION_PERMISSION_REQUEST_CODE, LOCATION_PERMISSIONS)) {
+            homeScreenPresenter.requestPlaceUpdates();
         }
     }
 
@@ -139,11 +140,11 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
             case LOCATION_SETTINGS_REQUEST_CODE:
                 //got result from resolution dialog
                 LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
-                mHomeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
+                homeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
                 break;
 
             case PLACE_AUTOCOMPLETE_REQUEST_CODE:
-                mHomeScreenPresenter.checkPlaceAutoCompleteResult(resultCode, data);
+                homeScreenPresenter.checkPlaceAutoCompleteResult(resultCode, data);
                 break;
         }
     }
@@ -154,8 +155,8 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE:
                 //requesting location updates if permissions granted
-                if (mPermissionsChecker.checkGrantResults(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
-                    mHomeScreenPresenter.requestPlaceUpdates();
+                if (permissionsChecker.checkGrantResults(this, LOCATION_PERMISSION_REQUEST_CODE, grantResults, R.string.rationale_access_location, LOCATION_PERMISSIONS)) {
+                    homeScreenPresenter.requestPlaceUpdates();
                 }
                 break;
         }
@@ -163,14 +164,14 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
 
     @Override
     protected void onStop() {
-        mHomeScreenPresenter.stopPlaceUpdates();
+        homeScreenPresenter.stopPlaceUpdates();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        mHomeScreenPresenter.unregisterPlaceUpdates();
-        mHomeScreenPresenter.detachView();
+        homeScreenPresenter.unregisterPlaceUpdates();
+        homeScreenPresenter.detachView();
         super.onDestroy();
     }
 
@@ -205,9 +206,9 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     @Override
     public void setupViewPager() {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(CurrentPlaceFragment.newInstance());
+        fragments.add(RecommendedPlacesFragment.newInstance());
+        fragments.add(ExplorePlacesFragment.newInstance());
         fragments.add(SavedPlacesFragment.newInstance());
-        fragments.add(TrendingPlacesFragment.newInstance());
 
         //setting pager adapter
         CommonPagerAdapter commonPagerAdapter = new CommonPagerAdapter(getSupportFragmentManager(), fragments);
@@ -217,28 +218,30 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
 
         //setting up tabs having only icons
         tabsHome.setupWithViewPager(pagerHome);
-        for (int i = 0; i < tabsHome.getTabCount(); i++) {
-            TabLayout.Tab tab = tabsHome.getTabAt(i);
+        for (int tabPos = 0; tabPos < tabsHome.getTabCount(); tabPos++) {
+            TabLayout.Tab tab = tabsHome.getTabAt(tabPos);
             if (tab == null) continue;
-            switch (i) {
-                case 0:
+            switch (tabPos) {
+                case TAB_POSITION_HOME:
                     tab.setIcon(R.drawable.ic_home_white_24dp);
                     break;
-                case 1:
+                case TAB_POSITION_EXPLORE:
                     tab.setIcon(R.drawable.ic_explore_white_24dp);
                     break;
-                case 2:
+                case TAB_POSITION_BOOKMARKS:
                     tab.setIcon(R.drawable.ic_bookmark_white_24dp);
                     break;
             }
         }
 
         //creating toolbar titles for equivalent tabs
-        mToolbarTitles = new ArrayList<>(tabsHome.getTabCount());
-        mToolbarTitles.add(R.string.home);
-        mToolbarTitles.add(R.string.explore);
-        mToolbarTitles.add(R.string.bookmarks);
-        setToolbarTitle(mToolbarTitles.get(0));
+        toolbarTitles = new ArrayList<>(tabsHome.getTabCount());
+        toolbarTitles.add(TAB_POSITION_HOME, R.string.home);
+        toolbarTitles.add(TAB_POSITION_EXPLORE, R.string.explore);
+        toolbarTitles.add(TAB_POSITION_EXPLORE, R.string.bookmarks);
+
+        //setting current title to home
+        setToolbarTitle(toolbarTitles.get(tabsHome.getSelectedTabPosition()));
     }
 
     @Override
@@ -254,7 +257,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
     @DebugLog
     @Override
     public void onPageSelected(int position) {
-        setToolbarTitle(mToolbarTitles.get(position));
+        setToolbarTitle(toolbarTitles.get(position));
     }
 
     @DebugLog
@@ -291,10 +294,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenContract.Vie
         try {
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
     }

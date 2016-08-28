@@ -17,7 +17,6 @@ package com.experiments.whereapp.modules.home.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +28,10 @@ import com.experiments.common.android.fragments.BaseFragment;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public class SavedPlacesFragment extends BaseFragment {
+public class RecommendedPlacesFragment extends BaseFragment {
 
-    public static Fragment newInstance() {
-        return new SavedPlacesFragment();
+    public static RecommendedPlacesFragment newInstance() {
+        return new RecommendedPlacesFragment();
     }
 
     @Nullable

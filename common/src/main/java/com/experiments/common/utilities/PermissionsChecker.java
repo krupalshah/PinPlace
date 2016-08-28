@@ -20,8 +20,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 
 import com.experiments.common.R;
-import com.experiments.common.base.activities.BaseActivity;
-import com.experiments.common.base.fragments.BaseFragment;
+import com.experiments.common.android.activities.BaseActivity;
+import com.experiments.common.android.fragments.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;

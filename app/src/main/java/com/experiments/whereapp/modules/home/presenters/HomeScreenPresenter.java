@@ -20,18 +20,16 @@ import android.location.Location;
 import android.util.Log;
 
 import com.droidexperiments.android.where.R;
-import com.experiments.common.base.presenters.BasePresenterImpl;
 import com.experiments.common.location.GetPlaceCallback;
-import com.experiments.common.location.LocationOperations;
-import com.experiments.common.location.LocationOperationsImpl;
-import com.experiments.common.location.PlaceModel;
-import com.experiments.common.location.PlaceUpdatesListener;
-import com.experiments.whereapp.modules.home.contracts.HomeScreenContract;
+import com.experiments.common.location.LocationUpdatesHelper;
+import com.experiments.common.location.LocationUpdatesListener;
+import com.experiments.common.location.Place;
+import com.experiments.common.mvp.presenters.BasePresenter;
+import com.experiments.whereapp.modules.home.views.HomeView;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import hugo.weaving.DebugLog;
@@ -42,18 +40,18 @@ import hugo.weaving.DebugLog;
  * <p>
  * presenter implementation for home screen
  */
-public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.View> implements HomeScreenContract.Presenter, PlaceUpdatesListener {
+public class HomeScreenPresenter extends BasePresenter<HomeView> implements LocationUpdatesListener {
 
     private static final String TAG = "HomeScreenPresenter";
     /**
      * minimum distance from old location for which address text should be refreshed
      */
-    private static double MIN_DISTANCE_IN_METERS = 50.00;
+    private static final double MIN_DISTANCE_IN_METERS = 50.00;
 
     /**
      * reference to location operations interface
      */
-    private LocationOperations mLocationOperations;
+    private LocationUpdatesHelper locationUpdatesHelper;
 
     /**
      * temporary location to check whether new updated location has not more distance from old than {@link #MIN_DISTANCE_IN_METERS}
@@ -62,7 +60,7 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
 
     @Override
     @DebugLog
-    public void attachView(HomeScreenContract.View view) {
+    public void attachView(HomeView view) {
         super.attachView(view);
         view.makeStatusBarTransparent();
         view.setupViewPager();
@@ -75,48 +73,42 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
         super.detachView();
     }
 
-    @Override
     @DebugLog
     public void registerPlaceUpdates() {
-        mLocationOperations = new LocationOperationsImpl(getView().getComponentContext());
-        mLocationOperations.registerUpdateCallbacks(this);
+        locationUpdatesHelper = new LocationUpdatesHelper(getView().getContext());
+        locationUpdatesHelper.registerUpdateCallbacks(this);
     }
 
-    @Override
     @DebugLog
     public void requestPlaceUpdates() {
-        mLocationOperations.connectApiClient();
+        locationUpdatesHelper.connectApiClient();
     }
 
-    @Override
     @DebugLog
     public void checkTurnOnLocationResult(LocationSettingsStates locationSettingsStates) {
         if (locationSettingsStates.isLocationUsable()) {
-            mLocationOperations.retrieveLastKnownPlace(false);
-            mLocationOperations.scheduleLocationUpdates();
+            locationUpdatesHelper.retrieveLastKnownPlace(false);
+            locationUpdatesHelper.scheduleLocationUpdates();
         } else {
             getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
         }
     }
 
-    @Override
     @DebugLog
     public void stopPlaceUpdates() {
-        mLocationOperations.removeLocationUpdates();
-        mLocationOperations.disconnectApiClient();
+        locationUpdatesHelper.removeLocationUpdates();
+        locationUpdatesHelper.disconnectApiClient();
     }
 
-    @Override
     @DebugLog
     public void unregisterPlaceUpdates() {
-        mLocationOperations.unregisterUpdateCallbacks();
-        mLocationOperations = null;
+        locationUpdatesHelper.unregisterUpdateCallbacks();
     }
 
     @Override
     @DebugLog
     public void onApiClientConnected() {
-        mLocationOperations.checkLocationSettings();
+        locationUpdatesHelper.checkLocationSettings();
     }
 
     @Override
@@ -125,8 +117,8 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
         Status status = locationSettingsResult.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS: //if location is on
-                mLocationOperations.retrieveLastKnownPlace(false);
-                mLocationOperations.scheduleLocationUpdates();
+                locationUpdatesHelper.retrieveLastKnownPlace(false);
+                locationUpdatesHelper.scheduleLocationUpdates();
                 break;
 
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED://if to ask through dialog
@@ -140,20 +132,19 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
     }
 
     @DebugLog
-    @Override
     public void checkPlaceAutoCompleteResult(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            Place place = PlaceAutocomplete.getPlace(getView().getComponentContext(), data);
+            com.google.android.gms.location.places.Place place = PlaceAutocomplete.getPlace(getView().getContext(), data);
             Log.e(TAG, "Place from autocomplete: " + place.getName());
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-            Status status = PlaceAutocomplete.getStatus(getView().getComponentContext(), data);
+            Status status = PlaceAutocomplete.getStatus(getView().getContext(), data);
             Log.e(TAG, status.getStatusMessage());
         }
     }
 
     @Override
     @DebugLog
-    public void onGotLastKnownPlace(PlaceModel lastKnownPlace) {
+    public void onGotLastKnownPlace(Place lastKnownPlace) {
         getView().updateAddressText(lastKnownPlace.getAddress());
     }
 
@@ -166,7 +157,7 @@ public class HomeScreenPresenter extends BasePresenterImpl<HomeScreenContract.Vi
         }
         tempLocation = newLocation;
         //otherwise get place with updated address and refresh text on view
-        mLocationOperations.getCurrentPlace(true, (place, operationStatus) -> {
+        locationUpdatesHelper.getCurrentPlace(true, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
                 getView().updateAddressText(place.getAddress());
             }

@@ -12,26 +12,16 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.experiments.whereapp.api.controllers;
-
-
-import com.experiments.common.controllers.BaseApiController;
+package com.experiments.common.mvp.models;
 
 /**
  * Author : Krupal Shah
- * Date : 17-Apr-16
+ * Date : 26-Apr-16
  * <p>
- * controller for all api calls
+ * validates model before using it
  */
-public class ApiController extends BaseApiController {
+public interface ModelValidator {
 
-    private static ApiController instance;
+    boolean isValid();
 
-    //singleton
-    public static synchronized ApiController getInstance() {
-        if (instance == null) {
-            instance = new ApiController();
-        }
-        return instance;
-    }
 }

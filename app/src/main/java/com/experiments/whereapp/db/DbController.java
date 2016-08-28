@@ -14,7 +14,7 @@
 
 package com.experiments.whereapp.db;
 
-import com.experiments.common.base.controllers.BaseDbController;
+import com.experiments.common.controllers.BaseDbController;
 
 /**
  * Author : Krupal Shah

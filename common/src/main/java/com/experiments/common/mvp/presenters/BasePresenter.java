@@ -12,26 +12,38 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.experiments.whereapp.api.controllers;
+package com.experiments.common.mvp.presenters;
 
+import android.support.annotation.CallSuper;
 
-import com.experiments.common.controllers.BaseApiController;
+import com.experiments.common.mvp.views.BaseView;
+
+import hugo.weaving.DebugLog;
 
 /**
  * Author : Krupal Shah
- * Date : 17-Apr-16
+ * Date : 25-Apr-16
  * <p>
- * controller for all api calls
+ *
+ * @param <T> MVP view
  */
-public class ApiController extends BaseApiController {
+public abstract class BasePresenter<T extends BaseView> {
 
-    private static ApiController instance;
+    protected T view;
 
-    //singleton
-    public static synchronized ApiController getInstance() {
-        if (instance == null) {
-            instance = new ApiController();
-        }
-        return instance;
+    @CallSuper
+    @DebugLog
+    public void attachView(T view) {
+        this.view = view;
+    }
+
+    @CallSuper
+    @DebugLog
+    public void detachView() {
+        view = null;
+    }
+
+    public T getView() {
+        return view;
     }
 }

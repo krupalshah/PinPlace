@@ -29,10 +29,10 @@ import com.experiments.common.android.fragments.BaseFragment;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public class SavedPlacesFragment extends BaseFragment {
+public class ExplorePlacesFragment extends BaseFragment {
 
     public static Fragment newInstance() {
-        return new SavedPlacesFragment();
+        return new ExplorePlacesFragment();
     }
 
     @Nullable

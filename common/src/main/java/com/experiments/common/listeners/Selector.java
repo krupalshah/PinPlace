@@ -12,26 +12,20 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package com.experiments.whereapp.api.controllers;
-
-
-import com.experiments.common.controllers.BaseApiController;
+package com.experiments.common.listeners;
 
 /**
  * Author : Krupal Shah
- * Date : 17-Apr-16
+ * Date : 08-May-16
  * <p>
- * controller for all api calls
+ * defines methods for retaining state during selection of an item
  */
-public class ApiController extends BaseApiController {
+public interface Selector {
 
-    private static ApiController instance;
+    boolean isSelected();
 
-    //singleton
-    public static synchronized ApiController getInstance() {
-        if (instance == null) {
-            instance = new ApiController();
-        }
-        return instance;
-    }
+    void select();
+
+    void unselect();
 }
+
