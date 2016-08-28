@@ -21,7 +21,7 @@ import android.support.annotation.Nullable;
  * Author : Krupal Shah
  * Date : 09-Apr-16
  * <p>
- * callback for {@link AsyncTaskListener}.<br/>
+ * callback for {@link AsyncTask}.<br/>
  * to avoid nested inner classes for async tasks.
  *
  * @param <T> type of result wanted in {@link AsyncTask#onPostExecute}

@@ -40,7 +40,7 @@ import hugo.weaving.DebugLog;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  * <p>
- * manages location
+ * manages location updates
  */
 public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 

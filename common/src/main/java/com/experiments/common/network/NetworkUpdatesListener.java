@@ -17,6 +17,8 @@ package com.experiments.common.network;
 /**
  * Author : Krupal Shah
  * Date : 02-Apr-16
+ * <p>
+ * callback from {@link NetworkUpdatesHelper}
  */
 public interface NetworkUpdatesListener {
 

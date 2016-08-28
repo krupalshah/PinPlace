@@ -28,7 +28,7 @@ import java.util.List;
  * Author : Krupal Shah
  * Date : 08-May-16
  * <p>
- * base class for all recycler view adapters in project.<br/>
+ * base class for all recycler view adapters in app.<br/>
  * sets click and long click listeners if specified.
  *
  * @param <A> item model

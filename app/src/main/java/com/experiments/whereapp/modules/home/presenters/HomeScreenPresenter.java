@@ -38,7 +38,7 @@ import hugo.weaving.DebugLog;
  * Author : Krupal Shah
  * Date : 25-Apr-16
  * <p>
- * presenter implementation for home screen
+ * presenter for home screen
  */
 public class HomeScreenPresenter extends BasePresenter<HomeView> implements LocationUpdatesListener {
 

@@ -40,7 +40,7 @@ public class PermissionsChecker {
      * list of non granted permissions<br/>
      * should be cleared every time checking new permissions
      */
-    private final List<String> nonGrantedPermissions = new ArrayList<>();
+    private final List<String> revokedPermissions = new ArrayList<>();
 
     /**
      * checks permission and asks if not granted
@@ -53,15 +53,15 @@ public class PermissionsChecker {
      */
     @DebugLog
     public final boolean askPermissionsIfNotGranted(BaseActivity baseActivity, int requestCode, String... permissionsToCheck) {
-        nonGrantedPermissions.clear();
+        revokedPermissions.clear();
         for (String permission : permissionsToCheck) { //iterating through permission given in params
             if (ContextCompat.checkSelfPermission(baseActivity, permission) == PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
                 continue;
             }
-            nonGrantedPermissions.add(permission); //otherwise add it to list
+            revokedPermissions.add(permission); //otherwise add it to list
         }
-        if (nonGrantedPermissions.size() > 0) { //request only non granted permissions
-            ActivityCompat.requestPermissions(baseActivity, nonGrantedPermissions.toArray(new String[nonGrantedPermissions.size()]), requestCode);
+        if (revokedPermissions.size() > 0) { //request only non granted permissions
+            ActivityCompat.requestPermissions(baseActivity, revokedPermissions.toArray(new String[revokedPermissions.size()]), requestCode);
             return false;
         } else {
             return true;
@@ -78,15 +78,15 @@ public class PermissionsChecker {
      */
     @DebugLog
     public final boolean askPermissionsIfNotGranted(BaseFragment baseFragment, int requestCode, String... permissionsToCheck) {
-        nonGrantedPermissions.clear();
+        revokedPermissions.clear();
         for (String permission : permissionsToCheck) { //iterating through permission given in params
             if (ContextCompat.checkSelfPermission(baseFragment.getContext(), permission) == PermissionChecker.PERMISSION_GRANTED) { //if granted - skip iteration
                 continue;
             }
-            nonGrantedPermissions.add(permission); //otherwise add it to list
+            revokedPermissions.add(permission); //otherwise add it to list
         }
-        if (nonGrantedPermissions.size() > 0) { //request only non granted permissions
-            baseFragment.requestPermissions(nonGrantedPermissions.toArray(new String[nonGrantedPermissions.size()]), requestCode);
+        if (revokedPermissions.size() > 0) { //request only non granted permissions
+            baseFragment.requestPermissions(revokedPermissions.toArray(new String[revokedPermissions.size()]), requestCode);
             return false;
         } else {
             return true;

@@ -27,6 +27,8 @@ import hugo.weaving.DebugLog;
 /**
  * Author : Krupal Shah
  * Date : 10-Apr-16
+ * <p>
+ * manages network connectivity changes
  */
 public class NetworkUpdatesHelper {
 

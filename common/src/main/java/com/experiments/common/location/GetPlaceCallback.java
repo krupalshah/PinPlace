@@ -22,7 +22,7 @@ import android.support.annotation.Nullable;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  * <p>
- * callback from {@link LocationOperations#getCurrentPlace}
+ * callback from {@link LocationUpdatesHelper#getCurrentPlace}
  */
 public interface GetPlaceCallback {
 

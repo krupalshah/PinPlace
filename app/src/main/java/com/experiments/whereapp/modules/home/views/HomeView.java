@@ -10,6 +10,7 @@ import com.google.android.gms.location.LocationSettingsResult;
 
 /**
  * Created by Krupal Shah on 28-Aug-16.
+ * mvp view for home screen
  */
 public interface HomeView extends BaseView {
 

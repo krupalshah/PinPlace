@@ -30,7 +30,7 @@ import com.experiments.common.mvp.views.BaseView;
  * Author : Krupal Shah
  * Date : 09-Apr-16
  * <p>
- * base class for all fragments in project
+ * base class for all fragments in app
  */
 public abstract class BaseFragment extends Fragment implements BaseView {
 

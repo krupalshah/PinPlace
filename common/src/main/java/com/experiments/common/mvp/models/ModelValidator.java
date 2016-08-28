@@ -18,7 +18,7 @@ package com.experiments.common.mvp.models;
  * Author : Krupal Shah
  * Date : 26-Apr-16
  * <p>
- * validates model before using it
+ * for validating model before using it
  */
 public interface ModelValidator {
 

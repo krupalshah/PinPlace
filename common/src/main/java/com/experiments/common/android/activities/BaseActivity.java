@@ -32,7 +32,7 @@ import com.experiments.common.mvp.views.BaseView;
  * Author : Krupal Shah
  * Date : 02-Apr-16
  * <p>
- * base class for all activities in project
+ * base class for all activities in app
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
