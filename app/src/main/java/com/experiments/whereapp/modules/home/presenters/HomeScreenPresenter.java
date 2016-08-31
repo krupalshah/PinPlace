@@ -22,10 +22,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.droidexperiments.android.where.R;
-import com.experiments.common.location.GetPlaceCallback;
-import com.experiments.common.location.LocationUpdatesHelper;
-import com.experiments.common.location.LocationUpdatesListener;
-import com.experiments.common.location.PlaceModel;
+import com.experiments.common.helpers.location.GetPlaceCallback;
+import com.experiments.common.helpers.location.LocationUpdatesHelper;
+import com.experiments.common.helpers.location.LocationUpdatesListener;
+import com.experiments.common.helpers.location.PlaceDataWrapper;
 import com.experiments.common.mvp.presenters.BasePresenter;
 import com.experiments.whereapp.events.OnCurrentPlaceUpdated;
 import com.experiments.whereapp.modules.home.views.HomeView;
@@ -158,7 +158,7 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
 
     @Override
     @DebugLog
-    public void onGotLastKnownPlace(@NonNull PlaceModel lastKnownPlace) {
+    public void onGotLastKnownPlace(@NonNull PlaceDataWrapper lastKnownPlace) {
         postUpdateCurrentPlaceEvent(lastKnownPlace);
     }
 
@@ -179,7 +179,7 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
         });
     }
 
-    private void postUpdateCurrentPlaceEvent(PlaceModel currentPlace) {
+    private void postUpdateCurrentPlaceEvent(PlaceDataWrapper currentPlace) {
         EventBus.getDefault().post(new OnCurrentPlaceUpdated(currentPlace));
     }
 

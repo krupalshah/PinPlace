@@ -13,7 +13,7 @@
  *   limitations under the License.
  */
 
-package com.experiments.common.location;
+package com.experiments.common.helpers.location;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -33,7 +33,6 @@ public interface GetPlaceCallback {
     //constants for indicating state of operation. see @GetPlaceOperationStatus
     int STATUS_SUCCESS = 1;
     int STATUS_NO_NETWORK = 2;
-    int STATUS_PREV_TASK_PENDING = 3;
     int STATUS_UNKNOWN_FAILURE = 4;
 
     /**
@@ -42,18 +41,17 @@ public interface GetPlaceCallback {
      * @param place           place object
      * @param operationStatus operation status defined in {@link GetPlaceOperationStatus}
      */
-    void onGotPlace(@Nullable PlaceModel place, @GetPlaceOperationStatus int operationStatus);
+    void onGotPlace(@Nullable PlaceDataWrapper place, @GetPlaceOperationStatus int operationStatus);
 
     /**
      * defines following constants for get place operation:
      * <p>
      * STATUS_SUCCESS - if successful operation<br/>
      * STATUS_NO_NETWORK - if network was not available during operation<br/>
-     * STATUS_PREV_TASK_PENDING - if previous operation is pending <br/>
      * STATUS_UNKNOWN_FAILURE - unknown failure while getting place (such as address could not be fetched or any other exception)
      */
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({STATUS_NO_NETWORK, STATUS_PREV_TASK_PENDING, STATUS_SUCCESS, STATUS_UNKNOWN_FAILURE})
+    @IntDef({STATUS_NO_NETWORK, STATUS_SUCCESS, STATUS_UNKNOWN_FAILURE})
     @interface GetPlaceOperationStatus {
     }
 }

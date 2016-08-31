@@ -13,27 +13,30 @@
  *   limitations under the License.
  */
 
-package com.experiments.common.location;
+package com.experiments.common.helpers.location;
 
 import android.Manifest;
 import android.content.Context;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
-import android.text.TextUtils;
+import android.util.Log;
 
 import com.experiments.common.config.BaseConfig;
-import com.experiments.common.network.NetworkUpdatesHelper;
+import com.experiments.common.helpers.network.NetworkUpdatesHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallbacks;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.Places;
 
 import hugo.weaving.DebugLog;
 
@@ -45,17 +48,17 @@ import hugo.weaving.DebugLog;
  */
 public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    private static final String TAG = "LocationUpdatesHelper";
     private final Context context;
-    private final PlaceModel currentPlace;
+    private final PlaceDataWrapper currentPlace;
     private GoogleApiClient googleApiClient;
     private LocationUpdatesListener locationUpdatesListener;
-    private FetchAddressTask fetchAddressTask;
     private NetworkUpdatesHelper networkUpdatesHelper;
     private LocationRequest locationRequest;
 
     public LocationUpdatesHelper(Context context) {
         this.context = context;
-        currentPlace = new PlaceModel();
+        currentPlace = new PlaceDataWrapper();
     }
 
     /**
@@ -70,6 +73,7 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
+                .addApi(Places.PLACE_DETECTION_API)
                 .build();
     }
 
@@ -114,11 +118,10 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
         if (lastKnownLocation == null) return;
 
         //setting latlng to place object and calling getCurrentPlace()
-        currentPlace.setLatitude(lastKnownLocation.getLatitude());
-        currentPlace.setLongitude(lastKnownLocation.getLongitude());
+        currentPlace.setLocationData(lastKnownLocation);
 
         //giving updated place object from getCurrentPlace in callback
-        getCurrentPlace(needsAddress, (place, operationStatus) -> {
+        getCurrentPlace(true, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
                 locationUpdatesListener.onGotLastKnownPlace(place);
             }
@@ -144,13 +147,6 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
         //removing location updates from fused location provider
         if (googleApiClient != null && googleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-        }
-        //canceling address fetching task if running
-        if (fetchAddressTask != null) {
-            if (fetchAddressTask.getStatus() == AsyncTask.Status.RUNNING) {
-                fetchAddressTask.cancel(true);
-            }
-            fetchAddressTask = null;
         }
     }
 
@@ -191,34 +187,38 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
      * @param callback     callback when gets the place
      */
     @DebugLog
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public void getCurrentPlace(boolean needsAddress, @NonNull final GetPlaceCallback callback) {
         if (!needsAddress) { //does not need place with updated address - just need location not address
-            callback.onGotPlace(currentPlace, GetPlaceCallback.STATUS_SUCCESS);
+            callback.onGotPlace(this.currentPlace, GetPlaceCallback.STATUS_SUCCESS);
             return;
         }
         if (networkUpdatesHelper == null) networkUpdatesHelper = new NetworkUpdatesHelper(context);
         if (!networkUpdatesHelper.isInternetAvailable()) { //needs address update but no internet
-            callback.onGotPlace(currentPlace, GetPlaceCallback.STATUS_NO_NETWORK);
+            callback.onGotPlace(this.currentPlace, GetPlaceCallback.STATUS_NO_NETWORK);
             return;
         }
-        double lat = currentPlace.getLatitude(), lng = currentPlace.getLongitude();
-        if (fetchAddressTask != null) { //if previous address fetching task is already running : block executing another task
-            if (fetchAddressTask.getStatus() == AsyncTask.Status.RUNNING || fetchAddressTask.getStatus() == AsyncTask.Status.PENDING) {
-                callback.onGotPlace(currentPlace, GetPlaceCallback.STATUS_PREV_TASK_PENDING);
-                return;
-            }
-        }
 
-        //executing address fetching task
-        fetchAddressTask = new FetchAddressTask(context, lat, lng, result -> {
-            if (TextUtils.isEmpty(result)) {
-                callback.onGotPlace(null, GetPlaceCallback.STATUS_UNKNOWN_FAILURE); //got empty address in callback
-            } else {
-                currentPlace.setAddress(result);
+        PendingResult<PlaceLikelihoodBuffer> currentPlaceData = Places.PlaceDetectionApi.getCurrentPlace(googleApiClient, null);
+        currentPlaceData.setResultCallback(new ResultCallbacks<PlaceLikelihoodBuffer>() {
+            @DebugLog
+            @Override
+            public void onSuccess(@NonNull PlaceLikelihoodBuffer placeLikelihoods) {
+                Log.d(TAG, "onSuccess() place = [" + placeLikelihoods.get(0).getPlace() + "]");
+
+                currentPlace.setPlaceData(placeLikelihoods.get(0).getPlace());
                 callback.onGotPlace(currentPlace, GetPlaceCallback.STATUS_SUCCESS);
+
+                placeLikelihoods.release();
+            }
+
+            @DebugLog
+            @Override
+            public void onFailure(@NonNull Status status) {
+                Log.d(TAG, "onFailure() : " + "cause = [" + status.getStatusMessage() + "]");
+                callback.onGotPlace(null, GetPlaceCallback.STATUS_UNKNOWN_FAILURE); //got empty address in callback
             }
         });
-        fetchAddressTask.execute();
     }
 
     @Override
@@ -231,8 +231,7 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
     @DebugLog
     public void onLocationChanged(Location location) {
         //when location is changed, assigning latlng to current place object
-        currentPlace.setLatitude(location.getLatitude());
-        currentPlace.setLongitude(location.getLongitude());
+        currentPlace.setLocationData(location);
 
         //dispatching callback about location update
         locationUpdatesListener.onLocationUpdated(location);

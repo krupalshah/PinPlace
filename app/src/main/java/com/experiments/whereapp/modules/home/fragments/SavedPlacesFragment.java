@@ -19,6 +19,7 @@ package com.experiments.whereapp.modules.home.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,13 @@ import android.widget.TextView;
 
 import com.droidexperiments.android.where.R;
 import com.experiments.common.android.fragments.BaseFragment;
+import com.experiments.common.helpers.location.PlaceDataWrapper;
+import com.experiments.whereapp.events.OnCurrentPlaceUpdated;
+import com.google.android.gms.location.places.Place;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +65,18 @@ public class SavedPlacesFragment extends BaseFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
@@ -69,5 +89,18 @@ public class SavedPlacesFragment extends BaseFragment {
     @Override
     public void removeListeners() {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onCurrentPlaceUpdatedEvent3(OnCurrentPlaceUpdated onCurrentPlaceUpdated) {
+        PlaceDataWrapper placeWrapper = onCurrentPlaceUpdated.getCurrentPlace();
+        updateAddressText(placeWrapper.getPlaceData());
+    }
+
+    private void updateAddressText(Place place) {
+        if (place == null || TextUtils.isEmpty(place.getAddress())) {
+            return;
+        }
+        tvAddress.setText(place.getAddress());
     }
 }

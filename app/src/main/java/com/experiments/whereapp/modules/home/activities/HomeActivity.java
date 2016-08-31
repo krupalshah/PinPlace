@@ -36,7 +36,7 @@ import com.droidexperiments.android.where.R;
 import com.experiments.common.android.activities.BaseActivity;
 import com.experiments.common.android.adapters.CommonPagerAdapter;
 import com.experiments.common.android.views.CustomTextView;
-import com.experiments.common.utilities.PermissionsChecker;
+import com.experiments.common.helpers.permissions.PermissionsChecker;
 import com.experiments.whereapp.modules.home.fragments.ExplorePlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.RecommendedPlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;

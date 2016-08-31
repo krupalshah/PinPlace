@@ -13,7 +13,7 @@
  *   limitations under the License.
  */
 
-package com.experiments.common.utilities;
+package com.experiments.common.helpers.permissions;
 
 import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;

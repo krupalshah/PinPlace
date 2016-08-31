@@ -13,29 +13,23 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.events;
-
-import com.experiments.common.helpers.location.PlaceDataWrapper;
+package com.experiments.common.helpers.network;
 
 /**
- * Created by Krupal Shah on 01-Sep-16.
+ * Author : Krupal Shah
+ * Date : 02-Apr-16
+ * <p>
+ * callback from {@link NetworkUpdatesHelper}
  */
-public class OnCurrentPlaceUpdated {
+public interface NetworkUpdatesListener {
 
-    private final PlaceDataWrapper currentPlace;
+    /**
+     * will be called when network becomes available
+     */
+    void onInternetConnected();
 
-    public OnCurrentPlaceUpdated(PlaceDataWrapper currentPlace) {
-        this.currentPlace = currentPlace;
-    }
-
-    public PlaceDataWrapper getCurrentPlace() {
-        return currentPlace;
-    }
-
-    @Override
-    public String toString() {
-        return "OnCurrentPlaceUpdated{" +
-                "currentPlace=" + currentPlace +
-                '}';
-    }
+    /**
+     * will be called when network becomes unavailable
+     */
+    void onInternetDisconnected();
 }

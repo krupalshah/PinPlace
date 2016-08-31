@@ -13,7 +13,7 @@
  *   limitations under the License.
  */
 
-package com.experiments.common.location;
+package com.experiments.common.helpers.location;
 
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -45,7 +45,7 @@ public interface LocationUpdatesListener {
      *
      * @param lastKnownPlace last place
      */
-    void onGotLastKnownPlace(@NonNull PlaceModel lastKnownPlace);
+    void onGotLastKnownPlace(@NonNull PlaceDataWrapper lastKnownPlace);
 
     /**
      * will be called whenever location is updated
