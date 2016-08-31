@@ -18,6 +18,7 @@ package com.experiments.whereapp.modules.home.presenters;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.droidexperiments.android.where.R;
@@ -26,6 +27,7 @@ import com.experiments.common.location.LocationUpdatesHelper;
 import com.experiments.common.location.LocationUpdatesListener;
 import com.experiments.common.location.PlaceModel;
 import com.experiments.common.mvp.presenters.BasePresenter;
+import com.experiments.whereapp.events.OnCurrentPlaceUpdated;
 import com.experiments.whereapp.modules.home.views.HomeView;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -33,6 +35,8 @@ import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+
+import org.greenrobot.eventbus.EventBus;
 
 import hugo.weaving.DebugLog;
 
@@ -54,6 +58,14 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
 
     //temporary location to check whether new updated location has not more distance from old than {@link #MIN_DISTANCE_IN_METERS}
     private Location tempLocation;
+
+    private HomeScreenPresenter() {
+        //private constructor to avoid direct instances. use factory method instead.
+    }
+
+    public static HomeScreenPresenter create() {
+        return new HomeScreenPresenter();
+    }
 
     @Override
     @DebugLog
@@ -146,8 +158,8 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
 
     @Override
     @DebugLog
-    public void onGotLastKnownPlace(PlaceModel lastKnownPlace) {
-        getView().updateAddressText(lastKnownPlace.getAddress());
+    public void onGotLastKnownPlace(@NonNull PlaceModel lastKnownPlace) {
+        postUpdateCurrentPlaceEvent(lastKnownPlace);
     }
 
     @Override
@@ -162,8 +174,13 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
         //otherwise get place with updated address and refresh text on view
         locationUpdatesHelper.getCurrentPlace(true, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
-                getView().updateAddressText(place.getAddress());
+                postUpdateCurrentPlaceEvent(place);
             }
         });
     }
+
+    private void postUpdateCurrentPlaceEvent(PlaceModel currentPlace) {
+        EventBus.getDefault().post(new OnCurrentPlaceUpdated(currentPlace));
+    }
+
 }

@@ -114,7 +114,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     protected void initComponents() {
         permissionsChecker = new PermissionsChecker();
 
-        homeScreenPresenter = new HomeScreenPresenter();
+        homeScreenPresenter = HomeScreenPresenter.create();
         homeScreenPresenter.attachView(this);
         homeScreenPresenter.registerPlaceUpdates();
     }
@@ -175,7 +175,6 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
         homeScreenPresenter.detachView();
         super.onDestroy();
     }
-
 
     @Override
     public void showTurnOnLocationDialog(Status locationSettingsStatus) {
@@ -244,11 +243,6 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
         //setting current title to home
         setToolbarTitle(toolbarTitles.get(tabsHome.getSelectedTabPosition()));
-    }
-
-    @Override
-    public void updateAddressText(String address) {
-
     }
 
     @Override

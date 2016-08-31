@@ -21,7 +21,6 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.view.View;
 
 import com.experiments.common.android.activities.BaseActivity;
 import com.experiments.common.mvp.views.BaseView;
@@ -61,12 +60,12 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     @Override
-    public void showSnakeBar(@NonNull String msg, @StringRes int action, View.OnClickListener actionListener) {
+    public void showSnakeBar(@NonNull String msg, @StringRes int action, android.view.View.OnClickListener actionListener) {
         ((BaseActivity) getActivity()).showSnakeBar(msg, action, actionListener);
     }
 
     @Override
-    public void showSnakeBar(@StringRes int msg, @StringRes int action, View.OnClickListener actionListener) {
+    public void showSnakeBar(@StringRes int msg, @StringRes int action, android.view.View.OnClickListener actionListener) {
         ((BaseActivity) getActivity()).showSnakeBar(msg, action, actionListener);
     }
 

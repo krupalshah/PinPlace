@@ -16,6 +16,7 @@
 package com.experiments.common.location;
 
 import android.location.Location;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.location.LocationSettingsResult;
 
@@ -44,7 +45,7 @@ public interface LocationUpdatesListener {
      *
      * @param lastKnownPlace last place
      */
-    void onGotLastKnownPlace(PlaceModel lastKnownPlace);
+    void onGotLastKnownPlace(@NonNull PlaceModel lastKnownPlace);
 
     /**
      * will be called whenever location is updated

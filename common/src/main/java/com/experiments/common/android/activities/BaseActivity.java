@@ -24,7 +24,6 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -37,7 +36,7 @@ import com.experiments.common.mvp.views.BaseView;
  * <p>
  * base class for all activities in app
  */
-public abstract class BaseActivity extends AppCompatActivity implements BaseView, View.OnClickListener {
+public abstract class BaseActivity extends AppCompatActivity implements BaseView, android.view.View.OnClickListener {
 
     //flag to manage if activity's onDestroy() has been called or not (since not available for minSDK < 17)
     private boolean isDestroyed;
@@ -67,7 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
-    public void showSnakeBar(@NonNull String msg, @StringRes int action, View.OnClickListener actionListener) {
+    public void showSnakeBar(@NonNull String msg, @StringRes int action, android.view.View.OnClickListener actionListener) {
         hideSnakeBar();
         snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG);
         snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.md_red_A200));
@@ -81,7 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @CallSuper
     @Override
-    public void onClick(View view) {
+    public void onClick(android.view.View view) {
         hideKeyBoard();
         hideSnakeBar();
     }
@@ -95,7 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void hideKeyBoard() {
-        View view = this.getCurrentFocus();
+        android.view.View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -103,7 +102,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
-    public void showSnakeBar(@StringRes int msg, @StringRes int action, @Nullable View.OnClickListener actionListener) {
+    public void showSnakeBar(@StringRes int msg, @StringRes int action, @Nullable android.view.View.OnClickListener actionListener) {
         showSnakeBar(getString(msg), action, actionListener);
     }
 

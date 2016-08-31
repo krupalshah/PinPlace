@@ -55,13 +55,6 @@ public interface HomeView extends BaseView {
     void showTurnOnLocationDialog(Status locationStatus);
 
     /**
-     * refreshes address text on home screen whenever location is updated
-     *
-     * @param address address
-     */
-    void updateAddressText(String address);
-
-    /**
      * navigates to settings screen
      */
     void navigateToSettings();
