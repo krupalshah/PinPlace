@@ -121,7 +121,7 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
         currentPlace.setLocationData(lastKnownLocation);
 
         //giving updated place object from getCurrentPlace in callback
-        getCurrentPlace(true, (place, operationStatus) -> {
+        getCurrentPlace(needsAddress, (place, operationStatus) -> {
             if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
                 locationUpdatesListener.onGotLastKnownPlace(place);
             }
@@ -190,12 +190,12 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public void getCurrentPlace(boolean needsAddress, @NonNull final GetPlaceCallback callback) {
         if (!needsAddress) { //does not need place with updated address - just need location not address
-            callback.onGotPlace(this.currentPlace, GetPlaceCallback.STATUS_SUCCESS);
+            callback.onGotPlace(currentPlace, GetPlaceCallback.STATUS_SUCCESS);
             return;
         }
         if (networkUpdatesHelper == null) networkUpdatesHelper = new NetworkUpdatesHelper(context);
         if (!networkUpdatesHelper.isInternetAvailable()) { //needs address update but no internet
-            callback.onGotPlace(this.currentPlace, GetPlaceCallback.STATUS_NO_NETWORK);
+            callback.onGotPlace(currentPlace, GetPlaceCallback.STATUS_NO_NETWORK);
             return;
         }
 

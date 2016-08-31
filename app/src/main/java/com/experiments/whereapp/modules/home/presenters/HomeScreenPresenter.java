@@ -107,6 +107,7 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
     public void stopPlaceUpdates() {
         locationUpdatesHelper.removeLocationUpdates();
         locationUpdatesHelper.disconnectApiClient();
+        tempLocation = null;
     }
 
     @DebugLog

@@ -17,6 +17,7 @@ package com.experiments.common.android.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -127,7 +128,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public boolean isDestroyed() {
-        return isDestroyed;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            return super.isDestroyed();
+        } else {
+            return isDestroyed;
+        }
     }
 
 }
