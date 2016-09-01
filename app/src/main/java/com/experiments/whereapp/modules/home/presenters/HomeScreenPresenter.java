@@ -60,7 +60,7 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
     private Location tempLocation;
 
     private HomeScreenPresenter() {
-        //private constructor to avoid direct instances. use factory method instead.
+        //avoiding direct instances. use factory method instead.
     }
 
     public static HomeScreenPresenter create() {

@@ -43,6 +43,14 @@ public class PermissionsChecker {
      */
     private final List<String> revokedPermissions = new ArrayList<>();
 
+    private PermissionsChecker() {
+        //avoiding direct instances. use factory method instead.
+    }
+
+    public static PermissionsChecker create() {
+        return new PermissionsChecker();
+    }
+
     /**
      * checks permission and asks if not granted
      *

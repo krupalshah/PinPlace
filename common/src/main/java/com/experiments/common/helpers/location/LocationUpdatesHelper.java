@@ -69,7 +69,13 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
     @DebugLog
     public void registerUpdateCallbacks(@NonNull LocationUpdatesListener locationUpdatesListener) {
         this.locationUpdatesListener = locationUpdatesListener;
-        googleApiClient = new GoogleApiClient.Builder(context)
+        googleApiClient = buildGoogleApiClient();
+    }
+
+    @DebugLog
+    @NonNull
+    private GoogleApiClient buildGoogleApiClient() {
+        return new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -91,10 +97,7 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
     @DebugLog
     public void checkLocationSettings() {
         //creating location request and configuring intervals
-        locationRequest = new LocationRequest();
-        locationRequest.setInterval(BaseConfig.LocationUpdates.NORMAL_LOCATION_UPDATE_INTERVAL);
-        locationRequest.setFastestInterval(BaseConfig.LocationUpdates.FASTEST_LOCATION_UPDATE_INTERVAL);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest = createLocationRequest();
 
         //checking for location settings
         LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
@@ -102,6 +105,15 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
                 .build();
         PendingResult<LocationSettingsResult> pendingResult = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, locationSettingsRequest);
         pendingResult.setResultCallback(locationUpdatesListener::onLocationSettingsResult);
+    }
+
+    @DebugLog
+    private LocationRequest createLocationRequest() {
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(BaseConfig.LocationUpdates.NORMAL_LOCATION_UPDATE_INTERVAL);
+        locationRequest.setFastestInterval(BaseConfig.LocationUpdates.FASTEST_LOCATION_UPDATE_INTERVAL);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        return locationRequest;
     }
 
     /**
@@ -240,6 +252,7 @@ public class LocationUpdatesHelper implements GoogleApiClient.ConnectionCallback
     @Override
     @DebugLog
     public void onConnectionSuspended(int i) {
+
     }
 
     @Override

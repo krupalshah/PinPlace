@@ -112,7 +112,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
     @Override
     protected void initComponents() {
-        permissionsChecker = new PermissionsChecker();
+        permissionsChecker = PermissionsChecker.create();
 
         homeScreenPresenter = HomeScreenPresenter.create();
         homeScreenPresenter.attachView(this);
