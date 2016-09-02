@@ -92,7 +92,7 @@ public class ExplorePlacesFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onCurrentPlaceUpdatedEvent1(OnCurrentPlaceUpdated onCurrentPlaceUpdated) {
+    public void onCurrentPlaceUpdatedEvent(OnCurrentPlaceUpdated onCurrentPlaceUpdated) {
         Place place = onCurrentPlaceUpdated.getCurrentPlace().getPlaceData();
         updateAddressText(place);
     }

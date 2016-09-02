@@ -24,6 +24,7 @@ import android.view.View;
  * Created by Krupal Shah on 28-Aug-16.
  */
 public interface BaseView extends BaseMvpView {
+
     /**
      * shows short-length toast
      *

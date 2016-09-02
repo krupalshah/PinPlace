@@ -92,7 +92,7 @@ public class SavedPlacesFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onCurrentPlaceUpdatedEvent3(OnCurrentPlaceUpdated onCurrentPlaceUpdated) {
+    public void onCurrentPlaceUpdatedEvent(OnCurrentPlaceUpdated onCurrentPlaceUpdated) {
         PlaceDataWrapper placeWrapper = onCurrentPlaceUpdated.getCurrentPlace();
         updateAddressText(placeWrapper.getPlaceData());
     }

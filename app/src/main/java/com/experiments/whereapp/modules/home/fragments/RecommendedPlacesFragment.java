@@ -90,7 +90,7 @@ public class RecommendedPlacesFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onCurrentPlaceUpdatedEvent2(OnCurrentPlaceUpdated onCurrentPlaceUpdated) {
+    public void onCurrentPlaceUpdatedEvent(OnCurrentPlaceUpdated onCurrentPlaceUpdated) {
         Place place = onCurrentPlaceUpdated.getCurrentPlace().getPlaceData();
         updateAddressText(place);
     }

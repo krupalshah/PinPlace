@@ -19,6 +19,8 @@ import com.experiments.common.helpers.location.PlaceDataWrapper;
 
 /**
  * Created by Krupal Shah on 01-Sep-16.
+ * <p>
+ * this event will be posted whenever current place information gets updated
  */
 public class OnCurrentPlaceUpdated {
 

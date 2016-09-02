@@ -33,6 +33,7 @@ import io.fabric.sdk.android.Fabric;
 public class WhereApp extends Common {
 
     @Override
+    @DebugLog
     public void onCreate() {
         super.onCreate();
         if (BuildConfig.DEBUG) LeakCanary.install(this);

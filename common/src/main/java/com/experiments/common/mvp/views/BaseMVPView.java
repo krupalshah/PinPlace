@@ -21,7 +21,7 @@ import com.experiments.common.mvp.presenters.BasePresenter;
 
 /**
  * base class for all MVP views. <br/>
- * do not conflict it with android's view class. it is just view in Model-View-Presenter.
+ * do not confuse it with android's view class. it is just view in Model-View-Presenter.
  */
 public interface BaseMvpView {
 

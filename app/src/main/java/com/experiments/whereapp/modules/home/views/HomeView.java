@@ -25,21 +25,14 @@ import com.google.android.gms.location.LocationSettingsResult;
 
 /**
  * Created by Krupal Shah on 28-Aug-16.
- * mvp view for home screen
+ * <p>
+ * view for home screen
  */
 public interface HomeView extends BaseView {
 
-    /**
-     * sets transparent status bar for kitkat & above
-     */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     void makeStatusBarTransparent();
 
-    /**
-     * sets title on toolbar
-     *
-     * @param titleRes resource id of title
-     */
     void setToolbarTitle(@StringRes int titleRes);
 
     /**

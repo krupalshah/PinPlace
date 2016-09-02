@@ -17,9 +17,22 @@ package com.experiments.common;
 
 import android.app.Application;
 
+import hugo.weaving.DebugLog;
+
 /**
  * Created by Krupal Shah on 28-Aug-16.
  */
 public class Common extends Application {
 
+    @Override
+    @DebugLog
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    @Override
+    @DebugLog
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
 }

@@ -42,7 +42,6 @@ import com.experiments.whereapp.modules.home.fragments.RecommendedPlacesFragment
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;
 import com.experiments.whereapp.modules.home.presenters.HomeScreenPresenter;
 import com.experiments.whereapp.modules.home.views.HomeView;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStates;
@@ -113,7 +112,6 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     @Override
     protected void initComponents() {
         permissionsChecker = PermissionsChecker.create();
-
         homeScreenPresenter = HomeScreenPresenter.create();
         homeScreenPresenter.attachView(this);
         homeScreenPresenter.registerPlaceUpdates();
@@ -176,15 +174,6 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
         super.onDestroy();
     }
 
-    @Override
-    public void showTurnOnLocationDialog(Status locationSettingsStatus) {
-        try {
-            //this will show location dialog to user
-            locationSettingsStatus.startResolutionForResult(HomeActivity.this, REQUEST_LOCATION_SETTINGS);
-        } catch (IntentSender.SendIntentException e) {
-            e.printStackTrace();
-        }
-    }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
@@ -206,48 +195,33 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
     @Override
     public void setupViewPager() {
+        //preparing fragments
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(RecommendedPlacesFragment.newInstance());
-        fragments.add(ExplorePlacesFragment.newInstance());
-        fragments.add(SavedPlacesFragment.newInstance());
+        prepareTabFragments(fragments);
 
         //setting pager adapter
-        CommonPagerAdapter commonPagerAdapter = new CommonPagerAdapter(getSupportFragmentManager(), fragments);
-        pagerHome.setOffscreenPageLimit(fragments.size());
-        pagerHome.setAdapter(commonPagerAdapter);
-        pagerHome.addOnPageChangeListener(this);
+        setPagerAdapter(fragments);
 
-        //setting up tabs having only icons
+        //setting up tabs with view pager
         tabsHome.setupWithViewPager(pagerHome);
-        for (int tabPos = 0; tabPos < tabsHome.getTabCount(); tabPos++) {
-            TabLayout.Tab tab = tabsHome.getTabAt(tabPos);
-            if (tab == null) continue;
-            switch (tabPos) {
-                case TAB_POSITION_HOME:
-                    tab.setIcon(R.drawable.ic_home_white_24dp);
-                    break;
-                case TAB_POSITION_EXPLORE:
-                    tab.setIcon(R.drawable.ic_explore_white_24dp);
-                    break;
-                case TAB_POSITION_BOOKMARKS:
-                    tab.setIcon(R.drawable.ic_bookmark_white_24dp);
-                    break;
-            }
-        }
 
-        //creating toolbar titles for equivalent tabs
+        //setting tab icons according to view pager
+        setTabIcons();
+
+        //creating toolbar titles for equivalent tabs & setting current title to home
         toolbarTitles = new ArrayList<>(tabsHome.getTabCount());
-        toolbarTitles.add(TAB_POSITION_HOME, R.string.home);
-        toolbarTitles.add(TAB_POSITION_EXPLORE, R.string.explore);
-        toolbarTitles.add(TAB_POSITION_EXPLORE, R.string.bookmarks);
-
-        //setting current title to home
+        prepareToolbarTitles(toolbarTitles);
         setToolbarTitle(toolbarTitles.get(tabsHome.getSelectedTabPosition()));
     }
 
     @Override
-    public void removeListeners() {
-        pagerHome.clearOnPageChangeListeners();
+    public void showTurnOnLocationDialog(Status locationSettingsStatus) {
+        try {
+            //this will show location dialog to user
+            locationSettingsStatus.startResolutionForResult(HomeActivity.this, REQUEST_LOCATION_SETTINGS);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
     }
 
     @DebugLog
@@ -258,14 +232,8 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
     @DebugLog
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @DebugLog
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
+    public void removeListeners() {
+        pagerHome.clearOnPageChangeListeners();
     }
 
     @OnClick({R.id.iv_search_toolbar, R.id.iv_settings_toolbar})
@@ -292,17 +260,74 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
         if (!permissionsChecker.askPermissionsIfNotGranted(this, PERMISSION_PLACE_PICKER, LOCATION_PERMISSIONS)) {
             return;
         }
-
         //building place picker intent and starting activity for result
         try {
             PlacePicker.IntentBuilder placeIntentBuilder = new PlacePicker.IntentBuilder();
             startActivityForResult(placeIntentBuilder.build(this), REQUEST_PLACE_PICKER);
-        } catch (GooglePlayServicesRepairableException e) {
-            showSnakeBar(R.string.err_play_services_disabled, android.R.string.ok, null);
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            showSnakeBar(R.string.err_play_services_not_available, android.R.string.ok, null);
-            e.printStackTrace();
+        } catch (Exception e) {
+            handleErrorOpeningPlacePicker(e);
         }
     }
+
+
+    private void prepareTabFragments(List<Fragment> fragments) {
+        fragments.add(RecommendedPlacesFragment.newInstance());
+        fragments.add(ExplorePlacesFragment.newInstance());
+        fragments.add(SavedPlacesFragment.newInstance());
+    }
+
+    private void prepareToolbarTitles(List<Integer> toolbarTitles) {
+        toolbarTitles.add(TAB_POSITION_HOME, R.string.home);
+        toolbarTitles.add(TAB_POSITION_EXPLORE, R.string.explore);
+        toolbarTitles.add(TAB_POSITION_EXPLORE, R.string.bookmarks);
+    }
+
+    private void setTabIcons() {
+        for (int tabPos = 0; tabPos < tabsHome.getTabCount(); tabPos++) {
+            TabLayout.Tab tab = tabsHome.getTabAt(tabPos);
+            if (tab == null) continue;
+
+            switch (tabPos) {
+                case TAB_POSITION_HOME:
+                    tab.setIcon(R.drawable.ic_home_white_24dp);
+                    break;
+                case TAB_POSITION_EXPLORE:
+                    tab.setIcon(R.drawable.ic_explore_white_24dp);
+                    break;
+                case TAB_POSITION_BOOKMARKS:
+                    tab.setIcon(R.drawable.ic_bookmark_white_24dp);
+                    break;
+            }
+        }
+    }
+
+    private void setPagerAdapter(List<Fragment> fragments) {
+        CommonPagerAdapter commonPagerAdapter = new CommonPagerAdapter(getSupportFragmentManager(), fragments);
+        pagerHome.setOffscreenPageLimit(fragments.size());
+        pagerHome.setAdapter(commonPagerAdapter);
+        pagerHome.addOnPageChangeListener(this);
+    }
+
+    private void handleErrorOpeningPlacePicker(Exception e) {
+        e.printStackTrace();
+        if (e instanceof GooglePlayServicesRepairableException) {
+            showSnakeBar(R.string.err_play_services_disabled, android.R.string.ok, null);
+        } else {
+            showSnakeBar(R.string.err_play_services_not_available, android.R.string.ok, null);
+        }
+    }
+
+
+    @DebugLog
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @DebugLog
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
 }
