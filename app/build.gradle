@@ -37,6 +37,12 @@ android {
         additionalParameters "--no-version-vectors"
     }
 
+    apt {
+        arguments {
+            eventBusIndex "com.experiments.whereapp.GeneratedEventBusIndex"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -97,6 +103,7 @@ dependencies {
 
     //event bus
     compile 'org.greenrobot:eventbus:3.0.0'
+    apt 'org.greenrobot:eventbus-annotation-processor:3.0.1'
 
     //crashes and leaks
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {

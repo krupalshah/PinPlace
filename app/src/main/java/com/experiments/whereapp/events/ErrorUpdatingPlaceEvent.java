@@ -14,12 +14,26 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.modules.home.views;
-
-import com.experiments.core.mvp.views.BaseView;
+package com.experiments.whereapp.events;
 
 /**
  * Created by Krupal Shah on 04-Sep-16.
  */
-public interface BaseHomeView extends BaseView {
+public class ErrorUpdatingPlaceEvent {
+    private final Throwable exception;
+
+    public ErrorUpdatingPlaceEvent(Throwable exception) {
+        this.exception = exception;
+    }
+
+    public Throwable getException() {
+        return exception;
+    }
+
+    @Override
+    public String toString() {
+        return "OnUpdatingPlaceError{" +
+                "exception=" + exception +
+                '}';
+    }
 }

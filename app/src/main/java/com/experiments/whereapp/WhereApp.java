@@ -22,6 +22,8 @@ import com.experiments.whereapp.config.AppConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.squareup.leakcanary.LeakCanary;
 
+import org.greenrobot.eventbus.EventBus;
+
 import hugo.weaving.DebugLog;
 import io.fabric.sdk.android.Fabric;
 
@@ -37,11 +39,12 @@ public class WhereApp extends Core {
     @DebugLog
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
-        FlowManager.init(this);
         if (AppConfig.DEBUG) {
             LeakCanary.install(this);
         }
+        Fabric.with(this, new Crashlytics());
+        FlowManager.init(this);
+        EventBus.builder().addIndex(new GeneratedEventBusIndex()).installDefaultEventBus();
     }
 
     @Override

@@ -36,11 +36,12 @@ import com.droidexperiments.android.where.R;
 import com.experiments.core.android.activities.BaseActivity;
 import com.experiments.core.android.adapters.CommonPagerAdapter;
 import com.experiments.core.android.views.CustomTextView;
+import com.experiments.core.exceptions.PermissionDeniedException;
 import com.experiments.core.helpers.permissions.PermissionsChecker;
 import com.experiments.whereapp.modules.home.fragments.ExplorePlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.RecommendedPlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;
-import com.experiments.whereapp.modules.home.presenters.HomeScreenPresenter;
+import com.experiments.whereapp.modules.home.presenters.HomePresenter;
 import com.experiments.whereapp.modules.home.views.HomeScreenView;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -96,7 +97,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
     ViewPager pagerHome;
 
 
-    private HomeScreenPresenter homeScreenPresenter;
+    private HomePresenter homePresenter;
     private PermissionsChecker permissionsChecker;
     private List<Integer> toolbarTitles;
 
@@ -111,9 +112,9 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
     @Override
     protected void initComponents() {
         permissionsChecker = PermissionsChecker.create();
-        homeScreenPresenter = HomeScreenPresenter.create();
-        homeScreenPresenter.attachView(this);
-        homeScreenPresenter.registerPlaceUpdates();
+        homePresenter = HomePresenter.create();
+        homePresenter.attachView(this);
+        homePresenter.registerPlaceUpdates();
     }
 
     @Override
@@ -122,7 +123,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
         if (!permissionsChecker.askPermissionsIfNotGranted(this, PERMISSION_LOCATION_UPDATES, LOCATION_PERMISSIONS)) {
             return;
         }
-        homeScreenPresenter.requestPlaceUpdates();
+        homePresenter.requestPlaceUpdates();
     }
 
     @Override
@@ -132,12 +133,12 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
             case REQUEST_LOCATION_SETTINGS:
                 //got result from resolution dialog
                 LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
-                homeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
+                homePresenter.checkTurnOnLocationResult(locationSettingsStates);
                 break;
 
             case REQUEST_PLACE_PICKER:
                 //got result from place picker
-                homeScreenPresenter.checkPlacePickerResult(resultCode, data);
+                homePresenter.checkPlacePickerResult(resultCode, data);
                 break;
         }
     }
@@ -149,7 +150,9 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
             case PERMISSION_LOCATION_UPDATES:
                 //requesting location updates if permissions granted
                 if (permissionsChecker.checkGrantResults(this, requestCode, grantResults, R.string.allow_location_updates, LOCATION_PERMISSIONS)) {
-                    homeScreenPresenter.requestPlaceUpdates();
+                    homePresenter.requestPlaceUpdates();
+                } else {
+                    homePresenter.postErrorGettingPlaceEvent(new PermissionDeniedException(LOCATION_PERMISSIONS));
                 }
                 break;
             case PERMISSION_PLACE_PICKER:
@@ -163,14 +166,14 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
 
     @Override
     protected void onStop() {
-        homeScreenPresenter.stopPlaceUpdates();
+        homePresenter.stopPlaceUpdates();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        homeScreenPresenter.unregisterPlaceUpdates();
-        homeScreenPresenter.detachView();
+        homePresenter.unregisterPlaceUpdates();
+        homePresenter.detachView();
         super.onDestroy();
     }
 
@@ -221,6 +224,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
             locationSettingsStatus.startResolutionForResult(HomeActivity.this, REQUEST_LOCATION_SETTINGS);
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
+            homePresenter.postErrorGettingPlaceEvent(e);
         }
     }
 
@@ -330,5 +334,4 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
     public void onPageScrollStateChanged(int state) {
 
     }
-
 }

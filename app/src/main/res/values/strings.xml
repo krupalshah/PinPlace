@@ -20,7 +20,7 @@
 
     <string name="allow_location_updates">Location permission is required for app to work</string>
     <string name="allow_place_search">Location permission is required for searching places</string>
-    <string name="err_no_internet">Internet not available</string>
+    <string name="err_no_internet">Internet not connected!</string>
     <string name="home">Home</string>
 
     <string name="dismiss">Dismiss</string>
@@ -33,5 +33,7 @@
     <string name="err_play_services_not_available">Google play services are not available</string>
     <string name="err_play_services_disabled">Google play services are either not updated or disabled</string>
     <string name="retrieving_location">Retrieving Place Information</string>
+    <string name="err_unknown">Unknown error occurred!</string>
+    <string name="err_fetching_place_info">Error getting current place!</string>
 
 </resources>

@@ -25,6 +25,7 @@ import android.support.annotation.RequiresPermission;
 import android.util.Log;
 
 import com.experiments.core.config.BaseConfig;
+import com.experiments.core.exceptions.NoInternetException;
 import com.experiments.core.utilities.BaseUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -135,9 +136,22 @@ public class LocationUpdatesManager implements GoogleApiClient.ConnectionCallbac
 
         //giving updated place object from getCurrentPlace in callback
         getCurrentPlace(needsAddress, (place, operationStatus) -> {
-            if (place == null) return;
+            if (place == null) {
+                locationUpdatesListener.onErrorGettingLastKnownPlace(new Throwable("place is null"));
+                return;
+            }
             switch (operationStatus) {
+                case GetPlaceCallback.STATUS_SUCCESS:
+                    locationUpdatesListener.onGotLastKnownPlace(place);
+                    break;
 
+                case GetPlaceCallback.STATUS_NO_NETWORK:
+                    locationUpdatesListener.onErrorGettingLastKnownPlace(new NoInternetException());
+                    break;
+
+                case GetPlaceCallback.STATUS_UNKNOWN_FAILURE:
+                    locationUpdatesListener.onErrorGettingLastKnownPlace(new Throwable("Unknown failure getting place information"));
+                    break;
             }
 
         });
@@ -255,13 +269,13 @@ public class LocationUpdatesManager implements GoogleApiClient.ConnectionCallbac
     @Override
     @DebugLog
     public void onConnectionSuspended(int i) {
-
+        locationUpdatesListener.onErrorGettingLocation(new Throwable("Google api client connection suspended"));
     }
 
     @Override
     @DebugLog
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        locationUpdatesListener.onErrorGettingLocation(new Throwable("Google api client connection failed"));
     }
 
 }

@@ -18,7 +18,7 @@ package com.experiments.whereapp.modules.home.fragments;
 
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,26 +26,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.droidexperiments.android.where.R;
-import com.experiments.thirdparty.shimmer.Shimmer;
-import com.experiments.thirdparty.shimmer.ShimmerTextView;
+import com.experiments.core.android.fragments.BaseFragment;
+import com.experiments.whereapp.modules.home.presenters.ExplorePlacesPresenter;
 import com.experiments.whereapp.modules.home.views.ExplorePlacesView;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public class ExplorePlacesFragment extends BaseHomePagerFragment implements ExplorePlacesView {
+public class ExplorePlacesFragment extends BaseFragment implements ExplorePlacesView {
 
-    public static final long DELAY_STOP_ANIMATION = 1000;
-    @BindView(R.id.txt_current_place_address)
-    ShimmerTextView txtCurrentPlaceAddress;
-    private Shimmer shimmer;
-    private Handler animationHandler;
-    private Runnable stopAnimationRunnable;
+    private ExplorePlacesPresenter explorePlacesPresenter;
 
+    @NonNull
     public static Fragment newInstance() {
         return new ExplorePlacesFragment();
     }
@@ -59,33 +54,31 @@ public class ExplorePlacesFragment extends BaseHomePagerFragment implements Expl
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initComponents();
+    }
+
+    @Override
     protected void initComponents() {
-        super.initComponents();
-        shimmer = new Shimmer();
-        animationHandler = new Handler();
-        stopAnimationRunnable = () -> {
-            if (shimmer.isAnimating()) {
-                shimmer.cancel();
-            }
-        };
-        if (isVisible()) {
-            shimmer.start(txtCurrentPlaceAddress);
-        }
+        explorePlacesPresenter = ExplorePlacesPresenter.create();
+        explorePlacesPresenter.attachView(this);
     }
 
     @Override
     public void removeListeners() {
-        animationHandler.removeCallbacksAndMessages(null);
+
     }
 
     @Override
-    protected void updateAddress(CharSequence address) {
-        if (isVisible() && !shimmer.isAnimating()) {
-            shimmer.start(txtCurrentPlaceAddress);
-        }
-        txtCurrentPlaceAddress.setText(address);
-        if (shimmer.isAnimating()) {
-            animationHandler.postDelayed(stopAnimationRunnable, DELAY_STOP_ANIMATION);
-        }
+    public void onDestroyView() {
+        explorePlacesPresenter.detachView();
+        super.onDestroyView();
     }
+
 }

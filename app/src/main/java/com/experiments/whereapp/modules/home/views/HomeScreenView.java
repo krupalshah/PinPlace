@@ -20,6 +20,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.StringRes;
 
+import com.experiments.core.mvp.views.BaseView;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
 
@@ -28,7 +29,7 @@ import com.google.android.gms.location.LocationSettingsResult;
  * <p>
  * view for home screen
  */
-public interface HomeScreenView extends BaseHomeView {
+public interface HomeScreenView extends BaseView {
 
     /**
      * sets transparent status bar above lolipop and translucent above jelly bean

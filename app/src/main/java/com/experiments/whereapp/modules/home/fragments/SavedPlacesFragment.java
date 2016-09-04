@@ -17,27 +17,57 @@
 package com.experiments.whereapp.modules.home.fragments;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.droidexperiments.android.where.R;
+import com.experiments.core.android.fragments.BaseFragment;
+
+import butterknife.ButterKnife;
 
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public class SavedPlacesFragment extends BaseHomePagerFragment {
-
+public class SavedPlacesFragment extends BaseFragment {
 
 
     public static Fragment newInstance() {
         return new SavedPlacesFragment();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.test, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // TODO: 05-Sep-16 replace address fragment
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initComponents();
+    }
+
+    @Override
+    protected void initComponents() {
+
+    }
+
     @Override
     public void removeListeners() {
 
     }
-
-    @Override
-    protected void updateAddress(CharSequence address) {
-
-    }
 }
+

@@ -14,14 +14,11 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.modules.home.presenters;
-
-import com.experiments.core.mvp.presenters.BasePresenter;
-import com.experiments.whereapp.modules.home.views.HomeScreenView;
+package com.experiments.core.android.activities;
 
 /**
- * Created by Krupal Shah on 04-Sep-16.
+ * Created by Krupal Shah on 05-Sep-16.
  */
-public abstract class BaseHomePresenter extends BasePresenter<HomeScreenView> {
+public abstract class BaseFragmentActivity extends BaseActivity {
 
 }

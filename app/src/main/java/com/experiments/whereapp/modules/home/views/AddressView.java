@@ -16,11 +16,21 @@
 
 package com.experiments.whereapp.modules.home.views;
 
+import android.support.annotation.Nullable;
+
 import com.experiments.core.mvp.views.BaseView;
 
 /**
  * Created by Krupal Shah on 04-Sep-16.
  */
-public interface ExplorePlacesView extends BaseView {
+public interface AddressView extends BaseView {
 
+    void updateAddress(@Nullable String address);
+
+
+    void animateAddress();
+
+    void stopAnimatingAddress(boolean stopImmediate);
+
+    void showError(@Nullable String string);
 }

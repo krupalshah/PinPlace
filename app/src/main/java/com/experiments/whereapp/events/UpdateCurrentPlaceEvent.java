@@ -23,11 +23,11 @@ import com.experiments.core.helpers.location.PlaceDataWrapper;
  * <p>
  * this event will be posted in event bus whenever current place information gets updated
  */
-public class OnCurrentPlaceDetailsUpdated {
+public class UpdateCurrentPlaceEvent {
 
     private final PlaceDataWrapper currentPlace;
 
-    public OnCurrentPlaceDetailsUpdated(PlaceDataWrapper currentPlace) {
+    public UpdateCurrentPlaceEvent(PlaceDataWrapper currentPlace) {
         this.currentPlace = currentPlace;
     }
 

@@ -14,13 +14,11 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.modules.home.views;
-
-import com.experiments.core.mvp.views.BaseView;
+package com.experiments.core.exceptions;
 
 /**
- * Created by Krupal Shah on 04-Sep-16.
+ * Created by Krupal Shah on 05-Sep-16.
  */
-public interface ExplorePlacesView extends BaseView {
+public class NoInternetException extends Exception {
 
 }

@@ -23,11 +23,14 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.droidexperiments.android.where.R;
+import com.experiments.core.exceptions.NoInternetException;
 import com.experiments.core.helpers.location.GetPlaceCallback;
 import com.experiments.core.helpers.location.LocationUpdatesListener;
 import com.experiments.core.helpers.location.LocationUpdatesManager;
 import com.experiments.core.helpers.location.PlaceDataWrapper;
-import com.experiments.whereapp.events.OnCurrentPlaceDetailsUpdated;
+import com.experiments.core.mvp.presenters.BasePresenter;
+import com.experiments.whereapp.events.ErrorUpdatingPlaceEvent;
+import com.experiments.whereapp.events.UpdateCurrentPlaceEvent;
 import com.experiments.whereapp.modules.home.views.HomeScreenView;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -46,7 +49,7 @@ import hugo.weaving.DebugLog;
  * <p>
  * presenter for home screen
  */
-public class HomeScreenPresenter extends BaseHomePresenter implements LocationUpdatesListener {
+public class HomePresenter extends BasePresenter<HomeScreenView> implements LocationUpdatesListener {
 
     private static final String TAG = "HomeScreenPresenter";
 
@@ -59,12 +62,16 @@ public class HomeScreenPresenter extends BaseHomePresenter implements LocationUp
     //temporary location to check whether new updated location has not more distance from old than {@link #MIN_DISTANCE_IN_METERS}
     private Location tempLocation;
 
-    private HomeScreenPresenter() {
-        //avoiding direct instances. use factory method instead.
+    private EventBus eventBus;
+
+    //avoiding direct instances. use factory method instead.
+    private HomePresenter() {
+        eventBus = EventBus.getDefault();
     }
 
-    public static HomeScreenPresenter create() {
-        return new HomeScreenPresenter();
+
+    public static HomePresenter create() {
+        return new HomePresenter();
     }
 
     @Override
@@ -75,16 +82,17 @@ public class HomeScreenPresenter extends BaseHomePresenter implements LocationUp
         view.setupViewPager();
     }
 
+
     @Override
     @DebugLog
     public void detachView() {
-        getView().removeListeners();
+        view.removeListeners();
         super.detachView();
     }
 
     @DebugLog
     public void registerPlaceUpdates() {
-        locationUpdatesManager = new LocationUpdatesManager(getView().getContext());
+        locationUpdatesManager = new LocationUpdatesManager(view.getContext());
         locationUpdatesManager.registerUpdateCallbacks(this);
     }
 
@@ -100,7 +108,8 @@ public class HomeScreenPresenter extends BaseHomePresenter implements LocationUp
             locationUpdatesManager.retrieveLastKnownPlace(false);
             locationUpdatesManager.scheduleLocationUpdates();
         } else {
-            getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+            view.showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+            eventBus.post(new ErrorUpdatingPlaceEvent(new Throwable("Permission was denied by user")));
         }
     }
 
@@ -134,11 +143,11 @@ public class HomeScreenPresenter extends BaseHomePresenter implements LocationUp
                 break;
 
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED://if to ask through dialog
-                getView().showTurnOnLocationDialog(status);
+                view.showTurnOnLocationDialog(status);
                 break;
 
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE: //if settings can not be changed
-                getView().showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+                view.showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
                 break;
         }
     }
@@ -147,13 +156,13 @@ public class HomeScreenPresenter extends BaseHomePresenter implements LocationUp
     public void checkPlacePickerResult(int resultCode, Intent data) {
         switch (resultCode) {
             case Activity.RESULT_OK:
-                Place place = PlacePicker.getPlace(getView().getContext(), data);
+                Place place = PlacePicker.getPlace(view.getContext(), data);
                 if (place == null) return;
                 Log.e(TAG, "got place from place picker: " + place.getName());
                 break;
 
             case PlacePicker.RESULT_ERROR:
-                Status status = PlacePicker.getStatus(getView().getContext(), data);
+                Status status = PlacePicker.getStatus(view.getContext(), data);
                 Log.e(TAG, "error from place picker" + status.getStatusMessage());
                 break;
         }
@@ -176,16 +185,48 @@ public class HomeScreenPresenter extends BaseHomePresenter implements LocationUp
         }
         tempLocation = newLocation;
         //otherwise get place with updated address and refresh text on view
-        locationUpdatesManager.getCurrentPlace(true, (place, operationStatus) -> {
-            if (place != null && operationStatus == GetPlaceCallback.STATUS_SUCCESS) {
+        locationUpdatesManager.getCurrentPlace(true, this::handleCurrentPlaceResult);
+    }
+
+
+    @DebugLog
+    @Override
+    public void onErrorGettingLastKnownPlace(Throwable t) {
+        postErrorGettingPlaceEvent(t);
+        t.printStackTrace();
+    }
+
+    @DebugLog
+    @Override
+    public void onErrorGettingLocation(Throwable t) {
+        postErrorGettingPlaceEvent(t);
+        t.printStackTrace();
+    }
+
+    private void handleCurrentPlaceResult(PlaceDataWrapper place, @GetPlaceCallback.GetPlaceOperationStatus int operationStatus) {
+        if (place == null) {
+            onErrorGettingLastKnownPlace(new Throwable("got null place"));
+            return;
+        }
+        switch (operationStatus) {
+            case GetPlaceCallback.STATUS_SUCCESS:
                 postUpdateCurrentPlaceEvent(place);
-            }
-        });
+                break;
+            case GetPlaceCallback.STATUS_NO_NETWORK:
+                onErrorGettingLastKnownPlace(new NoInternetException());
+                break;
 
+            case GetPlaceCallback.STATUS_UNKNOWN_FAILURE:
+                onErrorGettingLastKnownPlace(new Throwable("unknown failure operation status"));
+                break;
+        }
     }
 
-    private void postUpdateCurrentPlaceEvent(PlaceDataWrapper currentPlace) {
-        EventBus.getDefault().post(new OnCurrentPlaceDetailsUpdated(currentPlace));
+    public void postUpdateCurrentPlaceEvent(PlaceDataWrapper currentPlace) {
+        eventBus.post(new UpdateCurrentPlaceEvent(currentPlace));
     }
 
+    public void postErrorGettingPlaceEvent(Throwable t) {
+        eventBus.post(new ErrorUpdatingPlaceEvent(t));
+    }
 }

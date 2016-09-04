@@ -46,7 +46,4 @@ public abstract class BasePresenter<T extends BaseMvpView> {
         view = null;
     }
 
-    public T getView() {
-        return view;
-    }
 }

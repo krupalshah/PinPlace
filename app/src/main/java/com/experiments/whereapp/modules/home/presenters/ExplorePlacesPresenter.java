@@ -17,9 +17,31 @@
 package com.experiments.whereapp.modules.home.presenters;
 
 import com.experiments.core.mvp.presenters.BasePresenter;
+import com.experiments.whereapp.modules.home.views.ExplorePlacesView;
 
 /**
  * Created by Krupal Shah on 04-Sep-16.
  */
-public class ExplorePlacesPresenter extends BasePresenter {
+public class ExplorePlacesPresenter extends BasePresenter<ExplorePlacesView> {
+
+    private ExplorePlacesPresenter() {
+
+    }
+
+    public static ExplorePlacesPresenter create() {
+        return new ExplorePlacesPresenter();
+    }
+
+    @Override
+    public void attachView(ExplorePlacesView view) {
+        super.attachView(view);
+    }
+
+    @Override
+    public void detachView() {
+        view.removeListeners();
+        super.detachView();
+    }
+
+
 }

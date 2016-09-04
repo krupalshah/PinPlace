@@ -65,20 +65,6 @@ public class NetworkUpdatesManger {
     }
 
     /**
-     * checks if internet is available
-     *
-     * @return ture if available, false otherwise
-     */
-    @DebugLog
-    public boolean isInternetAvailable() {
-        if (connectivityManager == null) {
-            connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        }
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    /**
      * unregisters network receiver<br/>
      * also unregisters network update listener
      */
@@ -88,4 +74,20 @@ public class NetworkUpdatesManger {
         connectivityChangeReceiver = null;
         connectivityManager = null;
     }
+
+
+    /**
+     * checks if internet is available
+     *
+     * @return ture if available, false otherwise
+     */
+    @DebugLog
+    private boolean isInternetAvailable() {
+        if (connectivityManager == null) {
+            connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        }
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }
