@@ -1,5 +1,6 @@
 /*
- *   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+ *
+ *  Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -16,8 +17,8 @@
 package com.experiments.whereapp;
 
 import com.crashlytics.android.Crashlytics;
-import com.droidexperiments.android.where.BuildConfig;
-import com.experiments.common.Common;
+import com.experiments.core.Core;
+import com.experiments.whereapp.config.AppConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -30,15 +31,17 @@ import io.fabric.sdk.android.Fabric;
  * <p>
  * application class
  */
-public class WhereApp extends Common {
+public class WhereApp extends Core {
 
     @Override
     @DebugLog
     public void onCreate() {
         super.onCreate();
-        if (BuildConfig.DEBUG) LeakCanary.install(this);
         Fabric.with(this, new Crashlytics());
         FlowManager.init(this);
+        if (AppConfig.DEBUG) {
+            LeakCanary.install(this);
+        }
     }
 
     @Override

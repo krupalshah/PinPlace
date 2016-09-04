@@ -1,5 +1,6 @@
 /*
- *   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+ *
+ *  Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -17,13 +18,16 @@ package com.experiments.whereapp.modules.home.fragments;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.droidexperiments.android.where.R;
-import com.experiments.common.android.views.ShimmerTextView;
+import com.experiments.thirdparty.shimmer.Shimmer;
+import com.experiments.thirdparty.shimmer.ShimmerTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,13 +36,16 @@ import butterknife.ButterKnife;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public class RecommendedPlacesFragment extends BaseHomeFragment {
+public class RecommendedPlacesFragment extends BaseHomePagerFragment {
 
+    public static final long DELAY_STOP_ANIMATION = 1000;
+    @BindView(R.id.txt_current_place_address)
+    ShimmerTextView txtCurrentPlaceAddress;
+    private Shimmer shimmer;
+    private Handler animationHandler;
+    private Runnable stopAnimationRunnable;
 
-    @BindView(R.id.tv_current_place_address)
-    ShimmerTextView tvCurrentPlaceAddress;
-
-    public static RecommendedPlacesFragment newInstance() {
+    public static Fragment newInstance() {
         return new RecommendedPlacesFragment();
     }
 
@@ -53,17 +60,31 @@ public class RecommendedPlacesFragment extends BaseHomeFragment {
     @Override
     protected void initComponents() {
         super.initComponents();
-        tvCurrentPlaceAddress.startAnimation();
+        shimmer = new Shimmer();
+        animationHandler = new Handler();
+        stopAnimationRunnable = () -> {
+            if (shimmer.isAnimating()) {
+                shimmer.cancel();
+            }
+        };
+        if (isVisible()) {
+            shimmer.start(txtCurrentPlaceAddress);
+        }
     }
 
     @Override
     public void removeListeners() {
-
+        animationHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
     protected void updateAddress(CharSequence address) {
-        tvCurrentPlaceAddress.setText(address);
-        tvCurrentPlaceAddress.stopAnimation();
+        if (isVisible() && !shimmer.isAnimating()) {
+            shimmer.start(txtCurrentPlaceAddress);
+        }
+        txtCurrentPlaceAddress.setText(address);
+        if (shimmer.isAnimating()) {
+            animationHandler.postDelayed(stopAnimationRunnable, DELAY_STOP_ANIMATION);
+        }
     }
 }

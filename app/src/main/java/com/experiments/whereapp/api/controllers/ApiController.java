@@ -1,5 +1,6 @@
 /*
- *   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+ *
+ *  Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -16,7 +17,7 @@
 package com.experiments.whereapp.api.controllers;
 
 
-import com.experiments.common.controllers.BaseApiController;
+import com.experiments.core.controllers.BaseApiController;
 
 /**
  * Author : Krupal Shah

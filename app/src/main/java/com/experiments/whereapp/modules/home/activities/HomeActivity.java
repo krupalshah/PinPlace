@@ -1,5 +1,6 @@
 /*
- *   Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
+ *
+ *  Copyright  (c) 2016 Krupal Shah, Harsh Bhavsar
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -30,18 +31,17 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import com.droidexperiments.android.where.R;
-import com.experiments.common.android.activities.BaseActivity;
-import com.experiments.common.android.adapters.CommonPagerAdapter;
-import com.experiments.common.android.views.CustomTextView;
-import com.experiments.common.helpers.permissions.PermissionsChecker;
+import com.experiments.core.android.activities.BaseActivity;
+import com.experiments.core.android.adapters.CommonPagerAdapter;
+import com.experiments.core.android.views.CustomTextView;
+import com.experiments.core.helpers.permissions.PermissionsChecker;
 import com.experiments.whereapp.modules.home.fragments.ExplorePlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.RecommendedPlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;
-import com.experiments.whereapp.modules.home.presenters.HomePresenter;
-import com.experiments.whereapp.modules.home.views.HomeView;
+import com.experiments.whereapp.modules.home.presenters.HomeScreenPresenter;
+import com.experiments.whereapp.modules.home.views.HomeScreenView;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStates;
@@ -61,7 +61,7 @@ import hugo.weaving.DebugLog;
  * <p>
  * home screen activity after launch screen ends
  */
-public class HomeActivity extends BaseActivity implements HomeView, ViewPager.OnPageChangeListener {
+public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPager.OnPageChangeListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -88,16 +88,15 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     private static final int TAB_POSITION_EXPLORE = 1;
     private static final int TAB_POSITION_BOOKMARKS = 2;
 
-    @BindView(R.id.tv_title_toolbar)
-    CustomTextView tvTitleToolbar;
-    @BindView(R.id.iv_search_toolbar)
-    ImageView ivSearchToolbar;
+    @BindView(R.id.txt_title_toolbar)
+    CustomTextView txtTitleToolbar;
     @BindView(R.id.tabs_home)
     TabLayout tabsHome;
     @BindView(R.id.pager_home)
     ViewPager pagerHome;
 
-    private HomePresenter homePresenter;
+
+    private HomeScreenPresenter homeScreenPresenter;
     private PermissionsChecker permissionsChecker;
     private List<Integer> toolbarTitles;
 
@@ -112,9 +111,9 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     @Override
     protected void initComponents() {
         permissionsChecker = PermissionsChecker.create();
-        homePresenter = HomePresenter.create();
-        homePresenter.attachView(this);
-        homePresenter.registerPlaceUpdates();
+        homeScreenPresenter = HomeScreenPresenter.create();
+        homeScreenPresenter.attachView(this);
+        homeScreenPresenter.registerPlaceUpdates();
     }
 
     @Override
@@ -123,7 +122,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
         if (!permissionsChecker.askPermissionsIfNotGranted(this, PERMISSION_LOCATION_UPDATES, LOCATION_PERMISSIONS)) {
             return;
         }
-        homePresenter.requestPlaceUpdates();
+        homeScreenPresenter.requestPlaceUpdates();
     }
 
     @Override
@@ -133,12 +132,12 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
             case REQUEST_LOCATION_SETTINGS:
                 //got result from resolution dialog
                 LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
-                homePresenter.checkTurnOnLocationResult(locationSettingsStates);
+                homeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
                 break;
 
             case REQUEST_PLACE_PICKER:
                 //got result from place picker
-                homePresenter.checkPlacePickerResult(resultCode, data);
+                homeScreenPresenter.checkPlacePickerResult(resultCode, data);
                 break;
         }
     }
@@ -150,7 +149,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
             case PERMISSION_LOCATION_UPDATES:
                 //requesting location updates if permissions granted
                 if (permissionsChecker.checkGrantResults(this, requestCode, grantResults, R.string.allow_location_updates, LOCATION_PERMISSIONS)) {
-                    homePresenter.requestPlaceUpdates();
+                    homeScreenPresenter.requestPlaceUpdates();
                 }
                 break;
             case PERMISSION_PLACE_PICKER:
@@ -164,14 +163,14 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
     @Override
     protected void onStop() {
-        homePresenter.stopPlaceUpdates();
+        homeScreenPresenter.stopPlaceUpdates();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        homePresenter.unregisterPlaceUpdates();
-        homePresenter.detachView();
+        homeScreenPresenter.unregisterPlaceUpdates();
+        homeScreenPresenter.detachView();
         super.onDestroy();
     }
 
@@ -191,7 +190,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
     @Override
     public void setToolbarTitle(@StringRes int titleRes) {
-        tvTitleToolbar.setText(titleRes);
+        txtTitleToolbar.setText(titleRes);
     }
 
     @Override
@@ -237,14 +236,14 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
         pagerHome.clearOnPageChangeListeners();
     }
 
-    @OnClick({R.id.iv_search_toolbar, R.id.iv_settings_toolbar})
+    @OnClick({R.id.img_search_toolbar, R.id.img_settings_toolbar})
     public void onClick(View view) {
         super.onClick(view);
         switch (view.getId()) {
-            case R.id.iv_search_toolbar:
+            case R.id.img_search_toolbar:
                 openPlacePicker();
                 break;
-            case R.id.iv_settings_toolbar:
+            case R.id.img_settings_toolbar:
                 navigateToSettings();
                 break;
         }
