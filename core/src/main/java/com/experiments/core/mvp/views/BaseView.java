@@ -16,10 +16,7 @@
 
 package com.experiments.core.mvp.views;
 
-import android.app.Dialog;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.view.View;
 
 /**
  * Created by Krupal Shah on 28-Aug-16.
@@ -27,59 +24,18 @@ import android.view.View;
 public interface BaseView extends BaseMvpView {
 
     /**
-     * shows short-length toast
+     * shows generic message
      *
      * @param msgResId message string resource id
      */
-    void showToast(@StringRes int msgResId);
+    void showMessage(@StringRes int msgResId);
 
     /**
-     * shows short-length toast
+     * shows error message
      *
-     * @param msg message string
+     * @param msgResId message string resource id
      */
-    void showToast(@NonNull String msg);
-
-    /**
-     * hides keyboard if showing
-     */
-    void hideKeyBoard();
+    void showError(@StringRes int msgResId);
 
 
-    /**
-     * shows snake bar for infinite time
-     *
-     * @param msg            message string resource id
-     * @param action         action string resource id
-     * @param actionListener click listener for action
-     */
-    void showSnakeBar(@StringRes int msg, @StringRes int action, View.OnClickListener actionListener);
-
-    /**
-     * shows snake bar for infinite time
-     *
-     * @param msg            message string
-     * @param action         action string resource id
-     * @param actionListener click listener for action
-     */
-    void showSnakeBar(@NonNull String msg, @StringRes int action, View.OnClickListener actionListener);
-
-    /**
-     * hides snake bar if showing
-     */
-    void hideSnakeBar();
-
-    /**
-     * shows dialog if not showing already
-     *
-     * @param dialog dialog
-     */
-    void showDialog(Dialog dialog);
-
-    /**
-     * dismisses all specified dialog if they are showing
-     *
-     * @param dialogs dialogs
-     */
-    void dismissDialogs(Dialog... dialogs);
 }

@@ -57,26 +57,24 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
      */
     protected abstract void initComponents();
 
-    @Override
     public void showToast(@NonNull String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
     public void showToast(@StringRes int msgResId) {
         showToast(getString(msgResId));
     }
 
-    @Override
     public void showSnakeBar(@NonNull String msg, @StringRes int action, android.view.View.OnClickListener actionListener) {
         hideSnakeBar();
-        snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG);
-        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.md_red_A200));
-        if (actionListener != null) {
-            snackbar.setAction(action, actionListener);
-        } else {
-            snackbar.setAction(action, view -> snackbar.dismiss());
-        }
+        snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.md_light_blue_A400));
+        snackbar.setAction(action, view -> {
+            snackbar.dismiss();
+            if (actionListener != null) {
+                actionListener.onClick(view);
+            }
+        });
         snackbar.show();
     }
 
@@ -87,14 +85,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         hideSnakeBar();
     }
 
-    @Override
     public void hideSnakeBar() {
         if (snackbar != null && snackbar.isShownOrQueued()) {
             snackbar.dismiss();
         }
     }
 
-    @Override
     public void hideKeyBoard() {
         android.view.View view = this.getCurrentFocus();
         if (view != null) {
@@ -103,18 +99,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
     }
 
-    @Override
     public void showSnakeBar(@StringRes int msg, @StringRes int action, @Nullable android.view.View.OnClickListener actionListener) {
         showSnakeBar(getString(msg), action, actionListener);
     }
 
-    @Override
     public void showDialog(Dialog dialog) {
         if (dialog == null || dialog.isShowing()) return;
         dialog.show();
     }
 
-    @Override
     public void dismissDialogs(Dialog... dialogs) {
         for (Dialog dialog : dialogs) {
             if (dialog == null || !dialog.isShowing()) continue;
@@ -134,6 +127,18 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         } else {
             return isDestroyed;
         }
+    }
+
+    @Override
+    public void showMessage(@StringRes int msgResId) {
+        String message = getString(msgResId);
+        showSnakeBar(message, R.string.dismiss, null);
+    }
+
+    @Override
+    public void showError(@StringRes int msgResId) {
+        String message = getString(msgResId);
+        showSnakeBar(message, R.string.dismiss, null);
     }
 
 }

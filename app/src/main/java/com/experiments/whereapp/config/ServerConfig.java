@@ -31,7 +31,7 @@ public class ServerConfig extends BaseConfig {
     /**
      * to get api endpoint
      *
-     * @return api base url including trailing slash ('/')
+     * @return api base url inclusive to trailing slash ('/')
      */
     public static String baseUrl() {
         return BASE_URL;

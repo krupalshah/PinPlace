@@ -20,5 +20,4 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
-
 </LinearLayout>

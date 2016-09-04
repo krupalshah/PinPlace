@@ -27,10 +27,7 @@ public interface AddressView extends BaseView {
 
     void updateAddress(@Nullable String address);
 
-
     void animateAddress();
 
     void stopAnimatingAddress(boolean stopImmediate);
-
-    void showError(@Nullable String string);
 }

@@ -27,7 +27,6 @@ import com.google.android.gms.location.places.Place;
  */
 public class PlaceDataWrapper {
 
-
     private Location locationData;
     private Place placeData;
 

@@ -37,7 +37,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     //flag to manage if fragment's onDestroyView() has been called or not
     private boolean isDestroyed;
 
-
     @CallSuper
     @Override
     public void onDestroyView() {
@@ -50,44 +49,35 @@ public abstract class BaseFragment extends Fragment implements BaseView {
      */
     protected abstract void initComponents();
 
-    @Override
-    public void showToast(@StringRes int msgResId) {
+    protected void showToast(@StringRes int msgResId) {
         ((BaseActivity) getActivity()).showToast(msgResId);
     }
 
-    @Override
-    public void showToast(@NonNull String msg) {
+    protected void showToast(@NonNull String msg) {
         ((BaseActivity) getActivity()).showToast(msg);
     }
 
-    @Override
-    public void showSnakeBar(@NonNull String msg, @StringRes int action, android.view.View.OnClickListener actionListener) {
+    protected void showSnakeBar(@NonNull String msg, @StringRes int action, android.view.View.OnClickListener actionListener) {
         ((BaseActivity) getActivity()).showSnakeBar(msg, action, actionListener);
     }
 
-    @Override
-    public void showSnakeBar(@StringRes int msg, @StringRes int action, android.view.View.OnClickListener actionListener) {
+    protected void showSnakeBar(@StringRes int msg, @StringRes int action, android.view.View.OnClickListener actionListener) {
         ((BaseActivity) getActivity()).showSnakeBar(msg, action, actionListener);
     }
 
-    @Override
-    public void hideKeyBoard() {
+    protected void hideKeyBoard() {
         ((BaseActivity) getActivity()).hideKeyBoard();
     }
 
-    @Override
-    public void hideSnakeBar() {
+    protected void hideSnakeBar() {
         ((BaseActivity) getActivity()).hideSnakeBar();
     }
 
-
-    @Override
-    public void showDialog(Dialog dialog) {
+    protected void showDialog(Dialog dialog) {
         ((BaseActivity) getActivity()).showDialog(dialog);
     }
 
-    @Override
-    public void dismissDialogs(Dialog... dialogs) {
+    protected void dismissDialogs(Dialog... dialogs) {
         ((BaseActivity) getActivity()).dismissDialogs(dialogs);
     }
 
@@ -100,4 +90,15 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public boolean isDestroyed() {
         return isDestroyed;
     }
+
+    @Override
+    public void showMessage(@StringRes int msgResId) {
+        ((BaseActivity) getActivity()).showMessage(msgResId);
+    }
+
+    @Override
+    public void showError(@StringRes int msgResId) {
+        ((BaseActivity) getActivity()).showError(msgResId);
+    }
+
 }

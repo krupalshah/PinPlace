@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,12 +115,6 @@ public class AddressFragment extends BaseFragment implements AddressView {
         }
     }
 
-    @DebugLog
-    @Override
-    public void showError(String message) {
-        if (TextUtils.isEmpty(message)) return;
-        showSnakeBar(message, android.R.string.ok, null);
-    }
 
     @DebugLog
     @Override

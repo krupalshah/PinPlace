@@ -108,7 +108,7 @@ public class HomePresenter extends BasePresenter<HomeScreenView> implements Loca
             locationUpdatesManager.retrieveLastKnownPlace(false);
             locationUpdatesManager.scheduleLocationUpdates();
         } else {
-            view.showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+            view.showError(R.string.unable_to_get_location);
             eventBus.post(new ErrorUpdatingPlaceEvent(new Throwable("Permission was denied by user")));
         }
     }
@@ -147,7 +147,7 @@ public class HomePresenter extends BasePresenter<HomeScreenView> implements Loca
                 break;
 
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE: //if settings can not be changed
-                view.showSnakeBar(R.string.unable_to_get_location, R.string.dismiss, null);
+                view.showError(R.string.unable_to_get_location);
                 break;
         }
     }

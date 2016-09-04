@@ -17,6 +17,7 @@
 package com.experiments.whereapp.modules.home.presenters;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.droidexperiments.android.where.R;
 import com.experiments.core.exceptions.NoInternetException;
@@ -37,6 +38,8 @@ import hugo.weaving.DebugLog;
  * Created by Krupal Shah on 04-Sep-16.
  */
 public class AddressPresenter extends BasePresenter<AddressView> {
+
+    private static final String TAG = "AddressPresenter";
 
     protected final EventBus eventBus;
 
@@ -107,11 +110,11 @@ public class AddressPresenter extends BasePresenter<AddressView> {
         view.updateAddress(null);
 
         if (exception instanceof NoInternetException) {
-            view.showError(view.getContext().getString(R.string.err_no_internet));
+            view.showError(R.string.err_no_internet);
         } else if (exception instanceof PermissionDeniedException) {
-            view.showError(null);
+            Log.e(TAG, "onErrorGettingPlaceEvent: got PermissionDeniedException");
         } else {
-            view.showError(view.getContext().getString(R.string.err_fetching_place_info));
+            view.showError(R.string.err_fetching_place_info);
         }
     }
 }
