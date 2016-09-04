@@ -43,7 +43,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     private boolean isDestroyed;
     private Snackbar snackbar;
 
-
     @CallSuper
     @Override
     protected void onDestroy() {

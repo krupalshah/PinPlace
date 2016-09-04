@@ -46,7 +46,7 @@ import hugo.weaving.DebugLog;
  * <p>
  * presenter for home screen
  */
-public class HomeScreenPresenter extends BasePresenter<HomeView> implements LocationUpdatesListener {
+public class HomePresenter extends BasePresenter<HomeView> implements LocationUpdatesListener {
 
     private static final String TAG = "HomeScreenPresenter";
 
@@ -59,12 +59,12 @@ public class HomeScreenPresenter extends BasePresenter<HomeView> implements Loca
     //temporary location to check whether new updated location has not more distance from old than {@link #MIN_DISTANCE_IN_METERS}
     private Location tempLocation;
 
-    private HomeScreenPresenter() {
+    private HomePresenter() {
         //avoiding direct instances. use factory method instead.
     }
 
-    public static HomeScreenPresenter create() {
-        return new HomeScreenPresenter();
+    public static HomePresenter create() {
+        return new HomePresenter();
     }
 
     @Override

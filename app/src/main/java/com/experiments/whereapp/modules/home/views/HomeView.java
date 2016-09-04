@@ -30,9 +30,15 @@ import com.google.android.gms.location.LocationSettingsResult;
  */
 public interface HomeView extends BaseView {
 
+    /**
+     * sets transparent status bar above lolipop and translucent above jelly bean
+     */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     void makeStatusBarTransparent();
 
+    /**
+     * sets toolbar title
+     */
     void setToolbarTitle(@StringRes int titleRes);
 
     /**

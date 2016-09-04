@@ -18,20 +18,12 @@ package com.experiments.whereapp.modules.home.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.droidexperiments.android.where.R;
-import com.experiments.common.android.fragments.BaseFragment;
-import com.experiments.whereapp.events.OnCurrentPlaceUpdated;
-import com.google.android.gms.location.places.Place;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.experiments.common.android.views.ShimmerTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,10 +32,11 @@ import butterknife.ButterKnife;
  * Author : Krupal Shah
  * Date : 17-Apr-16
  */
-public class RecommendedPlacesFragment extends BaseFragment {
+public class RecommendedPlacesFragment extends BaseHomeFragment {
 
-    @BindView(R.id.tv_address)
-    TextView tvAddress;
+
+    @BindView(R.id.tv_current_place_address)
+    ShimmerTextView tvCurrentPlaceAddress;
 
     public static RecommendedPlacesFragment newInstance() {
         return new RecommendedPlacesFragment();
@@ -58,30 +51,9 @@ public class RecommendedPlacesFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
     protected void initComponents() {
-
+        super.initComponents();
+        tvCurrentPlaceAddress.startAnimation();
     }
 
     @Override
@@ -89,16 +61,9 @@ public class RecommendedPlacesFragment extends BaseFragment {
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onCurrentPlaceUpdatedEvent(OnCurrentPlaceUpdated onCurrentPlaceUpdated) {
-        Place place = onCurrentPlaceUpdated.getCurrentPlace().getPlaceData();
-        updateAddressText(place);
-    }
-
-    private void updateAddressText(Place place) {
-        if (place == null || TextUtils.isEmpty(place.getAddress())) {
-            return;
-        }
-        tvAddress.setText(place.getAddress());
+    @Override
+    protected void updateAddress(CharSequence address) {
+        tvCurrentPlaceAddress.setText(address);
+        tvCurrentPlaceAddress.stopAnimation();
     }
 }

@@ -40,7 +40,7 @@ import com.experiments.common.helpers.permissions.PermissionsChecker;
 import com.experiments.whereapp.modules.home.fragments.ExplorePlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.RecommendedPlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;
-import com.experiments.whereapp.modules.home.presenters.HomeScreenPresenter;
+import com.experiments.whereapp.modules.home.presenters.HomePresenter;
 import com.experiments.whereapp.modules.home.views.HomeView;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -97,7 +97,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     @BindView(R.id.pager_home)
     ViewPager pagerHome;
 
-    private HomeScreenPresenter homeScreenPresenter;
+    private HomePresenter homePresenter;
     private PermissionsChecker permissionsChecker;
     private List<Integer> toolbarTitles;
 
@@ -112,9 +112,9 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     @Override
     protected void initComponents() {
         permissionsChecker = PermissionsChecker.create();
-        homeScreenPresenter = HomeScreenPresenter.create();
-        homeScreenPresenter.attachView(this);
-        homeScreenPresenter.registerPlaceUpdates();
+        homePresenter = HomePresenter.create();
+        homePresenter.attachView(this);
+        homePresenter.registerPlaceUpdates();
     }
 
     @Override
@@ -123,7 +123,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
         if (!permissionsChecker.askPermissionsIfNotGranted(this, PERMISSION_LOCATION_UPDATES, LOCATION_PERMISSIONS)) {
             return;
         }
-        homeScreenPresenter.requestPlaceUpdates();
+        homePresenter.requestPlaceUpdates();
     }
 
     @Override
@@ -133,11 +133,12 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
             case REQUEST_LOCATION_SETTINGS:
                 //got result from resolution dialog
                 LocationSettingsStates locationSettingsStates = LocationSettingsStates.fromIntent(data);
-                homeScreenPresenter.checkTurnOnLocationResult(locationSettingsStates);
+                homePresenter.checkTurnOnLocationResult(locationSettingsStates);
                 break;
 
             case REQUEST_PLACE_PICKER:
-                homeScreenPresenter.checkPlacePickerResult(resultCode, data);
+                //got result from place picker
+                homePresenter.checkPlacePickerResult(resultCode, data);
                 break;
         }
     }
@@ -149,7 +150,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
             case PERMISSION_LOCATION_UPDATES:
                 //requesting location updates if permissions granted
                 if (permissionsChecker.checkGrantResults(this, requestCode, grantResults, R.string.allow_location_updates, LOCATION_PERMISSIONS)) {
-                    homeScreenPresenter.requestPlaceUpdates();
+                    homePresenter.requestPlaceUpdates();
                 }
                 break;
             case PERMISSION_PLACE_PICKER:
@@ -163,14 +164,14 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
 
     @Override
     protected void onStop() {
-        homeScreenPresenter.stopPlaceUpdates();
+        homePresenter.stopPlaceUpdates();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        homeScreenPresenter.unregisterPlaceUpdates();
-        homeScreenPresenter.detachView();
+        homePresenter.unregisterPlaceUpdates();
+        homePresenter.detachView();
         super.onDestroy();
     }
 
@@ -283,11 +284,11 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
     }
 
     private void setTabIcons() {
-        for (int tabPos = 0; tabPos < tabsHome.getTabCount(); tabPos++) {
-            TabLayout.Tab tab = tabsHome.getTabAt(tabPos);
+        for (int tabPosition = 0; tabPosition < tabsHome.getTabCount(); tabPosition++) {
+            TabLayout.Tab tab = tabsHome.getTabAt(tabPosition);
             if (tab == null) continue;
 
-            switch (tabPos) {
+            switch (tabPosition) {
                 case TAB_POSITION_HOME:
                     tab.setIcon(R.drawable.ic_home_white_24dp);
                     break;
@@ -308,6 +309,7 @@ public class HomeActivity extends BaseActivity implements HomeView, ViewPager.On
         pagerHome.addOnPageChangeListener(this);
     }
 
+    @DebugLog
     private void handleErrorOpeningPlacePicker(Exception e) {
         e.printStackTrace();
         if (e instanceof GooglePlayServicesRepairableException) {
