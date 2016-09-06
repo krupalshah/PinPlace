@@ -18,7 +18,8 @@ package com.experiments.core.mvp.presenters;
 
 import android.support.annotation.CallSuper;
 
-import com.experiments.core.mvp.views.BaseMvpView;
+import com.experiments.core.mvp.routers.BaseRouter;
+import com.experiments.core.mvp.views.BaseView;
 
 import hugo.weaving.DebugLog;
 
@@ -30,9 +31,10 @@ import hugo.weaving.DebugLog;
  *
  * @param <T> MVP view
  */
-public abstract class BasePresenter<T extends BaseMvpView> {
+public abstract class BasePresenter<T extends BaseView> {
 
     protected T view;
+    protected BaseRouter<T> router;
 
     @CallSuper
     @DebugLog
@@ -45,6 +47,18 @@ public abstract class BasePresenter<T extends BaseMvpView> {
     public void detachView() {
         view.removeCallbacks();
         view = null;
+    }
+
+    @CallSuper
+    @DebugLog
+    public void attachRouter(BaseRouter<T> router) {
+        this.router = router;
+    }
+
+    @CallSuper
+    @DebugLog
+    public void detachRouter() {
+        router = null;
     }
 
 }

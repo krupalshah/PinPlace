@@ -14,11 +14,25 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.storage.preferences;
+package com.experiments.whereapp.persistance.storage.controllers;
+
+import com.experiments.core.controllers.BaseStorageController;
 
 /**
- * Created by Krupal Shah on 06-Sep-16.
+ * Author : Krupal Shah
+ * Date : 17-Apr-16
+ * <p>
+ * controller for all local db related jobs
  */
-public class PreferenceManager {
+public class PlaceStorageController extends BaseStorageController {
 
+    private static PlaceStorageController instance;
+
+    //singleton
+    public static synchronized PlaceStorageController getInstance() {
+        if (instance == null) {
+            instance = new PlaceStorageController();
+        }
+        return instance;
+    }
 }

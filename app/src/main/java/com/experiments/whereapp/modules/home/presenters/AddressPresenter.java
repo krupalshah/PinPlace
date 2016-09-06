@@ -23,8 +23,8 @@ import com.droidexperiments.android.where.R;
 import com.experiments.core.exceptions.NoInternetException;
 import com.experiments.core.exceptions.PermissionDeniedException;
 import com.experiments.core.mvp.presenters.BasePresenter;
-import com.experiments.whereapp.events.GetPlaceErrorEvent;
-import com.experiments.whereapp.events.UpdateCurrentPlaceEvent;
+import com.experiments.whereapp.events.places.GetPlaceErrorEvent;
+import com.experiments.whereapp.events.places.UpdateCurrentPlaceEvent;
 import com.experiments.whereapp.modules.home.views.AddressView;
 import com.google.android.gms.location.places.Place;
 

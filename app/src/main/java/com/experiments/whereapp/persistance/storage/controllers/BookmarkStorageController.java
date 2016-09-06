@@ -14,25 +14,12 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.storage.database.controllers;
+package com.experiments.whereapp.persistance.storage.controllers;
 
-import com.experiments.core.controllers.BaseDbController;
+import com.experiments.core.controllers.BaseStorageController;
 
 /**
- * Author : Krupal Shah
- * Date : 17-Apr-16
- * <p>
- * controller for all local db related jobs
+ * Created by Krupal Shah on 07-Sep-16.
  */
-public class DbController extends BaseDbController {
-
-    private static DbController instance;
-
-    //singleton
-    public static synchronized DbController getInstance() {
-        if (instance == null) {
-            instance = new DbController();
-        }
-        return instance;
-    }
+public class BookmarkStorageController extends BaseStorageController {
 }

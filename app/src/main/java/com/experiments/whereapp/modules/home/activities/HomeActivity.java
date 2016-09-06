@@ -42,6 +42,7 @@ import com.experiments.whereapp.modules.home.fragments.ExplorePlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.RecommendedPlacesFragment;
 import com.experiments.whereapp.modules.home.fragments.SavedPlacesFragment;
 import com.experiments.whereapp.modules.home.presenters.HomePresenter;
+import com.experiments.whereapp.modules.home.routers.HomeScreenRouter;
 import com.experiments.whereapp.modules.home.views.HomeScreenView;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -62,7 +63,7 @@ import hugo.weaving.DebugLog;
  * <p>
  * home screen activity after launch screen ends
  */
-public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPager.OnPageChangeListener {
+public class HomeActivity extends BaseActivity implements HomeScreenView, HomeScreenRouter, ViewPager.OnPageChangeListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -158,7 +159,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
             case PERMISSION_PLACE_PICKER:
                 //opening place picker if permissions granted
                 if (permissionsChecker.checkGrantResults(this, requestCode, grantResults, R.string.allow_place_search, LOCATION_PERMISSIONS)) {
-                    openPlacePicker();
+                    routeToPlacePicker();
                 }
                 break;
         }
@@ -245,21 +246,21 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
         super.onClick(view);
         switch (view.getId()) {
             case R.id.img_search_toolbar:
-                openPlacePicker();
+                routeToPlacePicker();
                 break;
             case R.id.img_settings_toolbar:
-                navigateToSettings();
+                routeToSettings();
                 break;
         }
     }
 
     @Override
-    public void navigateToSettings() {
+    public void routeToSettings() {
 
     }
 
     @Override
-    public void openPlacePicker() {
+    public void routeToPlacePicker() {
         //place picker requires location permissions
         if (!permissionsChecker.askPermissionsIfNotGranted(this, PERMISSION_PLACE_PICKER, LOCATION_PERMISSIONS)) {
             return;

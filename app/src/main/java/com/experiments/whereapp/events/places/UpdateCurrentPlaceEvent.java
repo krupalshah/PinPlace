@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.events;
+package com.experiments.whereapp.events.places;
 
 import com.experiments.core.helpers.location.PlaceDataWrapper;
 

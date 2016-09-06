@@ -54,13 +54,4 @@ public interface HomeScreenView extends BaseView {
      */
     void showTurnOnLocationDialog(Status locationStatus);
 
-    /**
-     * navigates to settings screen
-     */
-    void navigateToSettings();
-
-    /**
-     * opens place picker for google places lib.
-     */
-    void openPlacePicker();
 }

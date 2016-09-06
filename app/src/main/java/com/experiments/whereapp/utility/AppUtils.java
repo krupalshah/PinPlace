@@ -14,14 +14,16 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.api;
+package com.experiments.whereapp.utility;
+
+import com.experiments.core.utility.BaseUtils;
 
 /**
  * Author : Krupal Shah
- * Date : 17-Apr-16
+ * Date : 10-Apr-16
  * <p>
- * repository interface of all apis
+ * contains application specific utility methods
  */
-public interface WebServices {
+public class AppUtils extends BaseUtils {
 
 }

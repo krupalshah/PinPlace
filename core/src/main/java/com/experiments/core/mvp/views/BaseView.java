@@ -16,12 +16,20 @@
 
 package com.experiments.core.mvp.views;
 
+import android.content.Context;
 import android.support.annotation.StringRes;
 
 /**
  * Created by Krupal Shah on 28-Aug-16.
  */
 public interface BaseView extends BaseMvpView {
+
+    /**
+     * to get context specific to any framework component that implements specified view
+     *
+     * @return context
+     */
+    Context getContext();
 
     /**
      * shows generic message

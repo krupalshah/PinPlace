@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.storage.database.models;
+package com.experiments.whereapp.persistance.storage.models;
 
 import android.text.TextUtils;
 

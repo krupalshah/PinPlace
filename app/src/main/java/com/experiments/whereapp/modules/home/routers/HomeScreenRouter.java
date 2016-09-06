@@ -14,13 +14,22 @@
  *   limitations under the License.
  */
 
-package com.experiments.core.controllers;
+package com.experiments.whereapp.modules.home.routers;
+
+import com.experiments.core.mvp.routers.BaseRouter;
+import com.experiments.whereapp.modules.home.views.HomeScreenView;
 
 /**
- * Created by Krupal Shah on 26-Jun-16.
- * <p>
- * base class for all api controllers
+ * Created by Krupal Shah on 07-Sep-16.
  */
-public abstract class BaseApiController {
+public interface HomeScreenRouter extends BaseRouter<HomeScreenView> {
+    /**
+     * navigates to settings screen
+     */
+    void routeToSettings();
 
+    /**
+     * opens place picker for google places lib.
+     */
+    void routeToPlacePicker();
 }

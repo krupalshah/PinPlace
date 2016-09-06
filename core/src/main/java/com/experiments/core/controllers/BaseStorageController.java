@@ -14,16 +14,13 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.utillities;
-
-import com.experiments.core.utilities.BaseUtils;
+package com.experiments.core.controllers;
 
 /**
- * Author : Krupal Shah
- * Date : 10-Apr-16
+ * Created by Krupal Shah on 26-Jun-16.
  * <p>
- * contains application specific utility methods
+ * base class for all local database controllers
  */
-public class AppUtils extends BaseUtils {
+public abstract class BaseStorageController {
 
 }

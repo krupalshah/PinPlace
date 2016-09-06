@@ -24,7 +24,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.experiments.core.R;
-import com.experiments.core.utilities.FontFactory;
+import com.experiments.core.utility.FontFactory;
 
 
 /**

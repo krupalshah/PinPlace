@@ -14,27 +14,14 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.api.controllers;
-
-
-import com.experiments.core.controllers.BaseApiController;
+package com.experiments.whereapp.service;
 
 /**
  * Author : Krupal Shah
  * Date : 17-Apr-16
  * <p>
- * controller for all api calls
+ * repository interface of all apis
  */
-public class ApiController extends BaseApiController {
-
-    private static ApiController instance;
-
-    //singleton
-    public static synchronized ApiController getInstance() {
-        if (instance == null) {
-            instance = new ApiController();
-        }
-        return instance;
-    }
+public interface WebServices {
 
 }

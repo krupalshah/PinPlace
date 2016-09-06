@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.api;
+package com.experiments.whereapp.service;
 
 import com.experiments.whereapp.config.AppConfig;
 import com.experiments.whereapp.config.ServerConfig;

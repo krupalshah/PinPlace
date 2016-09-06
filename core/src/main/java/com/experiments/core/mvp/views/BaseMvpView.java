@@ -16,8 +16,6 @@
 
 package com.experiments.core.mvp.views;
 
-import android.content.Context;
-
 import com.experiments.core.mvp.presenters.BasePresenter;
 
 /**
@@ -26,12 +24,6 @@ import com.experiments.core.mvp.presenters.BasePresenter;
  */
 public interface BaseMvpView {
 
-    /**
-     * to get context specific to any framework component that implements specified view
-     *
-     * @return context
-     */
-    Context getContext();
 
     /**
      * returns checks if component has reached its destroy state in its life cycle<br/>

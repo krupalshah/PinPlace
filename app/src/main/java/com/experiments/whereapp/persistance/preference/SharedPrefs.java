@@ -14,27 +14,10 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.events;
+package com.experiments.whereapp.persistance.preference;
 
 /**
- * Created by Krupal Shah on 04-Sep-16.
+ * Created by Krupal Shah on 06-Sep-16.
  */
-public class GetPlaceErrorEvent {
-
-    private final Throwable exception;
-
-    public GetPlaceErrorEvent(Throwable exception) {
-        this.exception = exception;
-    }
-
-    public Throwable getException() {
-        return exception;
-    }
-
-    @Override
-    public String toString() {
-        return "OnUpdatingPlaceError{" +
-                "exception=" + exception +
-                '}';
-    }
+public class SharedPrefs {
 }
