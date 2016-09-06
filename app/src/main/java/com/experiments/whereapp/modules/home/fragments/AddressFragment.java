@@ -99,7 +99,7 @@ public class AddressFragment extends BaseFragment implements AddressView {
 
     @CallSuper
     @Override
-    public void removeListeners() {
+    public void removeCallbacks() {
         animationHandler.removeCallbacksAndMessages(null);
     }
 
@@ -112,6 +112,7 @@ public class AddressFragment extends BaseFragment implements AddressView {
         } else {
             txtCurrentPlaceAddress.setVisibility(View.VISIBLE);
             txtCurrentPlaceAddress.setText(address);
+            txtCurrentPlaceAddress.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
     }
 

@@ -35,5 +35,6 @@
     <string name="retrieving_location">Retrieving Place Information</string>
     <string name="err_unknown">Unknown error occurred!</string>
     <string name="err_fetching_place_info">Error getting current place!</string>
+    <string name="account">Account</string>
 
 </resources>

@@ -23,7 +23,7 @@ import com.droidexperiments.android.where.R;
 import com.experiments.core.exceptions.NoInternetException;
 import com.experiments.core.exceptions.PermissionDeniedException;
 import com.experiments.core.mvp.presenters.BasePresenter;
-import com.experiments.whereapp.events.ErrorUpdatingPlaceEvent;
+import com.experiments.whereapp.events.GetPlaceErrorEvent;
 import com.experiments.whereapp.events.UpdateCurrentPlaceEvent;
 import com.experiments.whereapp.modules.home.views.AddressView;
 import com.google.android.gms.location.places.Place;
@@ -41,7 +41,7 @@ public class AddressPresenter extends BasePresenter<AddressView> {
 
     private static final String TAG = "AddressPresenter";
 
-    protected final EventBus eventBus;
+    private final EventBus eventBus;
 
     //avoiding direct instances. use factory method instead.
     private AddressPresenter() {
@@ -61,7 +61,6 @@ public class AddressPresenter extends BasePresenter<AddressView> {
     @Override
     public void detachView() {
         view.stopAnimatingAddress(true);
-        view.removeListeners();
         super.detachView();
     }
 
@@ -79,7 +78,7 @@ public class AddressPresenter extends BasePresenter<AddressView> {
 
     @DebugLog
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onCurrentPlaceUpdatedEvent(UpdateCurrentPlaceEvent updateCurrentPlaceEvent) {
+    public void onUpdateCurrentPlaceEvent(UpdateCurrentPlaceEvent updateCurrentPlaceEvent) {
         Place place = updateCurrentPlaceEvent.getCurrentPlace().getPlaceData();
         if (place == null) {
             view.stopAnimatingAddress(true);
@@ -102,8 +101,8 @@ public class AddressPresenter extends BasePresenter<AddressView> {
 
     @DebugLog
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onErrorGettingPlaceEvent(ErrorUpdatingPlaceEvent errorUpdatingPlaceEvent) {
-        Throwable exception = errorUpdatingPlaceEvent.getException();
+    public void onErrorGettingPlaceDetails(GetPlaceErrorEvent getPlaceErrorEvent) {
+        Throwable exception = getPlaceErrorEvent.getException();
         exception.printStackTrace();
 
         view.stopAnimatingAddress(true);

@@ -20,4 +20,10 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
+    <fragment
+        android:id="@+id/fragment_address"
+        android:name="com.experiments.whereapp.modules.home.fragments.AddressFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

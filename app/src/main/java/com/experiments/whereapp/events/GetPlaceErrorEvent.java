@@ -14,25 +14,27 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.db;
-
-import com.experiments.core.controllers.BaseDbController;
+package com.experiments.whereapp.events;
 
 /**
- * Author : Krupal Shah
- * Date : 17-Apr-16
- * <p>
- * controller for all local db related jobs
+ * Created by Krupal Shah on 04-Sep-16.
  */
-public class DbController extends BaseDbController {
+public class GetPlaceErrorEvent {
 
-    private static DbController instance;
+    private final Throwable exception;
 
-    //singleton
-    public static synchronized DbController getInstance() {
-        if (instance == null) {
-            instance = new DbController();
-        }
-        return instance;
+    public GetPlaceErrorEvent(Throwable exception) {
+        this.exception = exception;
+    }
+
+    public Throwable getException() {
+        return exception;
+    }
+
+    @Override
+    public String toString() {
+        return "OnUpdatingPlaceError{" +
+                "exception=" + exception +
+                '}';
     }
 }

@@ -16,9 +16,36 @@
 
 package com.experiments.core.exceptions;
 
+import android.support.annotation.Nullable;
+
+import java.util.Arrays;
+
 /**
  * Created by Krupal Shah on 05-Sep-16.
  */
 public class NoInternetException extends Exception {
 
+    private final String screenName;
+
+    public NoInternetException() {
+        super();
+        screenName = null;
+    }
+
+    public NoInternetException(String screenName) {
+        super();
+        this.screenName = screenName;
+    }
+
+    @Nullable
+    public String getScreenName() {
+        return screenName;
+    }
+
+    @Override
+    public String toString() {
+        return "NoInternetException{" +
+                "screenName='" + screenName + '\'' +
+                '}' + "\n Stack Trace : \n" + Arrays.toString(getStackTrace());
+    }
 }

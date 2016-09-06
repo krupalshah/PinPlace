@@ -39,10 +39,10 @@ public interface BaseMvpView {
      *
      * @return true if component has been destroyed in its lifecycle; false otherwise
      */
-    boolean isDestroyed();
+    boolean isComponentDestroyed();
 
     /**
      * removes all callbacks and listeners on view. to be called from {@link BasePresenter#detachView()}
      */
-    void removeListeners();
+    void removeCallbacks();
 }

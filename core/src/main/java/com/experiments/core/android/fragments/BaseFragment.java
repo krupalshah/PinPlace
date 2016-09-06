@@ -87,7 +87,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     @Override
-    public boolean isDestroyed() {
+    public boolean isComponentDestroyed() {
         return isDestroyed;
     }
 

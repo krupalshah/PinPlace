@@ -66,7 +66,7 @@ public class RecommendedPlacesFragment extends BaseFragment {
     }
 
     @Override
-    public void removeListeners() {
+    public void removeCallbacks() {
 
     }
 }

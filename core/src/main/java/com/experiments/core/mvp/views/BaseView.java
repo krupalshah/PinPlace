@@ -37,5 +37,4 @@ public interface BaseView extends BaseMvpView {
      */
     void showError(@StringRes int msgResId);
 
-
 }

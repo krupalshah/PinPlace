@@ -236,7 +236,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
 
     @DebugLog
     @Override
-    public void removeListeners() {
+    public void removeCallbacks() {
         pagerHome.clearOnPageChangeListeners();
     }
 
@@ -283,7 +283,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, ViewPa
     private void prepareToolbarTitles(List<Integer> toolbarTitles) {
         toolbarTitles.add(TAB_POSITION_HOME, R.string.home);
         toolbarTitles.add(TAB_POSITION_EXPLORE, R.string.explore);
-        toolbarTitles.add(TAB_POSITION_EXPLORE, R.string.bookmarks);
+        toolbarTitles.add(TAB_POSITION_BOOKMARKS, R.string.bookmarks);
     }
 
     private void setTabIcons() {

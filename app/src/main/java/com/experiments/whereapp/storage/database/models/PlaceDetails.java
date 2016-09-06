@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.db.models;
+package com.experiments.whereapp.storage.database.models;
 
 import android.text.TextUtils;
 

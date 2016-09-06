@@ -29,7 +29,7 @@ import com.experiments.core.helpers.location.LocationUpdatesListener;
 import com.experiments.core.helpers.location.LocationUpdatesManager;
 import com.experiments.core.helpers.location.PlaceDataWrapper;
 import com.experiments.core.mvp.presenters.BasePresenter;
-import com.experiments.whereapp.events.ErrorUpdatingPlaceEvent;
+import com.experiments.whereapp.events.GetPlaceErrorEvent;
 import com.experiments.whereapp.events.UpdateCurrentPlaceEvent;
 import com.experiments.whereapp.modules.home.views.HomeScreenView;
 import com.google.android.gms.common.api.Status;
@@ -55,14 +55,11 @@ public class HomePresenter extends BasePresenter<HomeScreenView> implements Loca
 
     //minimum distance from old location for which address text should be refreshed
     private static final double MIN_DISTANCE_IN_METERS = 100.00;
-
+    private final EventBus eventBus;
     //helper for location updates
     private LocationUpdatesManager locationUpdatesManager;
-
     //temporary location to check whether new updated location has not more distance from old than {@link #MIN_DISTANCE_IN_METERS}
     private Location tempLocation;
-
-    private EventBus eventBus;
 
     //avoiding direct instances. use factory method instead.
     private HomePresenter() {
@@ -82,11 +79,10 @@ public class HomePresenter extends BasePresenter<HomeScreenView> implements Loca
         view.setupViewPager();
     }
 
-
     @Override
     @DebugLog
     public void detachView() {
-        view.removeListeners();
+        locationUpdatesManager = null;
         super.detachView();
     }
 
@@ -109,7 +105,7 @@ public class HomePresenter extends BasePresenter<HomeScreenView> implements Loca
             locationUpdatesManager.scheduleLocationUpdates();
         } else {
             view.showError(R.string.unable_to_get_location);
-            eventBus.post(new ErrorUpdatingPlaceEvent(new Throwable("Permission was denied by user")));
+            eventBus.post(new GetPlaceErrorEvent(new Throwable("Permission was denied by user")));
         }
     }
 
@@ -198,7 +194,7 @@ public class HomePresenter extends BasePresenter<HomeScreenView> implements Loca
 
     @DebugLog
     @Override
-    public void onErrorGettingLocation(Throwable t) {
+    public void onErrorUpdatingLocation(Throwable t) {
         postErrorGettingPlaceEvent(t);
         t.printStackTrace();
     }
@@ -213,7 +209,7 @@ public class HomePresenter extends BasePresenter<HomeScreenView> implements Loca
                 postUpdateCurrentPlaceEvent(place);
                 break;
             case GetPlaceCallback.STATUS_NO_NETWORK:
-                onErrorGettingLastKnownPlace(new NoInternetException());
+                onErrorGettingLastKnownPlace(new NoInternetException("Home"));
                 break;
 
             case GetPlaceCallback.STATUS_UNKNOWN_FAILURE:
@@ -222,11 +218,13 @@ public class HomePresenter extends BasePresenter<HomeScreenView> implements Loca
         }
     }
 
+    @DebugLog
     public void postUpdateCurrentPlaceEvent(PlaceDataWrapper currentPlace) {
         eventBus.post(new UpdateCurrentPlaceEvent(currentPlace));
     }
 
+    @DebugLog
     public void postErrorGettingPlaceEvent(Throwable t) {
-        eventBus.post(new ErrorUpdatingPlaceEvent(t));
+        eventBus.post(new GetPlaceErrorEvent(t));
     }
 }

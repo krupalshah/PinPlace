@@ -43,6 +43,7 @@ public abstract class BasePresenter<T extends BaseMvpView> {
     @CallSuper
     @DebugLog
     public void detachView() {
+        view.removeCallbacks();
         view = null;
     }
 

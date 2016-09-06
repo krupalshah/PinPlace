@@ -14,24 +14,11 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.modules.home.presenters;
-
-import com.experiments.core.mvp.presenters.BasePresenter;
-import com.experiments.whereapp.modules.home.views.ExplorePlacesView;
+package com.experiments.whereapp.storage.preferences;
 
 /**
- * Created by Krupal Shah on 04-Sep-16.
+ * Created by Krupal Shah on 06-Sep-16.
  */
-public class ExplorePlacesPresenter extends BasePresenter<ExplorePlacesView> {
-
-    private ExplorePlacesPresenter() {
-
-    }
-
-    public static ExplorePlacesPresenter create() {
-        return new ExplorePlacesPresenter();
-    }
-
-
+public class PreferenceManager {
 
 }

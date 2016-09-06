@@ -57,6 +57,6 @@ public interface LocationUpdatesListener {
 
     void onErrorGettingLastKnownPlace(Throwable t);
 
-    void onErrorGettingLocation(Throwable t);
+    void onErrorUpdatingLocation(Throwable t);
 
 }

@@ -19,6 +19,8 @@ package com.experiments.core.exceptions;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Arrays;
+
 /**
  * Created by Krupal Shah on 05-Sep-16.
  */
@@ -55,4 +57,11 @@ public class PermissionDeniedException extends Exception {
         return deniedPermissions;
     }
 
+    @Override
+    public String toString() {
+        return "PermissionDeniedException{" +
+                "askedPermissions=" + Arrays.toString(askedPermissions) +
+                ", deniedPermissions=" + Arrays.toString(deniedPermissions) +
+                '}' + "\n Stack Trace : \n" + Arrays.toString(getStackTrace());
+    }
 }

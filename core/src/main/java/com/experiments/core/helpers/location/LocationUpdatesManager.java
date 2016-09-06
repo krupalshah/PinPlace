@@ -269,13 +269,13 @@ public class LocationUpdatesManager implements GoogleApiClient.ConnectionCallbac
     @Override
     @DebugLog
     public void onConnectionSuspended(int i) {
-        locationUpdatesListener.onErrorGettingLocation(new Throwable("Google api client connection suspended"));
+        locationUpdatesListener.onErrorUpdatingLocation(new Throwable("Google api client connection suspended"));
     }
 
     @Override
     @DebugLog
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        locationUpdatesListener.onErrorGettingLocation(new Throwable("Google api client connection failed"));
+        locationUpdatesListener.onErrorUpdatingLocation(new Throwable("Google api client connection failed"));
     }
 
 }

@@ -14,24 +14,25 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.modules.home.presenters;
+package com.experiments.whereapp.storage.database.controllers;
 
-import com.experiments.core.mvp.presenters.BasePresenter;
-import com.experiments.whereapp.modules.home.views.ExplorePlacesView;
+import com.experiments.core.controllers.BaseDbController;
 
 /**
- * Created by Krupal Shah on 04-Sep-16.
+ * Author : Krupal Shah
+ * Date : 17-Apr-16
+ * <p>
+ * controller for all local db related jobs
  */
-public class ExplorePlacesPresenter extends BasePresenter<ExplorePlacesView> {
+public class DbController extends BaseDbController {
 
-    private ExplorePlacesPresenter() {
+    private static DbController instance;
 
+    //singleton
+    public static synchronized DbController getInstance() {
+        if (instance == null) {
+            instance = new DbController();
+        }
+        return instance;
     }
-
-    public static ExplorePlacesPresenter create() {
-        return new ExplorePlacesPresenter();
-    }
-
-
-
 }

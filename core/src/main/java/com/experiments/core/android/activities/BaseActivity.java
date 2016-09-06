@@ -83,6 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     public void onClick(android.view.View view) {
         hideKeyBoard();
         hideSnakeBar();
+        // TODO: 06-Sep-16 hideLoader();
     }
 
     public void hideSnakeBar() {
@@ -121,7 +122,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
-    public boolean isDestroyed() {
+    public boolean isComponentDestroyed() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             return super.isDestroyed();
         } else {
@@ -140,5 +141,4 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         String message = getString(msgResId);
         showSnakeBar(message, R.string.dismiss, null);
     }
-
 }

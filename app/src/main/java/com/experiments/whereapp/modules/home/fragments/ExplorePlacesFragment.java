@@ -71,7 +71,7 @@ public class ExplorePlacesFragment extends BaseFragment implements ExplorePlaces
     }
 
     @Override
-    public void removeListeners() {
+    public void removeCallbacks() {
 
     }
 
