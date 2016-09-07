@@ -21,7 +21,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 
-import com.experiments.core.android.views.CustomTextView;
+import com.experiments.core.application.views.CustomTextView;
 
 /**
  * Shimmer

@@ -18,7 +18,7 @@
     package="com.droidexperiments.android.where">
 
     <application
-        android:name="com.experiments.whereapp.WhereApp"
+        android:name="com.experiments.whereapp.application.WhereApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,7 +27,7 @@
 
         <!--activities-->
         <activity
-            android:name="com.experiments.whereapp.modules.home.activities.HomeActivity"
+            android:name="com.experiments.whereapp.application.home.activities.HomeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
