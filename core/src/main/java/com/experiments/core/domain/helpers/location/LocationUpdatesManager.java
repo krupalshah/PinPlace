@@ -26,7 +26,7 @@ import android.util.Log;
 
 import com.experiments.core.config.BaseConfig;
 import com.experiments.core.domain.exceptions.NoInternetException;
-import com.experiments.core.utility.BaseUtils;
+import com.experiments.core.util.BaseUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;

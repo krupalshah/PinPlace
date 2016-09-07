@@ -14,9 +14,9 @@
  *   limitations under the License.
  */
 
-package com.experiments.whereapp.utility;
+package com.experiments.whereapp.util;
 
-import com.experiments.core.utility.BaseUtils;
+import com.experiments.core.util.BaseUtils;
 
 /**
  * Author : Krupal Shah

@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package com.experiments.core.utility;
+package com.experiments.core.util;
 
 import android.content.Context;
 import android.location.Address;

@@ -37,7 +37,7 @@ import com.experiments.core.application.activities.BaseActivity;
 import com.experiments.core.application.adapters.CommonPagerAdapter;
 import com.experiments.core.application.views.CustomTextView;
 import com.experiments.core.domain.exceptions.PermissionDeniedException;
-import com.experiments.core.utility.PermissionHandler;
+import com.experiments.core.util.PermissionHandler;
 import com.experiments.whereapp.application.home.fragments.ExplorePlacesFragment;
 import com.experiments.whereapp.application.home.fragments.RecommendedPlacesFragment;
 import com.experiments.whereapp.application.home.fragments.SavedPlacesFragment;
