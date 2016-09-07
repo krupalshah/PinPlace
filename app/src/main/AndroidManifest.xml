@@ -18,7 +18,7 @@
     package="com.droidexperiments.android.where">
 
     <application
-        android:name="com.experiments.whereapp.application.WhereApp"
+        android:name="com.experiments.whereapp.application.Where"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"

@@ -34,7 +34,7 @@ import io.fabric.sdk.android.Fabric;
  * <p>
  * application class
  */
-public class WhereApp extends Core {
+public class Where extends Core {
 
     @Override
     @DebugLog
