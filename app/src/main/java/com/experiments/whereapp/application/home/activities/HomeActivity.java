@@ -37,7 +37,7 @@ import com.experiments.core.application.activities.BaseActivity;
 import com.experiments.core.application.adapters.CommonPagerAdapter;
 import com.experiments.core.application.views.CustomTextView;
 import com.experiments.core.domain.exceptions.PermissionDeniedException;
-import com.experiments.core.util.PermissionHandler;
+import com.experiments.core.util.PermissionDispatcher;
 import com.experiments.whereapp.application.home.fragments.ExplorePlacesFragment;
 import com.experiments.whereapp.application.home.fragments.RecommendedPlacesFragment;
 import com.experiments.whereapp.application.home.fragments.SavedPlacesFragment;
@@ -99,7 +99,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, HomeSc
 
 
     private HomePresenter homePresenter;
-    private PermissionHandler permissionHandler;
+    private PermissionDispatcher permissionDispatcher;
     private List<Integer> toolbarTitles;
 
     @Override
@@ -112,7 +112,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, HomeSc
 
     @Override
     protected void initComponents() {
-        permissionHandler = PermissionHandler.create();
+        permissionDispatcher = PermissionDispatcher.create();
         homePresenter = HomePresenter.create();
         homePresenter.attachView(this);
         homePresenter.registerPlaceUpdates();
@@ -121,7 +121,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, HomeSc
     @Override
     protected void onStart() {
         super.onStart();
-        if (!permissionHandler.askPermissionsIfNotGranted(this, PERMISSION_LOCATION_UPDATES, LOCATION_PERMISSIONS)) {
+        if (!permissionDispatcher.askPermissionsIfNotGranted(this, PERMISSION_LOCATION_UPDATES, LOCATION_PERMISSIONS)) {
             return;
         }
         homePresenter.requestPlaceUpdates();
@@ -150,7 +150,7 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, HomeSc
         switch (requestCode) {
             case PERMISSION_LOCATION_UPDATES:
                 //requesting location updates if permissions granted
-                if (permissionHandler.checkGrantResults(this, requestCode, grantResults, R.string.allow_location_updates, LOCATION_PERMISSIONS)) {
+                if (permissionDispatcher.checkGrantResults(this, requestCode, grantResults, R.string.allow_location_updates, LOCATION_PERMISSIONS)) {
                     homePresenter.requestPlaceUpdates();
                 } else {
                     homePresenter.postErrorGettingPlaceEvent(new PermissionDeniedException(LOCATION_PERMISSIONS));
@@ -158,8 +158,8 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, HomeSc
                 break;
             case PERMISSION_PLACE_PICKER:
                 //opening place picker if permissions granted
-                if (permissionHandler.checkGrantResults(this, requestCode, grantResults, R.string.allow_place_search, LOCATION_PERMISSIONS)) {
-                    routeToPlacePicker();
+                if (permissionDispatcher.checkGrantResults(this, requestCode, grantResults, R.string.allow_place_search, LOCATION_PERMISSIONS)) {
+                    navigateToPlacePicker();
                 }
                 break;
         }
@@ -246,23 +246,23 @@ public class HomeActivity extends BaseActivity implements HomeScreenView, HomeSc
         super.onClick(view);
         switch (view.getId()) {
             case R.id.img_search_toolbar:
-                routeToPlacePicker();
+                navigateToPlacePicker();
                 break;
             case R.id.img_settings_toolbar:
-                routeToSettings();
+                navigateToSettings();
                 break;
         }
     }
 
     @Override
-    public void routeToSettings() {
+    public void navigateToSettings() {
 
     }
 
     @Override
-    public void routeToPlacePicker() {
+    public void navigateToPlacePicker() {
         //place picker requires location permissions
-        if (!permissionHandler.askPermissionsIfNotGranted(this, PERMISSION_PLACE_PICKER, LOCATION_PERMISSIONS)) {
+        if (!permissionDispatcher.askPermissionsIfNotGranted(this, PERMISSION_PLACE_PICKER, LOCATION_PERMISSIONS)) {
             return;
         }
         //building place picker intent and starting activity for result

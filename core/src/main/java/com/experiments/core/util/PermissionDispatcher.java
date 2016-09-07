@@ -35,7 +35,7 @@ import hugo.weaving.DebugLog;
  * <p>
  * handles permission checking for marshmallow and above
  */
-public class PermissionHandler {
+public class PermissionDispatcher {
 
     /**
      * list of non granted permissions<br/>
@@ -43,12 +43,12 @@ public class PermissionHandler {
      */
     private final List<String> revokedPermissions = new ArrayList<>();
 
-    private PermissionHandler() {
+    private PermissionDispatcher() {
         //avoiding direct instances. use factory method instead.
     }
 
-    public static PermissionHandler create() {
-        return new PermissionHandler();
+    public static PermissionDispatcher create() {
+        return new PermissionDispatcher();
     }
 
 

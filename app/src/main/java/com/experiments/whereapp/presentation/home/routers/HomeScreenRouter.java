@@ -26,10 +26,10 @@ public interface HomeScreenRouter extends BaseRouter<HomeScreenView> {
     /**
      * navigates to settings screen
      */
-    void routeToSettings();
+    void navigateToSettings();
 
     /**
      * opens place picker for google places lib.
      */
-    void routeToPlacePicker();
+    void navigateToPlacePicker();
 }
